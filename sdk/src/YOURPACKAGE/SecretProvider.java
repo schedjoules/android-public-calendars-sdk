@@ -2,6 +2,7 @@ package YOURPACKAGE.germany;
 
 import org.dmfs.android.calendarcontent.secrets.ISecretProvider;
 import org.dmfs.android.calendarcontent.secrets.Secret;
+import org.dmfs.android.calendarcontent.secrets.SecurityToken;
 
 import android.content.Context;
 
@@ -24,15 +25,15 @@ public class SecretProvider implements ISecretProvider
 
 
 	@Override
-	public Secret getSecret(Context context, String key, String keyFragment)
+	public Secret getSecret(Context context, String key, SecurityToken token)
 	{
 		if (KEY_LICENSE_KEY.equals(key))
 		{
-			return new Secret(context, keyFragment /* just pass on keyFragment */, LICENSE_KEY /* pass the license key in plain text here */);
+			return new Secret(context, token /* just forward the token */, LICENSE_KEY /* pass the license key in plain text here */);
 		}
 		else if (KEY_API_TOKEN.equals(key))
 		{
-			return new Secret(context, keyFragment /* just pass on keyFragment */, API_TOKEN /* pass the API token in plain text here */);
+			return new Secret(context, token /* just forward the token */, API_TOKEN /* pass the API token in plain text here */);
 		}
 		throw new IllegalArgumentException("unknown key '" + key + "'");
 	}
