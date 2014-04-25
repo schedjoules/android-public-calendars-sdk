@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+    *** SDK variables *** 
+	 
+    All these values have to be present and set properly. *None* of them is subject to translation! 
+    -->
+
+
+    <!--
+    The page you get when you query content item id 0
+	
+	Allowed placeholders are:
+	* {locale}   - will be replaced by the current language
+	* {location} - will be replaced by the current or selected location
+    -->
+    <string name="org_dmfs_android_calendarcontent_start_page_url">https://api.schedjoules.com/pages/113525?locale={locale}&amp;location={location}</string>
+
+    <!-- The account type of your account. This has to be unique, so add your package namespace. -->
+    <string name="org_dmfs_android_calendarcontent_account_type">your.package.name.ACCOUNT</string>
+
+    <!--
+    The class name of a class that returns the secrets required to access the API or the Play services.
+    
+    This class must implement org.dmfs.android.calendarcontent.secrets.ISecretProvider and return a valid
+    secret for the values ISecretProvider.KEY_LICENSE_KEY (the Google Play Public Key) and ISecretProvider.API_TOKEN (the SchedJoules API token).
+    -->
+    <string name="org_dmfs_android_calendarcontent_secret_provider">yourpackage.SecretProvider</string>
+
+    <!--
+    An ISO country code of the default location of the content.
+	
+    May be omitted or empty to use the location configured on the device.
+    -->
+    <string name="org_dmfs_android_calendarcontent_default_location">DE</string>
+
+</resources>

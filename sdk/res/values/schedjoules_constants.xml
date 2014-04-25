@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+	*** SDK constants *** 
+	 
+	Do not changes these values. None of these values is subject to translation.  
+    -->
+
+
+    <!--
+    DON'T CHANGE THIS!
+    The class name of the API connector.
+    -->
+    <string name="org_dmfs_android_calendarcontent_service_helper">org.dmfs.android.calendarcontent.servicehelper.schedjoules_v1.ServiceHelper</string>
+
+    <!--
+    DON'T CHANGE THIS!
+    The user-agent to send when syncing.
+    -->
+    <string name="org_dmfs_android_webcal_sync_user_agent">{AppName}/{AppVersion} ({DeviceManufacturer}; {DeviceModel}; Android {AndroidSDKLevel}; {Language}_{Country}; {AppPackage}/{AppVersionCode})</string>
+
+    <!--
+    DON'T CHANGE THIS!
+    A list of authentication schemes.
+    -->
+    <string-array name="org_dmfs_android_authenticator_auth_schemes">
+        <item>anonymous</item>
+    </string-array>
+
+    <!--
+    DON'T CHANGE THIS!
+    Fully qualified names of classes that handle the auth scheme at the same index in org_dmfs_android_authenticator_auth_schemes.
+    -->
+    <string-array name="org_dmfs_android_authenticator_auth_scheme_handlers">
+        <item>org.dmfs.android.authenticator.Anonymous</item>
+    </string-array>
+
+</resources>
