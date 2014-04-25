@@ -4,7 +4,7 @@ __Android SDK for SchedJoules services__
 
 ## The provider
 
-The API interface is implemented as a content provider. There is some [JavaDoc](javadoc/index.html) that describes the contract used by the interface.
+The API interface is implemented as a content provider. There is some [JavaDoc](https://rawgithub.com/schedjoules/Android-SDK/master/javadoc/index.html) that describes the contract used by the interface.
 
 * TODO: add examples how to use the interface
 * TODO: add more documentation
