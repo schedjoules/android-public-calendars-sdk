@@ -1,0 +1,123 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_bg" >
+
+        <LinearLayout
+            android:id="@+id/icon_and_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical"
+            android:minHeight="48dp"
+            android:orientation="horizontal"
+            android:padding="8dp" >
+
+            <org.dmfs.webcal.views.RemoteImageView
+                android:id="@+id/calendar_item_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginRight="8dp" />
+
+            <TextView
+                android:id="@android:id/title"
+                style="@style/large_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:minHeight="48dp" />
+
+            <CheckBox
+                android:id="@+id/starred"
+                style="?android:attr/starStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/icon_and_title"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="?android:attr/listDivider" />
+
+        <LinearLayout
+            android:id="@+id/sync_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/divider"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:minHeight="48dp"
+            android:orientation="horizontal"
+            android:padding="8dp" >
+
+            <TextView
+                android:id="@+id/calendar_item_purchase_now"
+                style="@style/medium_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:duplicateParentState="true"
+                android:enabled="false"
+                android:gravity="left|center_vertical"
+                android:text="@string/calendar_item_add_to_calendar"
+                android:textColor="@android:color/holo_blue_light"
+                android:visibility="visible" />
+
+            <Switch
+                android:id="@+id/calendar_item_sync_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- description stuff below is disabled for now -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            style="@style/medium_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/calendar_item_description_title"
+            android:textAllCaps="true"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/calendar_item_description"
+            style="@style/medium_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

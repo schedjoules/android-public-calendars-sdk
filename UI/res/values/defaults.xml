@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="faq_url">override me</string>
+    <string name="contact_address">override me</string>
+
+    <bool name="org_dmfs_android_show_calendar_details">true</bool>
+
+</resources>

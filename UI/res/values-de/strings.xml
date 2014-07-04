@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Strings for the Navigation Drawer Sidebar -->
+    <string name="drawer_open">Seitennavigation öffnen</string>
+    <string name="drawer_close">Seitennavigation schließen</string>
+
+    <!-- Button for new calendar subscription -->
+    <string name="calendar_item_subscribe_button">Abonnieren</string>
+
+    <!-- Switch to sync calendar if already purchased. -->
+    <string name="calendar_item_add_to_calendar">Kalender synchronisieren</string>
+
+    <!-- Title for description section of calendar once it is available. -->
+    <string name="calendar_item_description_title">Beschreibung</string>
+
+    <!-- Title for the small preview of events in a calendar -->
+    <string name="calendar_item_events_preview_title">Aktuelle Termine</string>
+
+    <!-- Text on button to view the full preview of events of a calendar. -->
+    <string name="calendar_item_events_small_events">Alle Termine</string>
+
+    <!-- Fallback title for Events Preview Activity -->
+    <string name="activity_title_events_preview">Terminvorschau</string>
+
+    <!-- Setting for a synced calendar -->
+    <string name="calendar_item_events_settings_title">Einstellungen</string>
+
+    <!-- Color for a synced calendar -->
+    <string name="calendar_settings_color">Kalenderfarbe</string>
+
+    <!-- Name for a synced calendar -->
+    <string name="calendar_settings_name">Kalendername</string>
+
+    <!-- Title for calendar setting "reminder" -->
+    <string name="calendar_settings_reminder">Erinnerung</string>
+
+    <!-- Text for dialog which prompts to pick a color for the calendar. -->
+    <string name="dialog_title_pick_a_color">Farbe wählen …</string>
+
+    <!-- Text for dialog which prompts to pick a name for the calendar. -->
+    <string name="dialog_title_enter_name">Name eingeben …</string>
+
+    <!-- Title of the Contact fragment -->
+    <string name="contact_us">Kontaktieren sie uns</string>
+
+    <!-- Message to customers -->
+    <string name="contact_text">Wenn Sie eine Frage haben, bitte zögern sie nicht uns eine Email zu senden.</string>
+
+    <!-- Button to send email -->
+    <string name="send_email">Email senden</string>
+
+    <!-- Message which is displayed when the data cannot be retrived from the server. -->
+    <string name="loading_failed">Fehler beim Laden der Daten. Bitte prüfen Sie die Internetverbindung oder versuchen Sie es später noch einmal.</string>
+
+    <!-- Message in "My Calendars" if there are no synced calendars yet -->
+    <string name="error_my_calendars_empty">Momentan synchronisieren sie keine Kalender. Öffnen Sie \"Alle Kalender\" um Kalender zu synchronisieren.</string>
+
+    <!-- Message in "Favorites" if there are no starred calendars yet -->
+    <string name="error_favorite_calendars_empty">Derzeit haben Sie keine Kalender zu den Favoriten hinzugefügt. Berühren Sie den Stern eines Kalenders um ihn zu den Favoriten hinzuzufügen.</string>
+
+    <!-- Message in "Free" if there are no free calendars yet -->
+    <string name="error_free_calendars_empty">Derzeit sind keine kostenlosen Kalender verfügbar.</string>
+
+    <!-- Purchase statuses -->
+    <string name="status_synced">Synchronisiert</string>
+    <string name="status_free">Kostenlos</string>
+    <string name="status_unlocked">Freigeschaltet</string>
+    <string name="status_free_trial">Kostenloser Test</string>
+
+    <!-- Purchase header -->
+
+    <string name="purchase_header_unlock_no_price">Synchronisation freischalten</string>
+    <string name="purchase_header_unlock">Synchr. für %s freischalten</string>
+    <string name="purchase_header_free_trial">1 Stunde gratis testen</string>
+
+    <plurals name="purchase_header_free_trial_minutes">
+        <item quantity="one">Kostenloser Test endet in %s Minute</item>
+        <item quantity="other">Kostenloser Test endet in %s Minuten</item>
+    </plurals>
+    <plurals name="purchase_header_free_trial_seconds">
+        <item quantity="one">Kostenloser Test endet in %s Sekunde</item>
+        <item quantity="other">Kostenloser Test endet in %s Sekunden</item>
+    </plurals>
+
+    <string-array name="alarm_names">
+        <item>Server-Standard</item>
+        <item>Keine Erinnerung</item>
+        <item>0 Minuten</item>
+        <item>1 Minute</item>
+        <item>2 Minuten</item>
+        <item>5 Minuten</item>
+        <item>10 Minuten</item>
+        <item>15 Minuten</item>
+        <item>30 Minuten</item>
+        <item>1 Stunde</item>
+        <item>2 Stunden</item>
+        <item>8 Stunden</item>
+        <item>12 Stunden</item>
+        <item>1 Tag</item>
+        <item>2 Tage</item>
+        <item>1 Woche</item>
+    </string-array>
+
+    <!-- String used in Preferences -->
+    <!-- Title for the preferences activity -->
+    <string name="title_activity_preferences">Einstellungen</string>
+    <!-- Locale preference title -->
+    <string name="preferences_locale_title">Land</string>
+    <!-- Locale preference summary -->
+    <string name="preferences_locale_summary"></string>
+
+    <!-- Items to be displayed in My Calendars -->
+    <string-array name="my_calendars_sections">
+        <item>Synchronisiert</item>
+        <item>Freigeschaltet</item>
+    </string-array>
+
+    <!-- Title of the entry for the default content location in the settings -->
+    <string name="default_location">Standard</string>
+
+    <!-- Season # -->
+    <string name="season">Saison %s</string>
+
+    <!-- Title of favourite calendars section -->
+    <string name="side_nav_favorite_calendars">Favoriten</string>
+
+    <!-- Title of my calendars section -->
+    <string name="side_nav_my_calendars">Meine Kalender</string>
+
+    <!-- Title of all calendars section -->
+    <string name="side_nav_all_calendars">Alle Kalender</string>
+
+    <!-- Title of free calendars section -->
+    <string name="side_nav_free_calendars">Kostenlose Kalender</string>
+
+    <!-- Title of faq section -->
+    <string name="side_nav_faq">FAQ</string>
+
+    <!-- Title of feedback section -->
+    <string name="side_nav_feedback">Feedback</string>
+
+    <!-- Title of settings section -->
+    <string name="side_nav_settings">Einstellungen</string>
+
+    <!-- Date & time strings -->
+    <string name="all_day">ganztags</string>
+    <string name="today">Heute</string>
+    <string name="yesterday">Gestern</string>
+    <string name="tomorrow">Morgen</string>
+
+</resources>

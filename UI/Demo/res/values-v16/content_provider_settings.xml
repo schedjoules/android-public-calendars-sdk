@@ -1,0 +1,5 @@
+<resources>
+
+    <bool name="content_provider_multi_process">true</bool>
+
+</resources>

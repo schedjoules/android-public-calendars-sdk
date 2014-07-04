@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+	*** UI variables ***
+
+	These are used by the UI. You need to adjust these values to your needs.
+    -->
+
+
+    <!-- FAQ URL -->
+    <string name="faq_url">https://cms.schedjoules.com/static_pages/android/help_en.html</string>
+
+    <!-- Default email address for contact -->
+    <string name="contact_address">support@schedjoules.com</string>
+
+</resources>

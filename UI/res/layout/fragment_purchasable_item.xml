@@ -1,0 +1,100 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/purchasable_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="true"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@android:id/title"
+            style="@style/large_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:padding="8dp"
+            android:scrollHorizontally="true"
+            android:singleLine="true" />
+
+        <LinearLayout
+            android:id="@+id/button_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@android:id/title"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:id="@+id/unlock_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/background_unlock_button"
+                android:clickable="true"
+                android:enabled="false" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:duplicateParentState="true"
+                    android:gravity="center"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/purchase_header_unlock_no_price"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/free_trial_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/background_free_trial"
+                android:clickable="true"
+                android:enabled="false" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:duplicateParentState="true"
+                    android:gravity="center"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/purchase_header_free_trial"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_color_free_trial" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/button_container"
+            android:background="@android:color/holo_blue_dark" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/purchasable_item_host"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </FrameLayout>
+
+</LinearLayout>

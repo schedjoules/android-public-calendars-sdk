@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+    The predefined values for alarms. The values are in "minutes before the event starts".
+    
+    A null string means "use server default", "none" is reserved for "no alarm".  
+    -->
+    <string-array name="alarm_values">
+        <item>@null</item>
+        <item>none</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>480</item>
+        <item>720</item>
+        <item>1440</item>
+        <item>2880</item>
+        <item>10080</item>
+    </string-array>
+
+</resources>

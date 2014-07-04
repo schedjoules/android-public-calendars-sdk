@@ -1,4 +1,7 @@
-
-# temporary files
-*~
-
+bin/*
+gen/*
+.settings/*
+*.class
+*.apk
+*.ap_
+libs/*

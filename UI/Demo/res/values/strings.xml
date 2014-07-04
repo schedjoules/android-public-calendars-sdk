@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="org_dmfs_android_calendarcontent_account_name">SchedJoules Demo</string>
+    <string name="title_activity_home">SchedJoules Demo</string>
+    <string name="app_name">SchedJoules Demo</string>
+    <string name="account_label">SchedJoules Demo</string>
+
+</resources>

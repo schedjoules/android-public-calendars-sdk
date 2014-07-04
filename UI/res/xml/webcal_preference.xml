@@ -1,0 +1,8 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ListPreference
+        android:key="content_location"
+        android:summary="@string/preferences_locale_summary"
+        android:title="@string/preferences_locale_title" />
+
+</PreferenceScreen>
