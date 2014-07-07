@@ -1,6 +1,5 @@
 package com.schedjoules.demo;
 
-import org.dmfs.android.authenticator.obfuscater.AbstractObfuscater;
 import org.dmfs.android.calendarcontent.secrets.ISecretProvider;
 import org.dmfs.android.calendarcontent.secrets.Secret;
 import org.dmfs.android.calendarcontent.secrets.SecurityToken;
@@ -29,7 +28,6 @@ public class SecretProvider implements ISecretProvider
 	@Override
 	public Secret getSecret(Context context, String key, SecurityToken keyFragment)
 	{
-		AbstractObfuscater o = new XOrObfuscater();
 		if (KEY_LICENSE_KEY.equals(key))
 		{
 			return new Secret(context, keyFragment, LICENSE_KEY);
@@ -45,7 +43,6 @@ public class SecretProvider implements ISecretProvider
 	@Override
 	public String getSecret(Context context, String key)
 	{
-		AbstractObfuscater o = new XOrObfuscater();
 		if (KEY_LICENSE_KEY.equals(key))
 		{
 			return LICENSE_KEY;
