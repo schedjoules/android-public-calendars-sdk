@@ -3,28 +3,18 @@
     android:id="@+id/calendar_item_settings_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:background="@drawable/card_bg"
     android:orientation="vertical"
+    android:padding="8dp"
     tools:context=".CalendarSettingsFragment" >
 
     <TextView
-        style="@style/small_text"
+        style="@style/dialog_text_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
         android:minHeight="48dp"
-        android:padding="8dp"
-        android:text="@string/calendar_item_events_settings_title"
-        android:textAllCaps="true" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:background="?android:attr/listDivider" />
+        android:padding="16dp"
+        android:text="@string/calendar_item_events_settings_title" />
 
     <LinearLayout
         android:id="@+id/color_setting"
@@ -32,13 +22,12 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
-        android:padding="8dp" >
+        android:padding="16dp" >
 
         <TextView
             style="@style/medium_text"
-            android:layout_width="fill_parent"
+            android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
@@ -53,11 +42,10 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/divider"
         android:layout_width="fill_parent"
         android:layout_height="1px"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="?android:attr/listDivider" />
 
     <LinearLayout
@@ -67,9 +55,8 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="vertical"
-        android:padding="8dp" >
+        android:padding="16dp" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -94,11 +81,10 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/divider"
         android:layout_width="fill_parent"
         android:layout_height="1px"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="?android:attr/listDivider" />
 
     <LinearLayout
@@ -108,9 +94,8 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="vertical"
-        android:padding="8dp" >
+        android:padding="16dp" >
 
         <LinearLayout
             android:layout_width="match_parent"

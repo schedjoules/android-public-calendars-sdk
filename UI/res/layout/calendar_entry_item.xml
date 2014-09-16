@@ -35,7 +35,7 @@
             android:visibility="gone" />
 
         <CheckBox
-            android:id="@+id/starred"
+            android:id="@+id/menu_starred"
             style="?android:attr/starStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             android:layout_alignWithParentIfMissing="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
-            android:layout_toLeftOf="@+id/starred"
+            android:layout_toLeftOf="@+id/menu_starred"
             android:layout_toRightOf="@android:id/icon"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"

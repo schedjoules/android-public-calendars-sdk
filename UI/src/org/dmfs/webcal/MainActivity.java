@@ -154,17 +154,17 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	{
 		Fragment contentFragment = mFragmentManager.findFragmentById(R.id.content);
 		Bundle args = contentFragment.getArguments();
-		return args != null ? args.getString(PagerFragment.ARG_TITLE) : "";
+		return args != null ? args.getString(PagerFragment.ARG_PAGE_TITLE) : "";
 	}
 
 
 	@Override
-	public void openCategory(long id, String title)
+	public void openCategory(long id, String title, long icon)
 	{
 		mFragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 
-		PagerFragment fragment = PagerFragment.newInstance(this, id, title);
+		PagerFragment fragment = PagerFragment.newInstance(this, id, title, icon);
 		fragmentTransaction.replace(R.id.content, fragment);
 		fragmentTransaction.addToBackStack("");
 		fragmentTransaction.commit();
@@ -174,13 +174,13 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 
 
 	@Override
-	public void openCalendar(long id)
+	public void openCalendar(long id, long icon)
 	{
 		mFragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 		Fragment contentFragment = mFragmentManager.findFragmentById(R.id.content);
-		String title = contentFragment.getArguments().getString(PagerFragment.ARG_TITLE);
-		CalendarItemFragment fragment = CalendarItemFragment.newInstance(this, id, title);
+		String title = contentFragment.getArguments().getString(PagerFragment.ARG_PAGE_TITLE);
+		CalendarItemFragment fragment = CalendarItemFragment.newInstance(this, id, title, icon);
 		fragmentTransaction.replace(R.id.content, fragment);
 		fragmentTransaction.addToBackStack("");
 		fragmentTransaction.commit();
@@ -202,7 +202,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		if (id == R.id.side_nav_favorite_calendars)
 		{
 			fragment = GenericListFragment.newInstance(CalendarContentContract.ContentItem.getStarredItemsContentUri(this),
-				getString(R.string.side_nav_favorite_calendars), R.string.error_favorite_calendars_empty, GenericListFragment.PROJECTION2);
+				getString(R.string.side_nav_favorite_calendars), R.string.error_favorite_calendars_empty, GenericListFragment.PROJECTION2, true);
 			mSelectedItemId = id;
 		}
 		else if (id == R.id.side_nav_my_calendars)
@@ -212,13 +212,13 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		}
 		else if (id == R.id.side_nav_all_calendars)
 		{
-			fragment = PagerFragment.newInstance(this, 0, getItemTitleById(id));
+			fragment = PagerFragment.newInstance(this, 0, getItemTitleById(id), -1);
 			mSelectedItemId = id;
 		}
 		else if (id == R.id.side_nav_free_calendars)
 		{
 			fragment = GenericListFragment.newInstance(CalendarContentContract.ContentItem.getFreeItemsContentUri(this),
-				getString(R.string.side_nav_free_calendars), R.string.error_free_calendars_empty, GenericListFragment.PROJECTION2);
+				getString(R.string.side_nav_free_calendars), R.string.error_free_calendars_empty, GenericListFragment.PROJECTION2, false);
 			mSelectedItemId = id;
 		}
 		else if (id == R.id.side_nav_faq)

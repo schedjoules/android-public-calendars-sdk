@@ -35,17 +35,25 @@ import android.util.Log;
  * Maintains a LIFO image download job queue. Download jobs added last will be started next.
  * 
  * @author Arjun Naik
- * @author Marten Gajda
+ * @author Marten Gajda <marten@dmfs.org>
  */
 public class ImageLoaderQueue
 {
 	private static final String TAG = "ImageLoaderQueue";
 	private ArrayList<Long> mDownloadJobQueue = new ArrayList<Long>(64);
-	private ImageDownloader mDownloader = null;
+	private ImageLoaderTask mDownloader = null;
 	private ImageProxy mImageProxy;
 	private Context mContext;
 
 
+	/**
+	 * Creates an {@link ImageLoaderQueue} that notifies the given {@link ImageProxy} when an image has been loaded.
+	 * 
+	 * @param context
+	 *            A {@link Context}.
+	 * @param imageProxy
+	 *            An {@link ImageProxy} to notify about finished jobs.
+	 */
 	public ImageLoaderQueue(Context context, ImageProxy imageProxy)
 	{
 		mContext = context;
@@ -89,7 +97,7 @@ public class ImageLoaderQueue
 				int last = mDownloadJobQueue.size() - 1;
 				Long iconId = mDownloadJobQueue.get(last);
 				mDownloadJobQueue.remove(last);
-				mDownloader = new ImageDownloader(iconId);
+				mDownloader = new ImageLoaderTask(iconId);
 				mDownloader.execute();
 			}
 			else
@@ -100,9 +108,9 @@ public class ImageLoaderQueue
 	}
 
 	/**
-	 * An AsyncTask that loads an image from an content provider.
+	 * An AsyncTask that loads an image from a content provider.
 	 */
-	private class ImageDownloader extends AsyncTask<Void, Integer, Drawable>
+	private class ImageLoaderTask extends AsyncTask<Void, Integer, Drawable>
 	{
 		/**
 		 * The id of the image to load.
@@ -110,7 +118,7 @@ public class ImageLoaderQueue
 		private long mIconId;
 
 
-		public ImageDownloader(long iconId)
+		public ImageLoaderTask(long iconId)
 		{
 			mIconId = iconId;
 		}

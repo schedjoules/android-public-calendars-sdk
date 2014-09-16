@@ -42,10 +42,10 @@
     <string name="calendar_settings_reminder">Reminder</string>
 
     <!-- Text for dialog which prompts to pick a color for the calendar. -->
-    <string name="dialog_title_pick_a_color">Pick a color …</string>
+    <string name="dialog_title_pick_a_color">Pick a color</string>
 
     <!-- Text for dialog which prompts to pick a name for the calendar. -->
-    <string name="dialog_title_enter_name">Enter name …</string>
+    <string name="dialog_title_enter_calendar_name">Enter calendar name</string>
 
     <!-- Title of the Contact fragment -->
     <string name="contact_us">Contact us</string>
@@ -77,18 +77,23 @@
     <!-- Purchase header -->
 
     <string name="purchase_header_unlock_no_price">Unlock sync</string>
-    <string name="purchase_header_unlock">Unlock sync for %s</string>
-    <string name="purchase_header_free_trial">1 hour free trial</string>
+    <string name="purchase_header_unlock">Buy now for %s</string>
+    <string name="purchase_dialog_take_the_free_trial">Take the free trial</string>
+    <string name="purchase_header_buy_now">Buy</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Unlock sync for the category &lt;b>%1$s&lt;/b> for just &lt;b>%2$s&lt;/b> and get access to the following calendars or take the &lt;b>1 hour free trial&lt;/b>.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Unlock sync for the category &lt;b>%1$s&lt;/b> for just &lt;b>%2$s&lt;/b> and get access to the following calendars.</string>
+    <string name="purchase_dialog_teaser_text_single_item_free_trial">Unlock sync for &lt;b>%1$s&lt;/b> for just &lt;b>%2$s&lt;/b> or take the &lt;b>1 hour free trial&lt;/b>.</string>
+    <string name="purchase_dialog_teaser_text_single_item_no_free_trial">Unlock sync for &lt;b>%1$s&lt;/b> for just &lt;b>%2$s&lt;/b>.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
-        <item quantity="one">Trial ends in %s minute</item>
-        <item quantity="two">Trial ends in %s minutes</item>
-        <item quantity="other">Trial ends in %s minutes</item>
+        <item quantity="one">Your free trial ends in %s minute</item>
+        <item quantity="two">Your free trial ends in %s minutes</item>
+        <item quantity="other">Your free trial ends in %s minutes</item>
     </plurals>
     <plurals name="purchase_header_free_trial_seconds">
-        <item quantity="one">Trial ends in %s second</item>
-        <item quantity="two">Trial ends in %s seconds</item>
-        <item quantity="other">Trial ends in %s seconds</item>
+        <item quantity="one">Your free trial ends in %s second</item>
+        <item quantity="two">Your free trial ends in %s seconds</item>
+        <item quantity="other">Your free trial ends in %s seconds</item>
     </plurals>
 
     <string-array name="alarm_names">
@@ -156,5 +161,11 @@
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
     <string name="tomorrow">Tomorrow</string>
+
+    <!-- Main menu options -->
+    <string name="menu_favorite_short">Favorite</string>
+    <string name="menu_favorite">Mark favorite</string>
+    <string name="menu_settings_short">Settions</string>
+    <string name="menu_settings">Open calendar settings</string>
 
 </resources>

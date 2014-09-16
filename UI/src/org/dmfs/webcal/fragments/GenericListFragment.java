@@ -58,6 +58,7 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
 	public static final String ARG_TITLE = "title";
 	public static final String ARG_EMPTY_MESSAGE = "empty_message";
 	public static final String ARG_PROJECTION = "projection";
+	public static final String ARG_SHOW_STARS = "show_stars";
 
 	public final static String[] PROJECTION = new String[] { CalendarContentContract.ContentItem._ID,
 		CalendarContentContract.SubscribedCalendars.CALENDAR_NAME, CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID,
@@ -84,6 +85,9 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
 	@Parameter(key = ARG_PROJECTION)
 	private String[] mProjection;
 
+	@Parameter(key = ARG_SHOW_STARS)
+	private boolean mShowStars;
+
 	private MixedNavigationAdapter mAdapter;
 	private int mFirstItem;
 	private int mPosFromTop;
@@ -91,7 +95,7 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
 	private TextView mMessageView;
 
 
-	public static GenericListFragment newInstance(Uri uri, String title, int emptyMessage, String[] projection)
+	public static GenericListFragment newInstance(Uri uri, String title, int emptyMessage, String[] projection, boolean showStars)
 	{
 		GenericListFragment result = new GenericListFragment();
 		Bundle args = new Bundle();
@@ -99,6 +103,7 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
 		args.putString(ARG_TITLE, title);
 		args.putInt(ARG_EMPTY_MESSAGE, emptyMessage);
 		args.putStringArray(ARG_PROJECTION, projection);
+		args.putBoolean(ARG_SHOW_STARS, showStars);
 		result.setArguments(args);
 		return result;
 	}
@@ -143,7 +148,7 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
 		View result = inflater.inflate(R.layout.generic_list, container, false);
 		mListView = (ListView) result.findViewById(android.R.id.list);
 		mMessageView = (TextView) result.findViewById(android.R.id.message);
-		mAdapter = new MixedNavigationAdapter(getActivity(), null, 0);
+		mAdapter = new MixedNavigationAdapter(getActivity(), null, 0, mShowStars);
 		mAdapter.setShowMissingIcons(true);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(this);
@@ -205,13 +210,14 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
 		Cursor cursor = (Cursor) adpView.getAdapter().getItem(position);
 		String itemType = cursor.getString(2);
 		String itemTitle = cursor.getString(1);
+		long itemIcon = cursor.getLong(cursor.getColumnIndex(ContentItem.ICON_ID));
 		if (CalendarContentContract.ContentItem.TYPE_PAGE.equals(itemType))
 		{
 			long selectedId = cursor.getLong(0);
 			Activity activity = getActivity();
 			if (activity instanceof CategoryNavigator)
 			{
-				((CategoryNavigator) activity).openCategory(selectedId, itemTitle);
+				((CategoryNavigator) activity).openCategory(selectedId, itemTitle, itemIcon);
 			}
 
 		}
@@ -225,7 +231,7 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
 			Activity activity = getActivity();
 			if (activity instanceof CategoryNavigator)
 			{
-				((CategoryNavigator) activity).openCalendar(selectedId);
+				((CategoryNavigator) activity).openCalendar(selectedId, -1);
 			}
 		}
 		else

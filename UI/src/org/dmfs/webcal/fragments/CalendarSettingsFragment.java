@@ -24,20 +24,26 @@ import org.dmfs.android.colorpicker.palettes.AbstractPalette;
 import org.dmfs.android.colorpicker.palettes.ColorFactory;
 import org.dmfs.android.colorpicker.palettes.ColorFactory.CombinedColorFactory;
 import org.dmfs.android.colorpicker.palettes.FactoryPalette;
-import org.dmfs.android.retentionmagic.SupportFragment;
+import org.dmfs.android.retentionmagic.SupportDialogFragment;
+import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.android.retentionmagic.annotations.Retain;
 import org.dmfs.webcal.R;
 import org.dmfs.webcal.fragments.InputTextDialogFragment.OnTextInputListener;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -49,8 +55,13 @@ import android.widget.TextView;
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class CalendarSettingsFragment extends SupportFragment implements OnClickListener, ColorDialogResultListener, OnTextInputListener
+public class CalendarSettingsFragment extends SupportDialogFragment implements OnClickListener, ColorDialogResultListener, OnTextInputListener,
+	LoaderManager.LoaderCallbacks<Cursor>
 {
+	private final static String ARG_SUBSCRIPTION_URI = "subscription_uri";
+
+	private final static int ID_SUBSCRIPTION_LOADER = 1;
+
 	private final static AbstractPalette[] PALETTES = new AbstractPalette[] { new FactoryPalette("rainbow", "Rainbow", ColorFactory.RAINBOW, 16),
 		new FactoryPalette("rainbow2", "Dirty Rainbow", new ColorFactory.RainbowColorFactory(0.5f, 0.5f), 16),
 		new FactoryPalette("red", "Red", new CombinedColorFactory(new ColorFactory.ColorShadeFactory(340), ColorFactory.RED), 16),
@@ -84,7 +95,7 @@ public class CalendarSettingsFragment extends SupportFragment implements OnClick
 	@Retain
 	private String mNewAlarm;
 
-	@Retain
+	@Parameter(key = ARG_SUBSCRIPTION_URI)
 	private Uri mSubscriptionUri;
 
 
@@ -93,9 +104,12 @@ public class CalendarSettingsFragment extends SupportFragment implements OnClick
 	 * 
 	 * @return A new instance of fragment CalendarSettingFragment.
 	 */
-	public static CalendarSettingsFragment newInstance()
+	public static CalendarSettingsFragment newInstance(Uri subscriptionUri)
 	{
 		CalendarSettingsFragment fragment = new CalendarSettingsFragment();
+		Bundle args = new Bundle();
+		args.putParcelable(ARG_SUBSCRIPTION_URI, subscriptionUri);
+		fragment.setArguments(args);
 		return fragment;
 	}
 
@@ -130,13 +144,53 @@ public class CalendarSettingsFragment extends SupportFragment implements OnClick
 			mAlarmSpinner.setAdapter(mAlarmAdapter);
 		}
 
+		LoaderManager loaderManage = getLoaderManager();
+		loaderManage.initLoader(ID_SUBSCRIPTION_LOADER, null, this);
+
 		return root;
 	}
 
 
-	public void setCalendarInfo(Cursor subscription, Uri subUri)
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState)
 	{
-		mSubscriptionUri = subUri;
+		Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+		// hide the actual dialog title, we have our own...
+		dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		return dialog;
+	}
+
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1)
+	{
+		return new CursorLoader(getActivity(), mSubscriptionUri, null, null, null, null);
+	}
+
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor)
+	{
+		if (cursor != null && cursor.moveToFirst())
+		{
+			setCalendarInfo(cursor);
+		}
+		else
+		{
+			dismiss();
+		}
+	}
+
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0)
+	{
+	}
+
+
+	private void setCalendarInfo(Cursor subscription)
+	{
 		if (subscription != null)
 		{
 			mNewColor = mOldColor = 0xff000000 | subscription.getInt(subscription.getColumnIndex(SubscribedCalendars.CALENDAR_COLOR));
@@ -225,7 +279,7 @@ public class CalendarSettingsFragment extends SupportFragment implements OnClick
 		}
 		else if (id == R.id.name_setting)
 		{
-			InputTextDialogFragment dialog = InputTextDialogFragment.newInstance(R.string.dialog_title_enter_name, mNewName);
+			InputTextDialogFragment dialog = InputTextDialogFragment.newInstance(R.string.dialog_title_enter_calendar_name, mNewName);
 			dialog.show(getChildFragmentManager(), null);
 		}
 		else if (id == R.id.alarm_setting)
@@ -257,4 +311,5 @@ public class CalendarSettingsFragment extends SupportFragment implements OnClick
 	{
 		// nothing to do
 	}
+
 }

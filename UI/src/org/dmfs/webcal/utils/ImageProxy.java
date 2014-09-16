@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
@@ -42,7 +43,7 @@ import android.support.v4.util.LruCache;
 public class ImageProxy
 {
 	/**
-	 * The maximal size taken by the image cache.
+	 * The maximum size taken by the image cache.
 	 */
 	private final static int IMAGE_CACHE_SIZE = 1024 * 1024; // 1MB
 
@@ -51,34 +52,69 @@ public class ImageProxy
 	 */
 	private static ImageProxy mInstance;
 
+	/**
+	 * The actual cache for the images.
+	 */
 	private ImageCache mImageCache = new ImageCache(IMAGE_CACHE_SIZE);
-	private ImageLoaderQueue downloader;
+
+	/**
+	 * The {@link ImageLoaderQueue} to load the images.
+	 */
+	private ImageLoaderQueue mLoader;
+
+	/**
+	 * {@link Map} of image ids to {@link Set}s of {@link ImageAvailableListener}s for that specific image.
+	 */
 	private HashMap<Long, Set<WeakReference<ImageAvailableListener>>> mJobWaitQueue = new HashMap<Long, Set<WeakReference<ImageAvailableListener>>>();
+
+	/**
+	 * The application {@link Context}.
+	 */
 	private Context mAppContext;
 
+	/**
+	 * A listener that get notified when an image has been loaded.
+	 */
 	public interface ImageAvailableListener
 	{
 		public void imageAvailable(long mIconId, Drawable drawable);
 	}
 
 
-	private ImageProxy(Context c)
-	{
-		mAppContext = c.getApplicationContext();
-		downloader = new ImageLoaderQueue(c, this);
-	}
-
-
-	public synchronized static ImageProxy getInstance(Context c)
+	/**
+	 * Get an {@link ImageProxy} instance.
+	 * 
+	 * @param context
+	 *            A {@link Context}.
+	 * @return The {@link ImageProxy} singleton.
+	 */
+	public synchronized static ImageProxy getInstance(Context context)
 	{
 		if (mInstance == null)
 		{
-			return mInstance = new ImageProxy(c);
+			return mInstance = new ImageProxy(context);
 		}
 		return mInstance;
 	}
 
 
+	private ImageProxy(Context c)
+	{
+		mAppContext = c.getApplicationContext();
+		mLoader = new ImageLoaderQueue(c, this);
+	}
+
+
+	/**
+	 * Return the image with then given id. If the icon is not present in the memory or filesystem cache this method returns <code>null</code>. The caller is
+	 * notified via the given {@link ImageAvailableListener} when the image has been loaded.
+	 * 
+	 * @param iconId
+	 *            The id of the icon to load.
+	 * @param callback
+	 *            The {@link ImageAvailableListener} to notify when the icon has been loaded.
+	 * @return A {@link Drawable} or null of the icon is loaded asynchronously or the id is invalid.
+	 */
 	public Drawable getImage(long iconId, ImageAvailableListener callback)
 	{
 		if (iconId == -1)
@@ -112,7 +148,15 @@ public class ImageProxy
 	}
 
 
-	public void registerImageRequest(long iconId, ImageAvailableListener callback)
+	/**
+	 * Registers an image for asynchronous loading.
+	 * 
+	 * @param iconId
+	 *            The icon id to load.
+	 * @param callback
+	 *            The {@link ImageAvailableListener} to notify when the image has been loaded.
+	 */
+	private void registerImageRequest(long iconId, ImageAvailableListener callback)
 	{
 		synchronized (mJobWaitQueue)
 		{
@@ -126,13 +170,21 @@ public class ImageProxy
 				Set<WeakReference<ImageAvailableListener>> listeners = new HashSet<WeakReference<ImageAvailableListener>>();
 				listeners.add(new WeakReference<ImageProxy.ImageAvailableListener>(callback));
 				mJobWaitQueue.put(iconId, listeners);
-				downloader.addJob(iconId);
+				mLoader.addJob(iconId);
 			}
 		}
 	}
 
 
-	public void imageReady(long iconId, Drawable result)
+	/**
+	 * Notify the {@link ImageProxy} that an image has been loaded.
+	 * 
+	 * @param iconId
+	 *            The id of the image that has been loaded.
+	 * @param result
+	 *            The image.
+	 */
+	void imageReady(long iconId, Drawable result)
 	{
 		if (result == null)
 		{
@@ -141,6 +193,7 @@ public class ImageProxy
 
 		synchronized (mImageCache)
 		{
+			// put the icon into the cache
 			mImageCache.put(iconId, result);
 		}
 

@@ -39,7 +39,7 @@
     <string name="dialog_title_pick_a_color">Kies een kleur …</string>
 
     <!-- Text for dialog which prompts to pick a name for the calendar. -->
-    <string name="dialog_title_enter_name">Je naam …</string>
+    <string name="dialog_title_enter_calendar_name">Je naam …</string>
 
     <!-- Title of the Contact fragment -->
     <string name="contact_us">Contact</string>
@@ -72,7 +72,7 @@
 
     <string name="purchase_header_unlock_no_price">Ontgrendel sync</string>
     <string name="purchase_header_unlock">Sync ontgrendelen voor %s</string>
-    <string name="purchase_header_free_trial">1 Uur gratis proberen</string>
+    <string name="purchase_dialog_take_the_free_trial">1 Uur gratis proberen</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Trial eindigt over %s minuut</item>

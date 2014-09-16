@@ -30,6 +30,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -143,6 +145,17 @@ public class EventsPreviewDetailFragment extends SupportFragment
 
 		((RemoteImageView) view.findViewById(R.id.calendar_item_icon)).setRemoteSource(mCalendarIconId);
 
+		setHasOptionsMenu(true);
+
 		return view;
 	}
+
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+	{
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.event_preview, menu);
+	}
+
 }

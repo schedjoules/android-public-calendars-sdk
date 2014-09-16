@@ -35,7 +35,7 @@ import android.widget.ImageView;
 public class RemoteImageView extends ImageView implements ImageAvailableListener
 {
 	/**
-	 * The duration of the fade-in when the image pops up the first time.
+	 * The duration of the fade-in animation when the image pops up the first time.
 	 */
 	private final static int ANIMATION_DURATION = 250; // ms
 
@@ -115,7 +115,7 @@ public class RemoteImageView extends ImageView implements ImageAvailableListener
 	{
 		if (iconId == mSource)
 		{
-			// ensure we fade in the icon softly if the icon was not visible before
+			// ensure we fade in the icon softly if there was no icon before
 
 			boolean animate = getDrawable() == null;
 

@@ -40,7 +40,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
-public class WebcalPrefsFragment extends PreferenceFragment
+public class PreferencesFragment extends PreferenceFragment
 {
 	private static final String TAG = "WebcalPrefsFragment";
 

@@ -22,6 +22,7 @@ import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.webcal.R;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
@@ -29,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -87,6 +89,17 @@ public class InputTextDialogFragment extends SupportDialogFragment implements On
 
 
 	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState)
+	{
+		Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+		// hide the actual dialog title, we have our own...
+		dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		return dialog;
+	}
+
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.fragment_input_text_dialog, container);
@@ -97,7 +110,7 @@ public class InputTextDialogFragment extends SupportDialogFragment implements On
 			mEditText.setText(mInitialText);
 		}
 
-		getDialog().setTitle(mTitleId);
+		((TextView) view.findViewById(android.R.id.title)).setText(mTitleId);
 
 		mEditText.requestFocus();
 		getDialog().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE);

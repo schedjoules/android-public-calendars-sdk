@@ -27,4 +27,16 @@
         android:layout_height="match_parent" >
     </android.support.v4.view.ViewPager>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_gravity="top"
+        android:background="@drawable/content_overlay" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#60000000" />
+    </FrameLayout>
+
 </FrameLayout>

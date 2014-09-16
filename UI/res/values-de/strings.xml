@@ -36,10 +36,10 @@
     <string name="calendar_settings_reminder">Erinnerung</string>
 
     <!-- Text for dialog which prompts to pick a color for the calendar. -->
-    <string name="dialog_title_pick_a_color">Farbe wählen …</string>
+    <string name="dialog_title_pick_a_color">Farbe wählen</string>
 
     <!-- Text for dialog which prompts to pick a name for the calendar. -->
-    <string name="dialog_title_enter_name">Name eingeben …</string>
+    <string name="dialog_title_enter_calendar_name">Kalendernamen eingeben</string>
 
     <!-- Title of the Contact fragment -->
     <string name="contact_us">Kontaktieren sie uns</string>
@@ -71,8 +71,11 @@
     <!-- Purchase header -->
 
     <string name="purchase_header_unlock_no_price">Synchronisation freischalten</string>
-    <string name="purchase_header_unlock">Synchr. für %s freischalten</string>
-    <string name="purchase_header_free_trial">1 Stunde gratis testen</string>
+    <string name="purchase_header_unlock">Für %s kaufen</string>
+    <string name="purchase_dialog_take_the_free_trial">Gratis testen</string>
+    <string name="purchase_header_buy_now">Kaufen</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Schalte die Synchronisation für &lt;b>%1$s&lt;/b> für nur &lt;b>%2$s&lt;/b> frei und erhalte Zugang zu den folgenden Kalendern oder teste die Synchronisation &lt;b>1 Stunde kostenlos&lt;/b>.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Schalte die Synchronisation für &lt;b>%1$s&lt;/b> für nur &lt;b>%2$s&lt;/b> frei und erhalte Zugang zu den folgenden Kalendern.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Kostenloser Test endet in %s Minute</item>
@@ -148,5 +151,11 @@
     <string name="today">Heute</string>
     <string name="yesterday">Gestern</string>
     <string name="tomorrow">Morgen</string>
+
+    <!-- Main menu options -->
+    <string name="menu_favorite_short">Favorit</string>
+    <string name="menu_favorite">Als Favorit markieren</string>
+    <string name="menu_settings_short">Einstellungen</string>
+    <string name="menu_settings">Kalendereinstellungen öffnen</string>
 
 </resources>

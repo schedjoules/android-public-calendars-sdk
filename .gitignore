@@ -1,4 +1,7 @@
 bin/*
+UI/bin/*
+UI/Demo/bin/*
+UI/Demo/gen/*
 gen/*
 .settings/*
 *.class

@@ -41,11 +41,13 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter
 		CalendarContentContract.Section.PARENT_ITEM };
 
 	private Cursor mSectionsCursor;
+	private long mPageIcon;
 
 
-	public SectionsPagerAdapter(FragmentManager fm)
+	public SectionsPagerAdapter(FragmentManager fm, long pageIcon)
 	{
 		super(fm);
+		mPageIcon = pageIcon;
 	}
 
 
@@ -74,7 +76,7 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter
 			// return a new CategoriesListFragment for this section
 			long sectionId = mSectionsCursor.getLong(0);
 			long parentItemId = mSectionsCursor.getLong(2);
-			return CategoriesListFragment.newInstance(sectionId, parentItemId, position);
+			return CategoriesListFragment.newInstance(sectionId, parentItemId, position, mPageIcon);
 		}
 		return null;
 	}

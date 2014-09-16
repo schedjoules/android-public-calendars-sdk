@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="AppBaseTheme">
+        <attr name="primaryColor" format="color" />
+        <attr name="primaryColorShaded" format="color" />
+    </declare-styleable>
+
+</resources>

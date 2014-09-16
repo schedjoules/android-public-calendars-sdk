@@ -107,7 +107,7 @@ public class SectionTitlesAdapter implements ListAdapter
 	 *            The packed id.
 	 * @return The encoded section id.
 	 */
-	private static long sectionId(long packedId)
+	public static long sectionId(long packedId)
 	{
 		return ((packedId >> 32) & 0x0ffffffffL);
 	}
@@ -120,7 +120,7 @@ public class SectionTitlesAdapter implements ListAdapter
 	 *            The packed id.
 	 * @return The encoded item position or {@link #HEADER_ID} if this id belongs to a section header.
 	 */
-	private static int itemPos(long packedId)
+	public static int itemPos(long packedId)
 	{
 		return (int) (packedId & 0x0ffffffffL);
 	}

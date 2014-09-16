@@ -17,7 +17,7 @@
 
 package org.dmfs.webcal;
 
-import org.dmfs.webcal.fragments.WebcalPrefsFragment;
+import org.dmfs.webcal.fragments.PreferencesFragment;
 
 import android.app.ActionBar;
 import android.os.Bundle;
@@ -33,7 +33,7 @@ public class PreferencesActivity extends FragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preferences);
-		getFragmentManager().beginTransaction().replace(R.id.pref_fragment_container, new WebcalPrefsFragment()).commit();
+		getFragmentManager().beginTransaction().replace(R.id.pref_fragment_container, new PreferencesFragment()).commit();
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}

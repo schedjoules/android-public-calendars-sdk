@@ -22,6 +22,7 @@ import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.webcal.fragments.EventsPreviewDetailFragment;
 import org.dmfs.webcal.utils.Event;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,21 +39,23 @@ import android.view.MenuItem;
  */
 public class EventsPreviewActivity extends FragmentActivity
 {
-	private static final String CALENDAR_NAME = "org.dmfs.webcal.EventsPreviewActivity.CALENDAR_NAME";
-	private static final String CALENDAR_IMAGE = "org.dmfs.webcal.EventsPreviewActivity.CALENDAR_IMAGE_URL";
-	private static final String PREVIEW_EVENT = "org.dmfs.webcal.EventsPreviewActivity.PREVIEW_EVENT";
-	private static final String PAGE_TITLE = "org.dmfs.webcal.EventsPreviewActivity.PAGE_TITLE";
+	private static final String EXTRA_CALENDAR_NAME = "org.dmfs.webcal.EventsPreviewActivity.CALENDAR_NAME";
+	private static final String EXTRA_CALENDAR_IMAGE = "org.dmfs.webcal.EventsPreviewActivity.CALENDAR_IMAGE_URL";
+	private static final String EXTRA_PREVIEW_EVENT = "org.dmfs.webcal.EventsPreviewActivity.PREVIEW_EVENT";
+	private static final String EXTRA_PAGE_TITLE = "org.dmfs.webcal.EventsPreviewActivity.PAGE_TITLE";
 
-	@Parameter(key = CALENDAR_NAME)
+	private static final String CONTENT_TYPE_EVENT = "vnd.android.cursor.item/event";
+
+	@Parameter(key = EXTRA_CALENDAR_NAME)
 	private String mCalendarName;
 
-	@Parameter(key = CALENDAR_IMAGE)
+	@Parameter(key = EXTRA_CALENDAR_IMAGE)
 	private long mCalendarIconId;
 
-	@Parameter(key = PREVIEW_EVENT)
+	@Parameter(key = EXTRA_PREVIEW_EVENT)
 	Event mEvent = null;
 
-	@Parameter(key = PAGE_TITLE)
+	@Parameter(key = EXTRA_PAGE_TITLE)
 	private String mTitle = null;
 
 
@@ -73,10 +76,10 @@ public class EventsPreviewActivity extends FragmentActivity
 	public static void show(Context context, Event event, String calendarName, long mIconId, String title)
 	{
 		Intent intent = new Intent(context, EventsPreviewActivity.class);
-		intent.putExtra(CALENDAR_NAME, calendarName);
-		intent.putExtra(CALENDAR_IMAGE, mIconId);
-		intent.putExtra(PREVIEW_EVENT, event);
-		intent.putExtra(PAGE_TITLE, title);
+		intent.putExtra(EXTRA_CALENDAR_NAME, calendarName);
+		intent.putExtra(EXTRA_CALENDAR_IMAGE, mIconId);
+		intent.putExtra(EXTRA_PREVIEW_EVENT, event);
+		intent.putExtra(EXTRA_PAGE_TITLE, title);
 		context.startActivity(intent);
 	}
 
@@ -91,17 +94,22 @@ public class EventsPreviewActivity extends FragmentActivity
 		{
 			FragmentManager fragmentManager = getSupportFragmentManager();
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
-			transaction.add(R.id.events_preview_fragment_container, EventsPreviewDetailFragment.newInstance(mEvent, mCalendarName, mCalendarIconId, mTitle));
+			transaction.add(R.id.events_preview_fragment_container,
+				EventsPreviewDetailFragment.newInstance(mEvent, mCalendarName, mCalendarIconId, mTitle));
 			transaction.commit();
 		}
 
+		ActionBar actionBar = getActionBar();
+
 		if (TextUtils.equals(mTitle, mCalendarName))
 		{
-			setTitle(mCalendarName);
+			actionBar.setTitle(mCalendarName);
+			actionBar.setSubtitle(null);
 		}
 		else
 		{
-			setTitle(String.format("%s - %s", mTitle, mCalendarName));
+			actionBar.setTitle(mCalendarName);
+			actionBar.setSubtitle(mTitle);
 		}
 
 		// Show the Up button in the action bar.

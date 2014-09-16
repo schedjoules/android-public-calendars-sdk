@@ -26,10 +26,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
@@ -47,7 +49,7 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
 
 	public interface SwitchStatusListener
 	{
-		boolean onSwitchToggle(boolean status);
+		boolean onSyncSwitchToggle(boolean status);
 	}
 
 	private static final String TAG = "CalendarItemFragment";
@@ -66,6 +68,8 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
 	private long mId;
 
 	private boolean mStarred;
+
+	private boolean mStarVisible = false;
 
 
 	public static CalendarTitleFragment newInstance()
@@ -103,6 +107,7 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
 
 	public void enableSwitch(boolean enable)
 	{
+		mSyncButton.setVisibility(enable ? View.VISIBLE : View.GONE);
 		mSyncButton.setEnabled(enable);
 		mSyncSwitch.setEnabled(enable);
 	}
@@ -123,31 +128,15 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
 	public void setStarred(boolean starred)
 	{
 		mStarred = starred;
-
-		CheckBox starredBox = (CheckBox) getView().findViewById(R.id.starred);
-		if (starredBox != null)
-		{
-			starredBox.setOnCheckedChangeListener(null);
-			starredBox.setChecked(mStarred);
-			starredBox.setOnCheckedChangeListener(new OnCheckedChangeListener()
-			{
-
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-				{
-					ContentItem.setStarred(getActivity(), mId, isChecked);
-				}
-			});
-		}
+		mStarVisible = true;
+		getActivity().invalidateOptionsMenu();
 	}
 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View returnView = inflater.inflate(R.layout.fragment_calendar_title, null);
-		mTitleView = (TextView) returnView.findViewById(android.R.id.title);
-		mTitleView.setText(mCalendarTitle);
+		View returnView = inflater.inflate(R.layout.fragment_calendar_sync_button, null);
 
 		mSyncButton = (LinearLayout) returnView.findViewById(R.id.sync_button);
 		mSyncButton.setOnClickListener(this);
@@ -159,11 +148,7 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
 		mSyncSwitch = (Switch) returnView.findViewById(R.id.calendar_item_sync_switch);
 		mSyncSwitch.setOnCheckedChangeListener(this);
 
-		mRemoteIcon = (RemoteImageView) returnView.findViewById(R.id.calendar_item_icon);
-		if (mCalendarIconId != -1)
-		{
-			mRemoteIcon.setRemoteSource(mCalendarIconId);
-		}
+		setHasOptionsMenu(true);
 
 		return returnView;
 	}
@@ -181,6 +166,32 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
 			Log.e(TAG, "Unknown type of click event passed to Handler");
 		}
 
+	}
+
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+	{
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.main, menu);
+		menu.findItem(R.id.menu_starred).setChecked(mStarred).setIcon(mStarred ? R.drawable.ic_fa_star : R.drawable.ic_fa_star_o).setVisible(mStarVisible);
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		int id = item.getItemId();
+		if (id == R.id.menu_starred)
+		{
+			boolean checked = !item.isChecked();
+			item.setChecked(checked);
+			// Selectors don't seem to work with menu options, so we have to hard code the icons.
+			item.setIcon(checked ? R.drawable.ic_fa_star : R.drawable.ic_fa_star_o);
+			ContentItem.setStarred(getActivity(), mId, checked);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 
@@ -204,7 +215,7 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
 
 			if (listener != null)
 			{
-				listener.onSwitchToggle(checked);
+				listener.onSyncSwitchToggle(checked);
 			}
 		}
 	}

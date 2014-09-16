@@ -17,6 +17,7 @@
 
 package org.dmfs.webcal.fragments;
 
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.Products;
 import org.dmfs.android.retentionmagic.SupportFragment;
@@ -26,6 +27,7 @@ import org.dmfs.asynctools.PetriNet.Transition;
 import org.dmfs.webcal.IBillingActivity;
 import org.dmfs.webcal.IBillingActivity.OnInventoryListener;
 import org.dmfs.webcal.R;
+import org.dmfs.webcal.fragments.PurchaseDialogFragment.OnPurchaseListener;
 import org.dmfs.webcal.utils.ExpandAnimation;
 import org.dmfs.webcal.utils.PurchasedItemCache;
 import org.dmfs.webcal.utils.billing.IabHelper.OnIabPurchaseFinishedListener;
@@ -50,36 +52,39 @@ import android.widget.TextView;
 
 
 /**
- * A Fragment that shows the purchase header with the options to unlock sync and to start a free trial.
+ * A Fragment that shows a header to initiate the purchase flow.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public abstract class PurchasableItemFragment extends SupportFragment implements OnClickListener, OnInventoryListener, OnIabPurchaseFinishedListener
+public abstract class PurchasableItemFragment extends SupportFragment implements OnClickListener, OnInventoryListener, OnIabPurchaseFinishedListener,
+	OnPurchaseListener
 {
 	private static final String TAG = "PurchasableItemFragment";
 
 	private View mHeaderView;
-	private TextView mTitleView;
-	private FrameLayout mUnlockButton;
-	private FrameLayout mFreeTrialButton;
+	private View mUnlockButton;
+	private View mBuyButton;
+	private TextView mFreeTrialCountDown;
 
 	private String mProductTitle;
 	private String mProductPrice;
 	private String mProductId;
 	private String mOrderId;
 	private String mUnlockCode;
-	private Purchase mPurchase;
-	private Long mTrialExpiryTime;
+
 	private Inventory mInventory;
+	private Purchase mPurchase;
+
+	private Long mTrialExpiryTime;
 
 	private Handler mHandler = new Handler();
 	private Resources mResources;
 
 	private int mGetPriceCounter = 2;
 
-	private Place mWaitingForUpdateView = new Place();
 	private Place mWaitingForInventory = new Place(1);
 	private Place mWaitingForCursor = new Place(1);
+	private Place mWaitingForUpdateView = new Place();
 
 	private boolean mAnimateHeader = false;
 	private boolean mEnforceHeaderHidden = false;
@@ -106,7 +111,7 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 			{
 				// load data from cursor
 				mProductId = cursor.getString(cursor.getColumnIndex(ContentItem.GOOGLE_PLAY_PRODUCT_ID));
-				mProductTitle = cursor.getString(cursor.getColumnIndex(ContentItem.PRODUCT_TITLE));
+				mProductTitle = sanitizeProductTitle(cursor.getString(cursor.getColumnIndex(ContentItem.PRODUCT_TITLE)));
 				mProductPrice = cursor.getString(cursor.getColumnIndex(ContentItem.PRODUCT_PRICE));
 				mOrderId = cursor.getString(cursor.getColumnIndex(ContentItem.GOOGLE_PLAY_ORDER_ID));
 				mUnlockCode = cursor.getString(cursor.getColumnIndex((ContentItem.APPTIVATE_ACTIVATION_RESPONSE)));
@@ -193,31 +198,19 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 			if (skuDetails != null)
 			{
 				// update price if we have any
-				((TextView) mUnlockButton.getChildAt(0)).setText(mResources.getString(R.string.purchase_header_unlock, skuDetails.getPrice()));
+				// ((TextView) mUnlockButton.getChildAt(0)).setText(mResources.getString(R.string.purchase_header_unlock, skuDetails.getPrice()));
 
 				String title = skuDetails.getTitle();
 				if (title.startsWith("Sync "))
 				{
 					title = title.substring(5);
 				}
-				mTitleView.setText(title);
-				mTitleView.setSelected(true);
 			}
 			else
 			{
-				if (!TextUtils.isEmpty(mProductTitle))
-				{
-					String title = mProductTitle;
-					if (title.startsWith("Sync "))
-					{
-						title = title.substring(5);
-					}
-					mTitleView.setText(title);
-					mTitleView.setSelected(true);
-				}
 				if (!TextUtils.isEmpty(mProductPrice))
 				{
-					((TextView) mUnlockButton.getChildAt(0)).setText(mResources.getString(R.string.purchase_header_unlock, mProductPrice));
+					// ((TextView) mUnlockButton.getChildAt(0)).setText(mResources.getString(R.string.purchase_header_unlock, mProductPrice));
 				}
 
 				Activity activity = getActivity();
@@ -230,13 +223,13 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 			if (mTrialExpiryTime != null && mTrialExpiryTime > System.currentTimeMillis())
 			{
 				// already in trial
-				mFreeTrialButton.setEnabled(false);
 				mHandler.post(mTrialButtonUpdater);
+				swapButtons(true);
 			}
 			else
 			{
 				// enable trial
-				mFreeTrialButton.setEnabled(true);
+				swapButtons(false);
 			}
 
 			showHeader(true && !mEnforceHeaderHidden, true);
@@ -264,18 +257,16 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 
 		mHeaderView = returnView.findViewById(R.id.purchasable_header);
 
-		// set the title
-		mTitleView = (TextView) mHeaderView.findViewById(android.R.id.title);
-		mTitleView.setSelected(true);
-
 		mUnlockButton = (FrameLayout) mHeaderView.findViewById(R.id.unlock_button);
 		mUnlockButton.setOnClickListener(this);
 
-		mFreeTrialButton = (FrameLayout) mHeaderView.findViewById(R.id.free_trial_button);
-		mFreeTrialButton.setOnClickListener(this);
+		mBuyButton = (FrameLayout) mHeaderView.findViewById(R.id.buy_now_button);
+		mBuyButton.setOnClickListener(this);
 
 		FrameLayout itemHost = (FrameLayout) returnView.findViewById(R.id.purchasable_item_host);
 		itemHost.addView(onCreateItemView(inflater, itemHost, savedInstanceState));
+
+		mFreeTrialCountDown = (TextView) mHeaderView.findViewById(R.id.free_trial_countdown);
 
 		mResources = getActivity().getResources();
 
@@ -343,7 +334,7 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	}
 
 
-	public abstract void onPurchase(boolean success, boolean test);
+	public abstract void onPurchase(boolean success, boolean freeTrial);
 
 
 	@Override
@@ -351,16 +342,26 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	{
 		int id = view.getId();
 
-		if (id == R.id.free_trial_button)
+		if ((id == R.id.unlock_button || id == R.id.buy_now_button) && mInventory != null)
 		{
-			// enable free trial
-			mFreeTrialButton.setEnabled(false);
-			Products.updateProduct(getActivity(), mProductId, Products.MAX_FREE_TRIAL_PERIOD);
+			PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mProductId, getItemIcon(), mProductTitle, getItemTitle(), mProductPrice,
+				mTrialExpiryTime == null || mTrialExpiryTime < System.currentTimeMillis());
+			purchaseDialog.show(getChildFragmentManager(), null);
+		}
+	}
+
+
+	@Override
+	public void onPurchase(boolean freeTrial)
+	{
+		if (freeTrial)
+		{
+			CalendarContentContract.Products.updateProduct(getActivity(), mProductId, Products.MAX_FREE_TRIAL_PERIOD);
 			onPurchase(true, true);
 		}
-		else if (id == R.id.unlock_button && mInventory != null)
+		else
 		{
-			// start purchase flow
+			// trigger google services purchase flow
 			((IBillingActivity) getActivity()).purchase(mProductId, this);
 		}
 	}
@@ -387,6 +388,12 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 			onPurchase(false, false);
 		}
 	}
+
+
+	public abstract String getItemTitle();
+
+
+	public abstract long getItemIcon();
 
 
 	private void showHeader(boolean show, boolean fast)
@@ -432,31 +439,75 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 			if (mTrialExpiryTime >= now + 60000)
 			{
 				int minutes = (int) Math.max(0, (mTrialExpiryTime - now + 499) / 60000L);
-				((TextView) mFreeTrialButton.getChildAt(0)).setText(mResources
-					.getQuantityString(R.plurals.purchase_header_free_trial_minutes, minutes, minutes));
+				mFreeTrialCountDown.setText(mResources.getQuantityString(R.plurals.purchase_header_free_trial_minutes, minutes, minutes));
 
 				mHandler.postDelayed(mTrialButtonUpdater, Math.min(60000, mTrialExpiryTime - now - 60000));
 			}
 			else if (mTrialExpiryTime > now + 5000)
 			{
 				int seconds = (int) Math.max(0, (mTrialExpiryTime - now) / 5000L * 5);
-				((TextView) mFreeTrialButton.getChildAt(0)).setText(mResources
-					.getQuantityString(R.plurals.purchase_header_free_trial_seconds, seconds, seconds));
+				mFreeTrialCountDown.setText(mResources.getQuantityString(R.plurals.purchase_header_free_trial_seconds, seconds, seconds));
 
 				mHandler.postDelayed(mTrialButtonUpdater, 5000);
 			}
 			else
 			{
-				((TextView) mFreeTrialButton.getChildAt(0)).setText(mResources.getString(R.string.purchase_header_free_trial));
+				mFreeTrialCountDown.setText("");
 				Activity activity = getActivity();
 				if (activity != null)
 				{
 					// forcefully update trial period to 0 to refresh all views
 					Products.updateProduct(activity, mProductId, 0);
 				}
-				mFreeTrialButton.setEnabled(true);
+				swapButtons(false);
 			}
 		}
 	};
+
+
+	/**
+	 * Replace the unlock button by a buy button or vice versa.
+	 * 
+	 * @param showBuyNow
+	 *            <code>true</code> to show the buy button.
+	 */
+	private void swapButtons(boolean showBuyNow)
+	{
+		mUnlockButton.setVisibility(showBuyNow ? View.GONE : View.VISIBLE);
+		mBuyButton.setVisibility(showBuyNow ? View.VISIBLE : View.GONE);
+	}
+
+
+	/**
+	 * Remove parts from the product title we don't want to present to the user, like the app title. The Google service dialog will show them for us.
+	 * 
+	 * @param productTitle
+	 *            The raw product title as returned by Google.
+	 * @return The sanitized product title.
+	 */
+	private static String sanitizeProductTitle(String productTitle)
+	{
+		if (productTitle != null)
+		{
+			// remove any white space, just in case ...
+			productTitle = productTitle.trim();
+
+			if (productTitle.startsWith("Sync "))
+			{
+				productTitle = productTitle.substring(5);
+			}
+
+			// remove "(<APPTITLE>)" at the end of the product title, Google adds it automatically but we don't want to show it
+			if (productTitle.endsWith(")"))
+			{
+				int idx = productTitle.lastIndexOf("(");
+				if (idx > 0)
+				{
+					productTitle = productTitle.substring(0, idx).trim();
+				}
+			}
+		}
+		return productTitle;
+	}
 
 }

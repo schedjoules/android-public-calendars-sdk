@@ -22,6 +22,9 @@ import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.android.retentionmagic.annotations.Retain;
 import org.dmfs.webcal.R;
 import org.dmfs.webcal.adapters.SectionsPagerAdapter;
+import org.dmfs.webcal.utils.BitmapUtils;
+import org.dmfs.webcal.utils.ImageProxy;
+import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -33,6 +36,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -47,12 +53,22 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
-public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<Cursor>, TabListener, OnPageChangeListener, OnSharedPreferenceChangeListener
+/**
+ * A fragment that contains a pager to present the sections of a page item to the user. It takes a {@link Uri} or a page item id.
+ * 
+ * @author Marten Gajda <marten@dmfs.org>
+ */
+public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<Cursor>, TabListener, OnPageChangeListener, OnSharedPreferenceChangeListener,
+	ImageAvailableListener
 {
 	private final static String TAG = "PagerFragment";
 
-	public final static String ARG_URI = "uri";
-	public static final String ARG_TITLE = "title";
+	private final static String ARG_SECTIONS_URI = "uri";
+	/**
+	 * FIXME: we should not publish this internal field.
+	 */
+	public static final String ARG_PAGE_TITLE = "title";
+	private static final String ARG_PAGE_ICON = "icon";
 
 	private final static int ID_URL_LOADER = 0;
 
@@ -60,11 +76,18 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	private SectionsPagerAdapter mAdapter;
 	private TextView mMessageText;
 
-	@Parameter(key = ARG_URI)
+	@Parameter(key = ARG_SECTIONS_URI)
 	private Uri mUri;
-	@Parameter(key = ARG_TITLE)
+
+	@Parameter(key = ARG_PAGE_TITLE)
 	private String mTitle;
 
+	@Parameter(key = ARG_PAGE_ICON)
+	private long mIcon = -1;
+
+	/**
+	 * The id is used to store the selected tab for this page, don't remove it.
+	 */
 	@SuppressWarnings("unused")
 	private long mId;
 
@@ -74,26 +97,52 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	private ProgressBar mProgressBar;
 
 
-	public static PagerFragment newInstance(Uri uri, String title)
+	/**
+	 * Create a new {@link PagerFragment} for the given sections {@link Uri}.
+	 * 
+	 * @param sectionsUri
+	 *            A {@link Uri} that points to the sections to show.
+	 * @param pageTitle
+	 *            The title of the page.
+	 * @param pageIcon
+	 *            The icon of the page.
+	 * @return A {@link PagerFragment}.
+	 */
+	public static PagerFragment newInstance(Uri sectionsUri, String pageTitle, long pageIcon)
 	{
 		PagerFragment result = new PagerFragment();
 		Bundle args = new Bundle();
-		args.putParcelable(ARG_URI, uri);
-		args.putString(ARG_TITLE, title);
+		args.putParcelable(ARG_SECTIONS_URI, sectionsUri);
+		args.putString(ARG_PAGE_TITLE, pageTitle);
+		args.putLong(ARG_PAGE_ICON, pageIcon);
 		result.setArguments(args);
 		return result;
 	}
 
 
-	public static PagerFragment newInstance(Context context, long id, String title)
+	/**
+	 * Create a new {@link PagerFragment} for the given page id.
+	 * 
+	 * @param context
+	 *            A {@link Context}.
+	 * @param pageId
+	 *            The id of a page with sections to show.
+	 * @param pageTitle
+	 *            The title of the page.
+	 * @param pageIcon
+	 *            The icon of the page.
+	 * @return A {@link PagerFragment}.
+	 */
+	public static PagerFragment newInstance(Context context, long pageId, String pageTitle, long pageIcon)
 	{
-		return newInstance(CalendarContentContract.ContentItem.getSectionContentUri(context, id), title);
+		return newInstance(CalendarContentContract.ContentItem.getSectionContentUri(context, pageId), pageTitle, pageIcon);
 	}
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+		// get the id before we call super.onCreate, because it's used to retrieve the id of the section to show first
 		mId = ContentUris.parseId(mUri);
 		super.onCreate(savedInstanceState);
 	}
@@ -110,6 +159,7 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	@Override
 	public void onDetach()
 	{
+		// avoid to get notifications for changes in the shared preferences that we caused ourselves (because the active section has been stored)
 		Activity activity = getActivity();
 		activity.getSharedPreferences(activity.getPackageName() + "_preferences", 0).unregisterOnSharedPreferenceChangeListener(this);
 		super.onDetach();
@@ -120,15 +170,35 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View returnView = inflater.inflate(R.layout.fragment_pager, container, false);
-		mViewPager = (ViewPager) returnView.findViewById(R.id.pager);
+
 		mProgressBar = (ProgressBar) returnView.findViewById(android.R.id.progress);
 		mMessageText = (TextView) returnView.findViewById(android.R.id.message);
+
+		mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), mIcon);
+
+		mViewPager = (ViewPager) returnView.findViewById(R.id.pager);
 		mViewPager.setOnPageChangeListener(this);
-		mAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 		mViewPager.setAdapter(mAdapter);
 
+		// start loading the pages
 		getLoaderManager().initLoader(ID_URL_LOADER, null, this);
-		getActivity().setTitle(mTitle);
+
+		// set the page title and clear the subtitle if any
+		ActionBar actionBar = getActivity().getActionBar();
+		actionBar.setTitle(mTitle);
+		actionBar.setSubtitle(null);
+
+		// load the icon and set it if we get any, otherwise insert a placeholder and set it later
+		Drawable icon = ImageProxy.getInstance(this.getActivity()).getImage(mIcon, this);
+		if (icon != null)
+		{
+			// we need to pre-scale the icon, apparently Android doesn't do that for us
+			actionBar.setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) icon, 36, 36));
+		}
+		else
+		{
+			actionBar.setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+		}
 
 		return returnView;
 	}
@@ -147,12 +217,14 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		mAdapter.swapCursor(cursor);
 		if (cursor == null)
 		{
+			// this indicates an error when loading the page, show an error message
 			mMessageText.setVisibility(View.VISIBLE);
 			mProgressBar.setVisibility(View.GONE);
 			mViewPager.setVisibility(View.GONE);
 		}
 		else if (cursor.getCount() > 0)
 		{
+			// indicates the page has been loaded, hide progress indicator and show pager
 			mMessageText.setVisibility(View.GONE);
 			mProgressBar.setVisibility(View.GONE);
 			mViewPager.setVisibility(View.VISIBLE);
@@ -160,6 +232,7 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		}
 		else
 		{
+			// all pages must have at least one section, 0 results means we're still waiting for the page to load, show a progress indicator
 			Activity activity = getActivity();
 			mProgressBar.setVisibility(View.VISIBLE);
 			activity.getActionBar().removeAllTabs();
@@ -175,6 +248,15 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	}
 
 
+	@Override
+	public void imageAvailable(long mIconId, Drawable drawable)
+	{
+		// the image has been loaded, scale it and update the ActionBar
+		getActivity().getActionBar().setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) drawable, 36, 36));
+	}
+
+
+	@Override
 	public void setupActionBar()
 	{
 		if (mAdapter != null)
@@ -184,6 +266,9 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	}
 
 
+	/**
+	 * Configures the tabs on the action bar.
+	 */
 	private void setupActionBarTabs()
 	{
 		ActionBar actionBar = getActivity().getActionBar();
@@ -215,14 +300,13 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		if (pageCount > 1)
 		{
 			int selection = mSelectedTab;
-			// changing the navigation mode might trigger a call to onTabSelected, overriding mSelectedTab with a wrong value, so save it
+			// changing the navigation mode might trigger a call to onTabSelected overriding mSelectedTab with a wrong value, so save it
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			mSelectedTab = selection;
 			if (selection < pageCount)
 			{
 				mViewPager.setCurrentItem(selection, false);
 			}
-
 		}
 		else
 		{
@@ -262,6 +346,7 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		Activity activity = getActivity();
 		if (activity == null)
 		{
+			// nothing to do
 			return;
 		}
 
@@ -292,6 +377,7 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences arg0, String arg1)
 	{
+		// the shared preferences have been changed, restart the loader to
 		getLoaderManager().restartLoader(ID_URL_LOADER, null, this);
 	}
 

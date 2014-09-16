@@ -56,12 +56,12 @@ public class MyCalendarsPagerAdapter extends FragmentStatePagerAdapter
 		if (position == 0)
 		{
 			return GenericListFragment.newInstance(CalendarContentContract.SubscribedCalendars.getContentUri(mContext), "Synced Calendars",
-				R.string.error_my_calendars_empty, GenericListFragment.PROJECTION);
+				R.string.error_my_calendars_empty, GenericListFragment.PROJECTION, false);
 		}
 		else if (position == 1)
 		{
 			return GenericListFragment.newInstance(CalendarContentContract.ContentItem.getUnlockedItemsContentUri(mContext), "Unlocked Calendars",
-				R.string.error_my_calendars_empty, GenericListFragment.PROJECTION2);
+				R.string.error_my_calendars_empty, GenericListFragment.PROJECTION2, false);
 		}
 		return null;
 

@@ -23,7 +23,7 @@ import android.os.AsyncTask;
 
 
 /**
- * An {@link AsyncTask} that starts an empty service for it's runtime to ensure it's not killed during it's operation.
+ * An {@link AsyncTask} that starts an empty service during it's runtime to ensure it's not killed during it's operation.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  * 

@@ -57,12 +57,14 @@ public class MixedNavigationAdapter extends CursorAdapter
 
 	private LayoutInflater mInflater;
 	private boolean mShowMissingIcons = false;
+	private final boolean mShowStars;
 
 
-	public MixedNavigationAdapter(Context context, Cursor c, int flags)
+	public MixedNavigationAdapter(Context context, Cursor c, int flags, boolean showStars)
 	{
 		super(context, c, flags);
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mShowStars = showStars;
 	}
 
 
@@ -156,22 +158,30 @@ public class MixedNavigationAdapter extends CursorAdapter
 			}
 		}
 
-		CheckBox starred = (CheckBox) view.findViewById(R.id.starred);
+		CheckBox starred = (CheckBox) view.findViewById(R.id.menu_starred);
 		if (starred != null)
 		{
-			starred.setOnCheckedChangeListener(null);
-			starred.setChecked(cursor.getInt(11) > 0);
-			starred.setOnCheckedChangeListener(new OnCheckedChangeListener()
+			if (mShowStars)
 			{
-
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+				starred.setVisibility(View.VISIBLE);
+				starred.setOnCheckedChangeListener(null);
+				starred.setChecked(cursor.getInt(11) > 0);
+				starred.setOnCheckedChangeListener(new OnCheckedChangeListener()
 				{
-					ContentItem.setStarred(context, id, isChecked);
-				}
-			});
-		}
 
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+					{
+						ContentItem.setStarred(context, id, isChecked);
+					}
+				});
+			}
+			else
+			{
+				starred.setVisibility(View.GONE);
+			}
+
+		}
 	}
 
 

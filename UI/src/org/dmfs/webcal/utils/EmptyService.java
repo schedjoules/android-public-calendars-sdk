@@ -22,6 +22,11 @@ import android.content.Intent;
 import android.os.IBinder;
 
 
+/**
+ * A service that doesn't do anything.
+ * 
+ * @author Marten Gajda <marten@dmfs.org>
+ */
 public class EmptyService extends Service
 {
 

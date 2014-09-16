@@ -37,8 +37,10 @@ import org.dmfs.webcal.adapters.EventListAdapter;
 import org.dmfs.webcal.adapters.SectionTitlesAdapter;
 import org.dmfs.webcal.adapters.SectionTitlesAdapter.SectionIndexer;
 import org.dmfs.webcal.fragments.CalendarTitleFragment.SwitchStatusListener;
+import org.dmfs.webcal.utils.BitmapUtils;
 import org.dmfs.webcal.utils.Event;
-import org.dmfs.webcal.utils.ExpandAnimation;
+import org.dmfs.webcal.utils.ImageProxy;
+import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
 import org.dmfs.webcal.utils.ProtectedBackgroundJob;
 import org.dmfs.webcal.utils.billing.IabHelper.OnIabPurchaseFinishedListener;
 import org.dmfs.webcal.utils.billing.Inventory;
@@ -50,6 +52,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -65,6 +68,9 @@ import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -74,20 +80,22 @@ import android.widget.ProgressBar;
 
 
 public class CalendarItemFragment extends PurchasableItemFragment implements OnInventoryListener, LoaderManager.LoaderCallbacks<Cursor>, SwitchStatusListener,
-	OnIabPurchaseFinishedListener, OnItemClickListener
+	OnIabPurchaseFinishedListener, OnItemClickListener, ImageAvailableListener
 {
-
+	/**
+	 * The time to wait before showing a progress indicator. Often the list loads much faster and we don't want the indicator to flash up.
+	 */
 	private final static int PROGRESS_INDICATOR_DELAY = 50;
 
 	private static final String TAG = "CalendarItemFragment";
-	private static final String ARG_CONTENT_URI = "CONTENT_URI";
+
+	private static final String ARG_CONTENT_URI = "content_uri";
 	private static final String ARG_TITLE = "title";
+	private static final String ARG_ICON = "icon";
 
 	private static final int LOADER_CALENDAR_ITEM = 24234;
 	private static final int LOADER_SUBSCRIBED_CALENDAR = LOADER_CALENDAR_ITEM + 1;
 	private static final int LOADER_PREVIEW = -2;
-
-	private static final int SETTINGS_ANIMATION_DURATION = 250;
 
 	private final static String[] PROJECTION = new String[] { CalendarContentContract.ContentItem.GOOGLE_PLAY_PRODUCT_ID,
 		CalendarContentContract.ContentItem.TITLE, CalendarContentContract.ContentItem.ICON_ID, CalendarContentContract.ContentItem.URL,
@@ -111,8 +119,6 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 	}
 
 	private CalendarTitleFragment mTitleFragment;
-	private CalendarSettingsFragment mSettingsFragment;
-	// private EventsPreviewSmallFragment mPreviewFragment;
 
 	private final Place mLoadingItem = new Place(1);
 	private final Place mLoadingSubscription = new Place(1);
@@ -128,16 +134,27 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 	private URI mCalendarUrl;
 	private String mOrderId;
 	private String mProductId;
+
+	/**
+	 * The icon is initialized with the icon passed to {@link #newInstance(Uri, String, long)} or {@link #newInstance(Context, long, String, long)}. If the
+	 * calendar has it's own icon, it replaces the initial icon later on.
+	 */
+	@Parameter(key = ARG_ICON)
 	private long mIcon;
+
 	private String mUnlockCode;
 	private Long mTrialPeriodEnd;
 	private boolean mSynced;
-	private boolean mAnimateSettings = false;
 	private Drawable mBackground = null;
 	private boolean mStarred;
 	private long mId;
 	private ProgressBar mProgressBar;
 	private EventListAdapter mListAdapter;
+	private ActionBar mActionBar;
+
+	private ImageProxy mImageProxy;
+	private SectionTitlesAdapter mSectionAdapter;
+	private ListView mListView;
 
 	private Transition<Inventory> mInventoryLoaded = new Transition<Inventory>(1, mInventoryReady)
 	{
@@ -156,7 +173,11 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 		{
 			if (cursor != null && cursor.moveToFirst())
 			{
-				mIcon = cursor.getLong(COLUMNS.ICON);
+				long iconId = cursor.getLong(COLUMNS.ICON);
+				if (iconId > 0)
+				{
+					mIcon = iconId;
+				}
 				mCalendarName = cursor.getString(COLUMNS.TITLE);
 				mCalendarUrl = URI.create(cursor.getString(COLUMNS.URL));
 				mOrderId = cursor.getString(COLUMNS.ORDER_ID);
@@ -170,6 +191,18 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 				mTitleFragment.setIcon(mIcon);
 				mTitleFragment.setId(mId);
 				mTitleFragment.setStarred(mStarred);
+
+				if (mActionBar != null)
+				{
+					mActionBar.setTitle(mCalendarName);
+					mActionBar.setSubtitle(mTitle);
+
+					Drawable icon = mImageProxy.getImage(mIcon, CalendarItemFragment.this);
+					if (icon != null)
+					{
+						mActionBar.setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) icon, 36, 36));
+					}
+				}
 
 				// mPurchaseHeaderFragment.onUpdateCursor(cursor);
 				setPurchaseableItem(cursor);
@@ -218,12 +251,14 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 			{
 				long id = cursor.getLong(cursor.getColumnIndex(SubscribedCalendars._ID));
 				mSubscriptionUri = SubscribedCalendars.getItemContentUri(getActivity(), id);
-				mSettingsFragment.setCalendarInfo(cursor, mSubscriptionUri);
+				// mSettingsFragment.setCalendarInfo(cursor, mSubscriptionUri);
 				mSynced = cursor.getInt(cursor.getColumnIndex(SubscribedCalendars.SYNC_ENABLED)) > 0;
 			}
 			mTitleFragment.setSwitchChecked(mSynced);
 			mTitleFragment.enableSwitch(mSynced);
-			showSettings(mSynced, !mAnimateSettings);
+
+			// invalidate options to show/hide settings option
+			getActivity().invalidateOptionsMenu();
 		}
 	};
 
@@ -264,7 +299,7 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 		@Override
 		protected void execute(Void data)
 		{
-			mTitleFragment.enableSwitch(mOrderId != null || mInventory != null || mProductId == null || !TextUtils.isEmpty(mUnlockCode)
+			mTitleFragment.enableSwitch(mOrderId != null || TextUtils.isEmpty(mProductId) || !TextUtils.isEmpty(mUnlockCode)
 				|| (mTrialPeriodEnd != null && mTrialPeriodEnd > System.currentTimeMillis()) || mSynced);
 		}
 	}.setAutoFire(true);
@@ -278,20 +313,21 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 	private String mTitle;
 
 
-	public static CalendarItemFragment newInstance(Uri contentUri, String title)
+	public static CalendarItemFragment newInstance(Uri contentUri, String title, long icon)
 	{
 		CalendarItemFragment result = new CalendarItemFragment();
 		Bundle args = new Bundle();
 		args.putParcelable(ARG_CONTENT_URI, contentUri);
 		args.putString(ARG_TITLE, title);
+		args.putLong(ARG_ICON, icon);
 		result.setArguments(args);
 		return result;
 	}
 
 
-	public static CalendarItemFragment newInstance(Context context, long id, String title)
+	public static CalendarItemFragment newInstance(Context context, long id, String title, long icon)
 	{
-		return newInstance(ContentItem.getItemContentUri(context, id), title);
+		return newInstance(ContentItem.getItemContentUri(context, id), title, icon);
 	}
 
 
@@ -307,30 +343,32 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 		super.onAttach(activity);
 		((IBillingActivity) activity).addOnInventoryListener(this);
 
-		ActionBar actionBar = activity.getActionBar();
-		actionBar.removeAllTabs();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		mActionBar = activity.getActionBar();
+		mActionBar.removeAllTabs();
+		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		mActionBar.setTitle(mCalendarName);
+		mActionBar.setSubtitle(mTitle);
+
+		mImageProxy = ImageProxy.getInstance(activity);
 	}
 
 
 	@Override
 	public View onCreateItemView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View returnView = inflater.inflate(R.layout.fragment_calendar_item, null);
+		View returnView = inflater.inflate(R.layout.fragment_calendar_item, container, false);
 
-		View headerView = inflater.inflate(R.layout.calendar_item_header, null);
-		View progressView = inflater.inflate(R.layout.progress_indicator, null);
+		View progressView = inflater.inflate(R.layout.progress_indicator, null, false);
 
 		mProgressBar = (ProgressBar) progressView.findViewById(android.R.id.progress);
 
-		ListView listView = (ListView) returnView;
+		mListView = (ListView) returnView.findViewById(android.R.id.list);
 
-		listView.addHeaderView(headerView);
-		listView.addHeaderView(progressView);
-		listView.setOnItemClickListener(this);
-		listView.setHeaderDividersEnabled(false);
+		mListView.addHeaderView(progressView);
+		mListView.setOnItemClickListener(this);
+		mListView.setHeaderDividersEnabled(false);
 		mListAdapter = new EventListAdapter(inflater.getContext(), null);
-		listView.setAdapter(new SectionTitlesAdapter(inflater.getContext(), mListAdapter, new SectionIndexer()
+		mListView.setAdapter(mSectionAdapter = new SectionTitlesAdapter(inflater.getContext(), mListAdapter, new SectionIndexer()
 		{
 
 			@Override
@@ -363,7 +401,6 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 		FragmentManager fm = getChildFragmentManager();
 
 		mTitleFragment = (CalendarTitleFragment) fm.findFragmentById(R.id.calendar_title_fragment_container);
-		mSettingsFragment = (CalendarSettingsFragment) fm.findFragmentById(R.id.calendar_settings_fragment_container);
 
 		FragmentTransaction ft = fm.beginTransaction();
 
@@ -371,12 +408,6 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 		{
 			mTitleFragment = CalendarTitleFragment.newInstance();
 			ft.replace(R.id.calendar_title_fragment_container, mTitleFragment);
-		}
-
-		if (mSettingsFragment == null)
-		{
-			mSettingsFragment = CalendarSettingsFragment.newInstance();
-			ft.replace(R.id.calendar_settings_fragment_container, mSettingsFragment);
 		}
 
 		if (!ft.isEmpty())
@@ -388,7 +419,9 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 		lm.initLoader(LOADER_CALENDAR_ITEM, null, this);
 		lm.initLoader(LOADER_SUBSCRIBED_CALENDAR, null, this);
 
-		getActivity().setTitle(mTitle);
+		// set this to true, so the menu is cleared automatically when leaving the fragment, otherwise the star icon will stay visible
+		setHasOptionsMenu(true);
+
 		return returnView;
 	}
 
@@ -397,6 +430,28 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 	public void onDetach()
 	{
 		super.onDetach();
+	}
+
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+	{
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.calendar_item, menu);
+		menu.findItem(R.id.menu_settings).setVisible(mSynced);
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		int id = item.getItemId();
+		if (id == R.id.menu_settings)
+		{
+			CalendarSettingsFragment settings = CalendarSettingsFragment.newInstance(mSubscriptionUri);
+			settings.show(getChildFragmentManager(), null);
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 
@@ -463,7 +518,40 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 					mProgressBar.setVisibility(View.GONE);
 					return;
 				}
-				mListAdapter.swapCursor(cursor);
+				Cursor oldCursor = mListAdapter.swapCursor(cursor);
+				if (oldCursor == null || oldCursor.getCount() == 0)
+				{
+					goToToday();
+				}
+
+				if (oldCursor != null)
+				{
+					oldCursor.close();
+				}
+		}
+	}
+
+
+	private void goToToday()
+	{
+		Time now = new Time(TimeZone.getDefault().getID());
+		now.setToNow();
+		int nowIdx = (now.year << 16) + (now.month << 8) + now.monthDay;
+
+		if (mSectionAdapter != null)
+		{
+			for (int i = 0, count = mSectionAdapter.getCount(); i < count; ++i)
+			{
+				long id = mSectionAdapter.getItemId(i);
+				if (SectionTitlesAdapter.itemPos(id) == SectionTitlesAdapter.HEADER_ID)
+				{
+					if (SectionTitlesAdapter.sectionId(id) >= nowIdx)
+					{
+						mListView.setSelectionFromTop(Math.min(mSectionAdapter.getCount() - 1, i + 1), 0);
+						return;
+					}
+				}
+			}
 		}
 	}
 
@@ -492,11 +580,10 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 
 
 	@Override
-	public boolean onSwitchToggle(boolean status)
+	public boolean onSyncSwitchToggle(boolean status)
 	{
 		if (isResumed() && status != mSynced)
 		{
-			mAnimateSettings = true;
 			if (mOrderId != null || mProductId == null || !TextUtils.isEmpty(mUnlockCode) || mTrialPeriodEnd != null
 				&& mTrialPeriodEnd > System.currentTimeMillis())
 			{
@@ -509,7 +596,7 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 			else if (!status)
 			{
 				setCalendarSynced(false);
-				mTitleFragment.enableSwitch(mOrderId != null || mInventory != null || mProductId == null || !TextUtils.isEmpty(mUnlockCode));
+				mTitleFragment.enableSwitch(mOrderId != null || !TextUtils.isEmpty(mUnlockCode));
 				setEnforceHeaderHidden(false);
 			}
 		}
@@ -518,21 +605,27 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 
 
 	@Override
-	public void onPurchase(boolean success, boolean test)
+	public void onPurchase(boolean success, boolean freeTrial)
 	{
 		if (success)
 		{
-			if (!test)
+			if (!freeTrial)
 			{
 				mInventory = null;
 			}
-			mAnimateSettings = true;
 			setCalendarSynced(true);
 		}
 		else
 		{
-			mTitleFragment.setSwitchChecked(false);
+			// mTitleFragment.setSwitchChecked(false);
 		}
+	}
+
+
+	@Override
+	public void imageAvailable(long mIconId, Drawable drawable)
+	{
+		mActionBar.setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) drawable, 36, 36));
 	}
 
 
@@ -585,34 +678,6 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 	}
 
 
-	private void showSettings(boolean show, boolean fast)
-	{
-		final View v = getView().findViewById(R.id.calendar_settings_fragment_container);
-		if (!show && v.getVisibility() != View.GONE)
-		{
-			if (fast)
-			{
-				v.setVisibility(View.GONE);
-			}
-			else
-			{
-				v.startAnimation(new ExpandAnimation(v, false, SETTINGS_ANIMATION_DURATION));
-			}
-		}
-		else if (show && mSubscriptionUri != null && v.getVisibility() != View.VISIBLE)
-		{
-			if (fast)
-			{
-				v.setVisibility(View.VISIBLE);
-			}
-			else
-			{
-				v.startAnimation(new ExpandAnimation(v, true, SETTINGS_ANIMATION_DURATION));
-			}
-		}
-	}
-
-
 	@Override
 	public void onItemClick(AdapterView<?> listView, View view, int position, long id)
 	{
@@ -646,4 +711,19 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 			mProgressBar.setVisibility(View.VISIBLE);
 		}
 	};
+
+
+	@Override
+	public String getItemTitle()
+	{
+		return mCalendarName;
+	}
+
+
+	@Override
+	public long getItemIcon()
+	{
+		return mIcon;
+	}
+
 }
