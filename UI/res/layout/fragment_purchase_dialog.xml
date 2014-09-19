@@ -47,6 +47,7 @@
     </RelativeLayout>
 
     <FrameLayout
+        android:id="@+id/list_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -69,6 +70,14 @@
             android:layout_gravity="center"
             android:indeterminate="true"
             android:padding="4dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@android:id/message"
+            style="@style/small_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_failed"
             android:visibility="gone" />
     </FrameLayout>
 

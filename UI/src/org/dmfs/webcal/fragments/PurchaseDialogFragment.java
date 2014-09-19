@@ -17,10 +17,15 @@
 
 package org.dmfs.webcal.fragments;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
 import org.dmfs.android.retentionmagic.SupportDialogFragment;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.webcal.R;
+import org.dmfs.webcal.adapters.SectionTitlesAdapter;
+import org.dmfs.webcal.adapters.SectionTitlesAdapter.SectionIndexer;
 import org.dmfs.webcal.views.RemoteImageView;
 
 import android.app.Activity;
@@ -35,6 +40,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,7 +69,7 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 	private final static String ARG_PRICE = "price";
 	private final static String ARG_ENABLE_FREE_TRIAL = "enableFreeTrial";
 
-	private final static int PROGRESS_INDICATOR_DELAY = 50;
+	private final static int PROGRESS_INDICATOR_DELAY = 10;
 
 	/**
 	 * A listener for purchase events.
@@ -81,9 +87,13 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 	}
 
 	private ProgressBar mProgressBar;
+	private View mCalendarListContainer;
+	private TextView mTeaserView;
+	private TextView mMessageView;
 
 	private CursorAdapter mListAdapter;
 	private final Handler mHandler = new Handler();
+	private final Map<String, Integer> mTitleIndexMap = new HashMap<String, Integer>(16);
 
 	@Parameter(key = ARG_PRODUCT_ID)
 	private String mProductId;
@@ -159,9 +169,12 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 		freeTrialButton.setVisibility(mEnableFreeTrial ? View.VISIBLE : View.GONE);
 		freeTrialButton.setOnClickListener(this);
 
-		TextView teaserView = (TextView) returnView.findViewById(android.R.id.text1);
-		teaserView.setText(Html.fromHtml(getString(mEnableFreeTrial ? R.string.purchase_dialog_teaser_text_free_trial
-			: R.string.purchase_dialog_teaser_text_no_free_trial, mProductTitle, mPrice)));
+		mMessageView = (TextView) returnView.findViewById(android.R.id.message);
+		mCalendarListContainer = returnView.findViewById(R.id.list_container);
+
+		mTeaserView = (TextView) returnView.findViewById(android.R.id.text1);
+		mTeaserView.setText(Html.fromHtml(getString(mEnableFreeTrial ? R.string.purchase_dialog_teaser_text_free_trial
+			: R.string.purchase_dialog_teaser_text_no_free_trial, "", mProductTitle, mPrice)));
 
 		mListAdapter = new CursorAdapter(inflater.getContext(), null, false)
 		{
@@ -176,12 +189,56 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 			@Override
 			public void bindView(View view, Context context, Cursor cursor)
 			{
-				((TextView) view.findViewById(android.R.id.title)).setText(cursor.getString(cursor.getColumnIndex(ContentItem.TITLE)));
+				TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+				TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+
+				boolean isSubItem = !TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ContentItem.PRODUCT_PARENT_PAGE_TITLE)));
+
+				if (isSubItem)
+				{
+					text1.setVisibility(View.GONE);
+					text2.setVisibility(View.VISIBLE);
+					text2.setText("· " + cursor.getString(cursor.getColumnIndex(ContentItem.TITLE)));
+				}
+				else
+				{
+					text1.setVisibility(View.VISIBLE);
+					text1.setText(cursor.getString(cursor.getColumnIndex(ContentItem.TITLE)));
+					text2.setVisibility(View.GONE);
+				}
 			}
 		};
 
 		ListView calendarListView = (ListView) returnView.findViewById(android.R.id.list);
-		calendarListView.setAdapter(mListAdapter);
+		calendarListView.setAdapter(new SectionTitlesAdapter(inflater.getContext(), mListAdapter, new SectionIndexer()
+		{
+
+			@Override
+			public String getSectionTitle(int index)
+			{
+				Cursor c = (Cursor) mListAdapter.getItem(index);
+				return c.getString(c.getColumnIndex(ContentItem.PRODUCT_PARENT_PAGE_TITLE));
+			}
+
+
+			@Override
+			public int getSectionIndex(Object object)
+			{
+				Cursor c = (Cursor) object;
+				String title = c.getString(c.getColumnIndex(ContentItem.PRODUCT_PARENT_PAGE_TITLE));
+				Integer i = mTitleIndexMap.get(title);
+				if (i != null)
+				{
+					return i;
+				}
+				else
+				{
+					int pos = c.getPosition();
+					mTitleIndexMap.put(title, pos);
+					return pos;
+				}
+			}
+		}, R.layout.calendar_preview_section));
 
 		LoaderManager lm = getLoaderManager();
 		lm.initLoader(-1, null, this);
@@ -260,9 +317,30 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 	@Override
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor)
 	{
-		mListAdapter.swapCursor(cursor);
 		mHandler.removeCallbacks(mProgressIndicator);
 		mProgressBar.setVisibility(View.GONE);
+		if (cursor != null)
+		{
+			int calendarCount = cursor.getCount();
+
+			if (calendarCount > 1)
+			{
+				mTeaserView.setText(Html.fromHtml(getString(mEnableFreeTrial ? R.string.purchase_dialog_teaser_text_free_trial
+					: R.string.purchase_dialog_teaser_text_no_free_trial, " <b>" + calendarCount + "</b>", mProductTitle, mPrice)));
+				mTitleIndexMap.clear();
+				mListAdapter.swapCursor(cursor);
+			}
+			else
+			{
+				mTeaserView.setText(Html.fromHtml(getString(mEnableFreeTrial ? R.string.purchase_dialog_teaser_text_single_item_free_trial
+					: R.string.purchase_dialog_teaser_text_single_item_no_free_trial, mProductTitle, mPrice)));
+				mCalendarListContainer.setVisibility(View.GONE);
+			}
+		}
+		else
+		{
+			mMessageView.setVisibility(View.VISIBLE);
+		}
 	}
 
 

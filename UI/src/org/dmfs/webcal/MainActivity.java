@@ -55,11 +55,10 @@ import android.text.TextUtils;
 
 
 /**
- * The Home Activity is used to display the the main page along with the subsections.
+ * The Home Activity is used to display the main page along with the subsections.
  */
 public class MainActivity extends NavbarActivity implements CategoryNavigator, IBillingActivity, OnIabSetupFinishedListener, QueryInventoryFinishedListener
 {
-
 	private final static int REQUEST_CODE_LAUNCH_PURCHASE_FLOW = 10003;
 
 	private final static long MAX_INVENTORY_AGE = 15L * 60L * 1000L; // 15 minutes

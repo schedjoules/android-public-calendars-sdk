@@ -24,9 +24,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.support.v4.widget.CursorAdapter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -83,6 +85,7 @@ public class SectionTitlesAdapter implements ListAdapter
 	private final int mSectionHeaderViewId;
 	private List<Long> mIndex = new ArrayList<Long>(64);
 	private LayoutInflater mInflater;
+	private boolean mHideEmptySectionTitle = true;
 
 
 	/**
@@ -198,14 +201,24 @@ public class SectionTitlesAdapter implements ListAdapter
 
 		if (itemPos == HEADER_ID)
 		{
+			String title = mIndexer.getSectionTitle((int) sectionId(mIndex.get(position)));
+
 			// this is a section header
-			if (convertView == null)
+			if (convertView == null || convertView instanceof FrameLayout && !TextUtils.isEmpty(title))
 			{
 				convertView = mInflater.inflate(mSectionHeaderViewId, parent, false);
 			}
 
-			((TextView) convertView.findViewById(android.R.id.title)).setText(mIndexer.getSectionTitle((int) sectionId(mIndex.get(position))));
-			return convertView;
+			if (mHideEmptySectionTitle && TextUtils.isEmpty(title))
+			{
+				// setting visibility of convertView doesn't work, we need to return an empty view
+				return new FrameLayout(mInflater.getContext());
+			}
+			else
+			{
+				((TextView) convertView.findViewById(android.R.id.title)).setText(title);
+				return convertView;
+			}
 		}
 		else
 		{

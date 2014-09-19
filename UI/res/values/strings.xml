@@ -80,8 +80,8 @@
     <string name="purchase_header_unlock">Buy now for %s</string>
     <string name="purchase_dialog_take_the_free_trial">Take the free trial</string>
     <string name="purchase_header_buy_now">Buy</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Unlock sync for the category &lt;b>%1$s&lt;/b> for just &lt;b>%2$s&lt;/b> and get access to the following calendars or take the &lt;b>1 hour free trial&lt;/b>.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Unlock sync for the category &lt;b>%1$s&lt;/b> for just &lt;b>%2$s&lt;/b> and get access to the following calendars.</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Unlock sync for all%1$s calendars in &lt;b>%2$s&lt;/b> for just &lt;b>%3$s&lt;/b> or take the &lt;b>1 hour free trial&lt;/b>.&lt;br />See what\'s included:</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Unlock sync for all%1$s calendars in &lt;b>%2$s&lt;/b> for just &lt;b>%3$s&lt;/b>.&lt;br />See what\'s included:</string>
     <string name="purchase_dialog_teaser_text_single_item_free_trial">Unlock sync for &lt;b>%1$s&lt;/b> for just &lt;b>%2$s&lt;/b> or take the &lt;b>1 hour free trial&lt;/b>.</string>
     <string name="purchase_dialog_teaser_text_single_item_no_free_trial">Unlock sync for &lt;b>%1$s&lt;/b> for just &lt;b>%2$s&lt;/b>.</string>
 
