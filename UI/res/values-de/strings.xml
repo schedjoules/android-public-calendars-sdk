@@ -74,8 +74,8 @@
     <string name="purchase_header_unlock">Für %s kaufen</string>
     <string name="purchase_dialog_take_the_free_trial">Gratis testen</string>
     <string name="purchase_header_buy_now">Kaufen</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Schalte die Synchronisation für alle%1$s Kalender in &lt;b>%2$s&lt;/b> für nur &lt;b>%3$s&lt;/b> frei oder teste sie &lt;b>1 Stunde kostenlos&lt;/b> und erhalte Zugang zu folgenden Kalendern:</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Schalte die Synchronisation für alle%1$s Kalender in &lt;b>%2$s&lt;/b> für nur &lt;b>%3$s&lt;/b> frei und erhalte damit Zugang zu folgenden Kalendern:</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Schalte die Synchronisation für die folgenden%1$s Kalender in &lt;b>%2$s&lt;/b> für nur &lt;b>%3$s&lt;/b> frei oder teste sie &lt;b>1 Stunde kostenlos&lt;/b>.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Schalte die Synchronisation für die folgenden%1$s Kalender in &lt;b>%2$s&lt;/b> für nur &lt;b>%3$s&lt;/b> frei.</string>
     <string name="purchase_dialog_teaser_text_single_item_free_trial">Schalte die Synchronisation für &lt;b>%1$s&lt;/b> für nur &lt;b>%2$s&lt;/b> frei oder teste die Synchronisation &lt;b>1 Stunde kostenlos&lt;/b>.</string>
     <string name="purchase_dialog_teaser_text_single_item_no_free_trial">Schalte die Synchronisation für &lt;b>%1$s&lt;/b> für nur &lt;b>%2$s&lt;/b> frei.</string>
 
