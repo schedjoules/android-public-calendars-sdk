@@ -331,15 +331,9 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	{
 		int id = view.getId();
 
-		if ((id == R.id.unlock_button || id == R.id.buy_now_button) && mInventory != null)
+		if (id == R.id.unlock_button || id == R.id.buy_now_button)
 		{
 			startPurchaseFlow();
-		}
-		else if ((id == R.id.unlock_button || id == R.id.buy_now_button) && mInventory == null)
-		{
-			// mInventory is null, that means we can't connect to Google Play
-			MessageDialogFragment.show(getChildFragmentManager(), R.string.purchase_connection_error_title,
-				getString(R.string.purchase_connection_error_message));
 		}
 	}
 
@@ -349,9 +343,18 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	 */
 	public void startPurchaseFlow()
 	{
-		PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mProductId, getItemIcon(), mProductTitle, getItemTitle(), mProductPrice,
-			mTrialExpiryTime == null || mTrialExpiryTime < System.currentTimeMillis());
-		purchaseDialog.show(getChildFragmentManager(), null);
+		if (mInventory != null)
+		{
+			PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mProductId, getItemIcon(), mProductTitle, getItemTitle(), mProductPrice,
+				mTrialExpiryTime == null || mTrialExpiryTime < System.currentTimeMillis());
+			purchaseDialog.show(getChildFragmentManager(), null);
+		}
+		else
+		{
+			// mInventory is null, that means we can't connect to Google Play
+			MessageDialogFragment.show(getChildFragmentManager(), R.string.purchase_connection_error_title,
+				getString(R.string.purchase_connection_error_message));
+		}
 	}
 
 
