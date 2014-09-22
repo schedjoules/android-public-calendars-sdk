@@ -333,9 +333,7 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 
 		if ((id == R.id.unlock_button || id == R.id.buy_now_button) && mInventory != null)
 		{
-			PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mProductId, getItemIcon(), mProductTitle, getItemTitle(), mProductPrice,
-				mTrialExpiryTime == null || mTrialExpiryTime < System.currentTimeMillis());
-			purchaseDialog.show(getChildFragmentManager(), null);
+			startPurchaseFlow();
 		}
 		else if ((id == R.id.unlock_button || id == R.id.buy_now_button) && mInventory == null)
 		{
@@ -343,6 +341,17 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 			MessageDialogFragment.show(getChildFragmentManager(), R.string.purchase_connection_error_title,
 				getString(R.string.purchase_connection_error_message));
 		}
+	}
+
+
+	/**
+	 * Starts the purchase flow by showing the purchase dialog.
+	 */
+	public void startPurchaseFlow()
+	{
+		PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mProductId, getItemIcon(), mProductTitle, getItemTitle(), mProductPrice,
+			mTrialExpiryTime == null || mTrialExpiryTime < System.currentTimeMillis());
+		purchaseDialog.show(getChildFragmentManager(), null);
 	}
 
 
