@@ -169,6 +169,10 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 		freeTrialButton.setVisibility(mEnableFreeTrial ? View.VISIBLE : View.GONE);
 		freeTrialButton.setOnClickListener(this);
 
+		TextView cancelButton = (TextView) returnView.findViewById(R.id.cancel_button);
+		cancelButton.setVisibility(mEnableFreeTrial ? View.GONE : View.VISIBLE);
+		cancelButton.setOnClickListener(this);
+
 		mMessageView = (TextView) returnView.findViewById(android.R.id.message);
 		mCalendarListContainer = returnView.findViewById(R.id.list_container);
 
@@ -271,6 +275,10 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 		else if (id == R.id.purchase_button)
 		{
 			notifyListener(false);
+			dismiss();
+		}
+		else if (id == R.id.cancel_button)
+		{
 			dismiss();
 		}
 	}

@@ -107,6 +107,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/purchase_dialog_take_the_free_trial"
                 android:textColor="#f0b014" />
+
+            <TextView
+                android:id="@+id/cancel_button"
+                style="@style/dialog_button_stacked_secondary"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/purchase_dialog_cancel"
+                android:visibility="gone" />
         </LinearLayout>
     </FrameLayout>
 
