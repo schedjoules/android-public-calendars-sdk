@@ -192,14 +192,8 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 				}
 			}
 
-			// enable unlock button if we have a connection to Google Play.
-			mUnlockButton.setEnabled(mInventory != null);
-
 			if (skuDetails != null)
 			{
-				// update price if we have any
-				// ((TextView) mUnlockButton.getChildAt(0)).setText(mResources.getString(R.string.purchase_header_unlock, skuDetails.getPrice()));
-
 				String title = skuDetails.getTitle();
 				if (title.startsWith("Sync "))
 				{
@@ -208,11 +202,6 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 			}
 			else
 			{
-				if (!TextUtils.isEmpty(mProductPrice))
-				{
-					// ((TextView) mUnlockButton.getChildAt(0)).setText(mResources.getString(R.string.purchase_header_unlock, mProductPrice));
-				}
-
 				Activity activity = getActivity();
 				if (activity != null && mInventory != null && mGetPriceCounter-- > 0)
 				{
@@ -253,7 +242,7 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	@Override
 	public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View returnView = inflater.inflate(R.layout.fragment_purchasable_item, null);
+		View returnView = inflater.inflate(R.layout.fragment_purchasable_item, container, false);
 
 		mHeaderView = returnView.findViewById(R.id.purchasable_header);
 
@@ -347,6 +336,12 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 			PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mProductId, getItemIcon(), mProductTitle, getItemTitle(), mProductPrice,
 				mTrialExpiryTime == null || mTrialExpiryTime < System.currentTimeMillis());
 			purchaseDialog.show(getChildFragmentManager(), null);
+		}
+		else if ((id == R.id.unlock_button || id == R.id.buy_now_button) && mInventory == null)
+		{
+			// mInventory is null, that means we can't connect to Google Play
+			MessageDialogFragment.show(getChildFragmentManager(), R.string.purchase_connection_error_title,
+				getString(R.string.purchase_connection_error_message));
 		}
 	}
 

@@ -96,6 +96,9 @@
         <item quantity="other">Your free trial ends in %s seconds</item>
     </plurals>
 
+    <string name="purchase_connection_error_title">Error</string>
+    <string name="purchase_connection_error_message">Can not connect to Google Play services.\nPlease check your Internet conntection or retry later.</string>
+
     <string-array name="alarm_names">
         <item>Server default</item>
         <item>No reminder</item>

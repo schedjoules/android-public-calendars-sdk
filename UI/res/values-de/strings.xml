@@ -88,6 +88,9 @@
         <item quantity="other">Kostenloser Test endet in %s Sekunden</item>
     </plurals>
 
+    <string name="purchase_connection_error_title">Fehler</string>
+    <string name="purchase_connection_error_message">Keine Verbindung zum Google Play Dienst herstellbar.\nBitte prüfen Sie Ihre Intenetverbindung oder versuchen Sie es später noch einmal.</string>
+
     <string-array name="alarm_names">
         <item>Server-Standard</item>
         <item>Keine Erinnerung</item>
