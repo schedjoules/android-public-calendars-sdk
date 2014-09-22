@@ -625,7 +625,10 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 	@Override
 	public void imageAvailable(long mIconId, Drawable drawable)
 	{
-		mActionBar.setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) drawable, 36, 36));
+		if (isAdded())
+		{
+			mActionBar.setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) drawable, 36, 36));
+		}
 	}
 
 
