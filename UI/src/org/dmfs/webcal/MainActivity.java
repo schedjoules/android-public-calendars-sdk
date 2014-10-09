@@ -103,7 +103,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		if (savedInstanceState == null)
 		{
 			selectItem(R.id.side_nav_all_calendars);
-			setNavigationSelection(2);
+			setNavigationSelection(0);
 		}
 		else if (mSelectedItemId >= 0)
 		{
@@ -125,7 +125,14 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		super.onDestroy();
 		if (mIabHelper != null)
 		{
-			mIabHelper.dispose();
+			try
+			{
+				mIabHelper.dispose();
+			}
+			catch (Exception e)
+			{
+				// ignore, it seems to throw an exception every now and then in the emulator
+			}
 		}
 	}
 

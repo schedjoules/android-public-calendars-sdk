@@ -22,10 +22,12 @@ import org.dmfs.android.retentionmagic.FragmentActivity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -248,12 +250,22 @@ public abstract class NavbarActivity extends FragmentActivity implements ListVie
 			TextView titleView = (TextView) result.findViewById(mTextViewResourceId);
 			if (titleView != null)
 			{
+				MenuItem item = (MenuItem) getItem(position);
 				if ((category & Menu.CATEGORY_SECONDARY) == 0)
 				{
 					titleView.setTextAppearance(mContext, mDrawerList.getCheckedItemPosition() == position ? R.style.navigation_text_selected
 						: R.style.navigation_text_normal);
 				}
-				titleView.setText(((MenuItem) getItem(position)).getTitle());
+				titleView.setText(item.getTitle());
+
+				Drawable icon = item.getIcon();
+				if (icon != null)
+				{
+					DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+					icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+					titleView.setCompoundDrawables(icon, null, null, null);
+					titleView.setCompoundDrawablePadding((int) (displayMetrics.density * 8));
+				}
 			}
 
 			return result;

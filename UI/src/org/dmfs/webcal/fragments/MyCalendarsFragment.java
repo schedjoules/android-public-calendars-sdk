@@ -28,6 +28,7 @@ import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
@@ -99,7 +100,9 @@ public class MyCalendarsFragment extends ActionBarFragment implements TabListene
 		mViewPager.setOnPageChangeListener(this);
 		mAdapter = new MyCalendarsPagerAdapter(getActivity(), getChildFragmentManager());
 		mViewPager.setAdapter(mAdapter);
-		getActivity().setTitle(mTitle);
+		FragmentActivity activity = getActivity();
+		activity.setTitle(mTitle);
+		activity.getActionBar().setTitle(mTitle);
 		setupActionBar();
 		return returnView;
 	}

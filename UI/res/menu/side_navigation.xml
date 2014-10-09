@@ -2,15 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/side_nav_favorite_calendars"
-        android:title="@string/side_nav_favorite_calendars"/>
+        android:id="@+id/side_nav_all_calendars"
+        android:title="@string/side_nav_all_calendars"/>
     <item
         android:id="@+id/side_nav_my_calendars"
         android:title="@string/side_nav_my_calendars"/>
     <item
-        android:id="@+id/side_nav_all_calendars"
-        android:title="@string/side_nav_all_calendars"/>
-
+        android:id="@+id/side_nav_favorite_calendars"
+        android:title="@string/side_nav_favorite_calendars"/>
     <!-- The SDK doesn't support the free calendars section yet, so this one is not visible -->
     <item
         android:id="@+id/side_nav_free_calendars"
@@ -18,14 +17,17 @@
         android:visible="false"/>
     <item
         android:id="@+id/side_nav_faq"
+        android:icon="@drawable/ic_faq"
         android:menuCategory="secondary"
         android:title="@string/side_nav_faq"/>
     <item
         android:id="@+id/side_nav_feedback"
+        android:icon="@drawable/ic_feedback"
         android:menuCategory="secondary"
         android:title="@string/side_nav_feedback"/>
     <item
         android:id="@+id/side_nav_settings"
+        android:icon="@drawable/ic_settings"
         android:menuCategory="secondary"
         android:title="@string/side_nav_settings"/>
 

@@ -249,8 +249,9 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
 			ActionBar ab = getActivity().getActionBar();
 			ab.removeAllTabs();
 			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-
-			getActivity().setTitle(mTitle);
+			FragmentActivity activity = getActivity();
+			activity.setTitle(mTitle);
+			activity.getActionBar().setTitle(mTitle);
 		}
 	}
 

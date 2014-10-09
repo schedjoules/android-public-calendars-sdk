@@ -140,7 +140,7 @@
     <string name="season">Season %s</string>
 
     <!-- Title of favourite calendars section -->
-    <string name="side_nav_favorite_calendars">Starred calendars</string>
+    <string name="side_nav_favorite_calendars">Favorites</string>
 
     <!-- Title of my calendars section -->
     <string name="side_nav_my_calendars">My calendars</string>
