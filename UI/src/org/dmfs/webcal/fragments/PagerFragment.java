@@ -251,8 +251,11 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	@Override
 	public void imageAvailable(long mIconId, Drawable drawable)
 	{
-		// the image has been loaded, scale it and update the ActionBar
-		getActivity().getActionBar().setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) drawable, 36, 36));
+		if (isAdded())
+		{
+			// the image has been loaded, scale it and update the ActionBar
+			getActivity().getActionBar().setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) drawable, 36, 36));
+		}
 	}
 
 
