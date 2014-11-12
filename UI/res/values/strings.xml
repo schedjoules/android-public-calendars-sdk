@@ -63,7 +63,7 @@
     <string name="error_my_calendars_empty">Currently, you don\'t sync any calendars. Open \"All Calendars\" to sync calendars.</string>
 
     <!-- Message in "Favorites" if there are no starred calendars yet -->
-    <string name="error_favorite_calendars_empty">You don\'t have starred any calendars yet.</string>
+    <string name="error_favorite_calendars_empty">You don\'t have any favorite calendars yet.</string>
 
     <!-- Message in "Free" if there are no free calendars yet -->
     <string name="error_free_calendars_empty">At present there are no free calendars available.</string>
@@ -169,7 +169,7 @@
     <!-- Main menu options -->
     <string name="menu_favorite_short">Favorite</string>
     <string name="menu_favorite">Mark favorite</string>
-    <string name="menu_settings_short">Settions</string>
+    <string name="menu_settings_short">Settings</string>
     <string name="menu_settings">Open calendar settings</string>
 
 </resources>
