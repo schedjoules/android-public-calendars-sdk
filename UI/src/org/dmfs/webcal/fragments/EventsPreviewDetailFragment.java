@@ -36,6 +36,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.schedjoules.analytics.Analytics;
+
 
 /**
  * A fragment that shows the details of an event.
@@ -146,6 +148,8 @@ public class EventsPreviewDetailFragment extends SupportFragment
 		((RemoteImageView) view.findViewById(R.id.calendar_item_icon)).setRemoteSource(mCalendarIconId);
 
 		setHasOptionsMenu(true);
+
+		Analytics.screen("eventpreview", null, null);
 
 		return view;
 	}

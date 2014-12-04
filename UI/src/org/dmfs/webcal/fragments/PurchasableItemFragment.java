@@ -50,6 +50,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.schedjoules.analytics.Analytics;
+
 
 /**
  * A Fragment that shows a header to initiate the purchase flow.
@@ -345,12 +347,15 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	{
 		if (mInventory != null)
 		{
+			Analytics.screen("purchase-dialog", null, null);
+			Analytics.event("open-purchase-dialog", "calendar-action", mProductId, null, null, null);
 			PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mProductId, getItemIcon(), mProductTitle, getItemTitle(), mProductPrice,
 				mTrialExpiryTime == null || mTrialExpiryTime < System.currentTimeMillis());
 			purchaseDialog.show(getChildFragmentManager(), null);
 		}
 		else
 		{
+			Analytics.event("open-purchase-dialog-error", "calendar-action", "no connection to play services", null, null, null);
 			// mInventory is null, that means we can't connect to Google Play
 			MessageDialogFragment.show(getChildFragmentManager(), R.string.purchase_connection_error_title,
 				getString(R.string.purchase_connection_error_message));
@@ -363,6 +368,7 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	{
 		if (freeTrial)
 		{
+			Analytics.event("free-trial-enabled", "calendar-action", mProductId, null, null, null);
 			CalendarContentContract.Products.updateProduct(getActivity(), mProductId, Products.MAX_FREE_TRIAL_PERIOD);
 			onPurchase(true, true);
 		}

@@ -78,6 +78,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.schedjoules.analytics.Analytics;
+
 
 public class CalendarItemFragment extends PurchasableItemFragment implements OnInventoryListener, LoaderManager.LoaderCallbacks<Cursor>, SwitchStatusListener,
 	OnIabPurchaseFinishedListener, OnItemClickListener, ImageAvailableListener
@@ -427,6 +429,15 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 
 
 	@Override
+	public void onStart()
+	{
+		super.onStart();
+		mId = ContentUris.parseId(mContentUri);
+		Analytics.screen(mTitle + "/calendar_preview", null, String.valueOf(ContentItem.getApiId(mId)));
+	}
+
+
+	@Override
 	public void onDetach()
 	{
 		super.onDetach();
@@ -449,6 +460,9 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 		if (id == R.id.menu_settings)
 		{
 			CalendarSettingsFragment settings = CalendarSettingsFragment.newInstance(mSubscriptionUri);
+			String itemId = String.valueOf(ContentItem.getApiId(mId));
+			Analytics.event("open-settings", "calendar-action", null, null, itemId, null);
+			Analytics.screen("calendar-settings", null, itemId);
 			settings.show(getChildFragmentManager(), null);
 		}
 		return super.onOptionsItemSelected(item);
@@ -587,14 +601,17 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 			if (mOrderId != null || mProductId == null || !TextUtils.isEmpty(mUnlockCode) || mTrialPeriodEnd != null
 				&& mTrialPeriodEnd > System.currentTimeMillis())
 			{
+				Analytics.event("sync-enabled", "calendar-action", Boolean.toString(status), null, String.valueOf(ContentItem.getApiId(mId)), null);
 				setCalendarSynced(status);
 			}
 			else if (status && mInventory != null)
 			{
+				Analytics.event("sync-selected", "calendar-action", Boolean.toString(status), null, String.valueOf(ContentItem.getApiId(mId)), null);
 				((IBillingActivity) getActivity()).purchase(mProductId, this);
 			}
 			else if (!status)
 			{
+				Analytics.event("sync-enabled", "calendar-action", Boolean.toString(status), null, String.valueOf(ContentItem.getApiId(mId)), null);
 				setCalendarSynced(false);
 				mTitleFragment.enableSwitch(mOrderId != null || !TextUtils.isEmpty(mUnlockCode));
 				setEnforceHeaderHidden(false);

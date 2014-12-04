@@ -26,11 +26,9 @@ import org.dmfs.webcal.R;
 import org.dmfs.webcal.adapters.MixedNavigationAdapter;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
@@ -43,7 +41,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.schedjoules.analytics.Analytics;
 
+
+/**
+ * A fragment that shows all items of a specific section of a page. These items represent either pages or calendars.
+ * 
+ * @author Marten Gajda <marten@dmfs.org>
+ */
 public class CategoriesListFragment extends SupportFragment implements OnItemClickListener, LoaderCallbacks<Cursor>
 {
 	public static final String ARG_SECTION_ID = "section_id";
@@ -67,14 +72,13 @@ public class CategoriesListFragment extends SupportFragment implements OnItemCli
 	private int mFirstItem;
 	private int mPosFromTop;
 	private ListView mListView;
-	private boolean mShowCalendarDetails;
-
-	private Handler mHandler = new Handler();
 
 	@Retain
 	private Uri mPurchasedItem = null;
-	private String mPurchasedName = null;
 
+	/**
+	 * An interface to be implemented by the parent activity of this fragment. It provides methods to navigate to a specific page or calendar.
+	 */
 	public interface CategoryNavigator
 	{
 		public void openCategory(long id, String title, long icon);
@@ -96,22 +100,6 @@ public class CategoriesListFragment extends SupportFragment implements OnItemCli
 		fragment.setArguments(args);
 
 		return fragment;
-	}
-
-
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-	}
-
-
-	@Override
-	public void onAttach(Activity activity)
-	{
-		super.onAttach(activity);
-		Resources resources = activity.getResources();
-		mShowCalendarDetails = resources.getBoolean(R.bool.org_dmfs_android_show_calendar_details);
 	}
 
 
@@ -145,7 +133,6 @@ public class CategoriesListFragment extends SupportFragment implements OnItemCli
 		 * For now we keep it that way until we find a proper solution
 		 */
 		LoaderManager loaderManager = getParentFragment().getLoaderManager();
-		loaderManager.initLoader((int) mSectionId, null, this);
 		loaderManager.initLoader((int) (-4 * 1000000 + mSectionId), null, this);
 		return mListView;
 	}
@@ -154,17 +141,8 @@ public class CategoriesListFragment extends SupportFragment implements OnItemCli
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args)
 	{
-		Uri uri = null;
-		if (id == -4 * 1000000 + mSectionId)
-		{
-			uri = CalendarContentContract.ContentItem.getItemContentUri(getActivity(), mItemId);
-			return new CursorLoader(getActivity(), uri, null, null, null, null);
-		}
-		else
-		{
-			uri = CalendarContentContract.Section.getItemContentUri(getActivity(), mSectionId);
-			return new CursorLoader(getActivity(), uri, MixedNavigationAdapter.PROJECTION, null, null, null);
-		}
+		Uri uri = CalendarContentContract.Section.getItemContentUri(getActivity(), mSectionId);
+		return new CursorLoader(getActivity(), uri, MixedNavigationAdapter.PROJECTION, null, null, null);
 	}
 
 
@@ -184,17 +162,7 @@ public class CategoriesListFragment extends SupportFragment implements OnItemCli
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
 	{
-		if (loader.getId() == -4 * 1000000 + mSectionId)
-		{
-			if (cursor != null && cursor.moveToFirst())
-			{
-				// setPurchaseableItem(cursor);
-			}
-		}
-		else
-		{
-			mAdapter.swapCursor(cursor);
-		}
+		mAdapter.swapCursor(cursor);
 	}
 
 
@@ -208,12 +176,13 @@ public class CategoriesListFragment extends SupportFragment implements OnItemCli
 	@Override
 	public void onItemClick(AdapterView<?> adpView, View view, int position, long id)
 	{
-		Cursor cursor = (Cursor) adpView.getAdapter().getItem(position);
+		Cursor cursor = (Cursor) mAdapter.getItem(position);
 		String itemType = cursor.getString(2);
 		String itemTitle = cursor.getString(1);
 		long itemIcon = cursor.getLong(cursor.getColumnIndex(ContentItem.ICON_ID));
-		String itemPurchaseId = cursor.getString(cursor.getColumnIndex(ContentItem.GOOGLE_PLAY_PRODUCT_ID));
 		long selectedId = cursor.getLong(0);
+		Analytics
+			.event("item-clicked", "navigate", null, String.valueOf(ContentItem.getApiId(mItemId)), String.valueOf(ContentItem.getApiId(selectedId)), null);
 		if (itemType.equals(CalendarContentContract.ContentItem.TYPE_PAGE))
 		{
 			Activity activity = getActivity();
@@ -225,21 +194,11 @@ public class CategoriesListFragment extends SupportFragment implements OnItemCli
 		}
 		else if (itemType.equals(CalendarContentContract.ContentItem.TYPE_CALENDAR))
 		{
-			if (mShowCalendarDetails /* || isInInventory(itemPurchaseId) */)
+			Activity activity = getActivity();
+			if (activity instanceof CategoryNavigator)
 			{
-				Activity activity = getActivity();
-				if (activity instanceof CategoryNavigator)
-				{
-					((CategoryNavigator) activity).openCalendar(selectedId, itemIcon > 0 ? itemIcon : mCategoryIconId);
-				}
+				((CategoryNavigator) activity).openCalendar(selectedId, itemIcon > 0 ? itemIcon : mCategoryIconId);
 			}
-			// else if (getActivity() instanceof IBillingActivity)
-			// {
-			// mPurchasedItem = ContentItem.getItemContentUri(getActivity(), selectedId);
-			// mPurchasedName = itemTitle;
-			// ((IBillingActivity) getActivity()).purchase(
-			// cursor.getString(cursor.getColumnIndex(CalendarContentContract.ContentItem.GOOGLE_PLAY_PRODUCT_ID)), this);
-			// }
 		}
 		else
 		{
@@ -247,61 +206,6 @@ public class CategoriesListFragment extends SupportFragment implements OnItemCli
 		}
 	}
 
-
-	//
-	// @Override
-	// public void onPurchase(boolean success, boolean test)
-	// {
-	// if (success && !mShowCalendarDetails && mPurchasedItem != null)
-	// {
-	// setCalendarSynced(true);
-	// }
-	// }
-
-	// private void setCalendarSynced(final boolean status)
-	// {
-	// final Activity activity = getActivity();
-	// if (status)
-	// {
-	// new ProtectedBackgroundJob<Void, Uri>(activity)
-	// {
-	// @Override
-	// protected Uri doInBackground(Void... params)
-	// {
-	// if (status)
-	// {
-	// mHandler.post(new Runnable()
-	// {
-	//
-	// @Override
-	// public void run()
-	// {
-	// ((CategoryNavigator) activity).openCalendar(ContentUris.parseId(mPurchasedItem));
-	// }
-	// });
-	//
-	// return SubscribedCalendars.addCalendar(activity, ContentUris.parseId(mPurchasedItem), mPurchasedName,
-	// (int) (Math.random() * 0x1000000) + 0xff000000);
-	// }
-	// else
-	// {
-	// SubscribedCalendars.delCalendar(activity, mPurchasedItem);
-	// return null;
-	// }
-	// }
-	//
-	//
-	// @Override
-	// protected void doPostExecute(Uri result)
-	// {
-	// // TODO Automatisch generierter Methodenstub
-	//
-	// }
-	//
-	// }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-	// }
-	//
-	// }
 
 	public long getSectionId()
 	{

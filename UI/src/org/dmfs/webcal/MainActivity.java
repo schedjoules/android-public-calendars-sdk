@@ -48,10 +48,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+
+import com.schedjoules.analytics.Analytics;
+import com.schedjoules.analytics.PurchaseState;
 
 
 /**
@@ -62,6 +66,8 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	private final static int REQUEST_CODE_LAUNCH_PURCHASE_FLOW = 10003;
 
 	private final static long MAX_INVENTORY_AGE = 15L * 60L * 1000L; // 15 minutes
+
+	private final static long MAX_ANALYTICS_AGE = 60L * 1000L; // 1 minute
 
 	public static final String SUBCATEGORY_EXTRA = "org.dmfs.webcal.SUBCATEGORY_EXTRA";
 
@@ -90,6 +96,8 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	@Retain(key = "firststart", permanent = true, classNS = "MainActivity")
 	private boolean mFirstStart = true;
 
+	private final Handler mHandler = new Handler();
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -116,6 +124,28 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 			mFirstStart = false;
 			openDrawer();
 		}
+
+		if (savedInstanceState == null)
+		{
+			Analytics.enable();
+			Analytics.sessionStart("MAIN");
+		}
+	}
+
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		mHandler.postDelayed(mAnalyticsTrigger, MAX_ANALYTICS_AGE);
+	}
+
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		mHandler.removeCallbacks(mAnalyticsTrigger);
 	}
 
 
@@ -134,6 +164,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 				// ignore, it seems to throw an exception every now and then in the emulator
 			}
 		}
+		Analytics.sessionEnd();
 	}
 
 
@@ -210,30 +241,36 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 			fragment = GenericListFragment.newInstance(CalendarContentContract.ContentItem.getStarredItemsContentUri(this),
 				getString(R.string.side_nav_favorite_calendars), R.string.error_favorite_calendars_empty, GenericListFragment.PROJECTION2, true);
 			mSelectedItemId = id;
+			Analytics.event("fav-calendars", "menu", null, null, null, null);
 		}
 		else if (id == R.id.side_nav_my_calendars)
 		{
 			fragment = MyCalendarsFragment.newInstance(getItemTitleById(id));
 			mSelectedItemId = id;
+			Analytics.event("my-calendars", "menu", null, null, null, null);
 		}
 		else if (id == R.id.side_nav_all_calendars)
 		{
 			fragment = PagerFragment.newInstance(this, 0, getItemTitleById(id), -1);
 			mSelectedItemId = id;
+			Analytics.event("all-calendars", "menu", null, null, null, null);
 		}
 		else if (id == R.id.side_nav_free_calendars)
 		{
 			fragment = GenericListFragment.newInstance(CalendarContentContract.ContentItem.getFreeItemsContentUri(this),
 				getString(R.string.side_nav_free_calendars), R.string.error_free_calendars_empty, GenericListFragment.PROJECTION2, false);
 			mSelectedItemId = id;
+			Analytics.event("free-calendars", "menu", null, null, null, null);
 		}
 		else if (id == R.id.side_nav_faq)
 		{
 			Intent faqIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.faq_url)));
 			startActivity(faqIntent);
+			Analytics.event("faq", "menu", null, null, null, null);
 		}
 		else if (id == R.id.side_nav_feedback)
 		{
+			Analytics.event("feedback", "menu", null, null, null, null);
 			PackageManager pm = getPackageManager();
 			PackageInfo pi = null;
 			try
@@ -267,6 +304,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		{
 			Intent preferencesIntent = new Intent(this, PreferencesActivity.class);
 			startActivity(preferencesIntent);
+			Analytics.event("settings", "menu", "settings clicked", null, null, null);
 		}
 
 		if (fragment != null)
@@ -376,10 +414,11 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 
 
 	@Override
-	public void purchase(String productId, final OnIabPurchaseFinishedListener callback)
+	public void purchase(final String productId, final OnIabPurchaseFinishedListener callback)
 	{
 		if (mIabHelper != null && mIabHelperReady && !mIabHelper.asyncInProgress())
 		{
+			Analytics.purchase(null, PurchaseState.STARTED, 0.0f, null, null, productId);
 			// we inject our own listener to update the inventory
 			mIabHelper.launchPurchaseFlow(this, productId, REQUEST_CODE_LAUNCH_PURCHASE_FLOW, new OnIabPurchaseFinishedListener()
 			{
@@ -389,12 +428,16 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 				{
 					// forward result
 					callback.onIabPurchaseFinished(result, info);
-
 					if (result.isSuccess())
 					{
+						Analytics.purchase(info.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, productId);
 						// update inventory
 						mInventoryCache = null;
 						getInventory();
+					}
+					else if (result.isFailure())
+					{
+						Analytics.purchase(null, PurchaseState.FAILED, 0.0f, null, result.getMessage(), productId);
 					}
 				}
 			});
@@ -517,4 +560,20 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 			}
 		}
 	}
+
+	/**
+	 * A {@link Runnable} that triggers a transmission of analytics hits at least every {@value #MAX_INVENTORY_AGE} milliseconds.
+	 * 
+	 * @see #MAX_ANALYTICS_AGE
+	 */
+	private final Runnable mAnalyticsTrigger = new Runnable()
+	{
+
+		@Override
+		public void run()
+		{
+			Analytics.triggerSendBatch();
+			mHandler.postDelayed(mAnalyticsTrigger, MAX_ANALYTICS_AGE);
+		}
+	};
 }

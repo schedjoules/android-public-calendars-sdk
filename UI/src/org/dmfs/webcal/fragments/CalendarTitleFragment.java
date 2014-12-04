@@ -38,6 +38,8 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.schedjoules.analytics.Analytics;
+
 
 /**
  * A fragment that shows the title and icon of a calendar. It also has a switch to enable or disable synchronization for that calendar.
@@ -189,6 +191,7 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
 			// Selectors don't seem to work with menu options, so we have to hard code the icons.
 			item.setIcon(checked ? R.drawable.ic_fa_star : R.drawable.ic_fa_star_o);
 			ContentItem.setStarred(getActivity(), mId, checked);
+			Analytics.event("starred", "calendar-action", checked ? "starred" : "un-starred", null, String.valueOf(mId), null);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

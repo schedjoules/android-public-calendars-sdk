@@ -18,6 +18,7 @@
 package org.dmfs.webcal.fragments;
 
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.android.retentionmagic.annotations.Retain;
 import org.dmfs.webcal.R;
@@ -51,6 +52,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.schedjoules.analytics.Analytics;
 
 
 /**
@@ -163,6 +166,14 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		Activity activity = getActivity();
 		activity.getSharedPreferences(activity.getPackageName() + "_preferences", 0).unregisterOnSharedPreferenceChangeListener(this);
 		super.onDetach();
+	}
+
+
+	@Override
+	public void onStart()
+	{
+		super.onStart();
+		Analytics.screen(mTitle, String.valueOf(ContentItem.getApiId(mId)), null);
 	}
 
 
