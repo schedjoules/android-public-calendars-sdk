@@ -10,7 +10,7 @@
 
     <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">?attr/primaryColor</item>
-        <item name="android:backgroundStacked">?attr/primaryColorShaded</item>
+        <item name="android:backgroundStacked">?attr/primaryColor</item>
     </style>
 
 </resources>
