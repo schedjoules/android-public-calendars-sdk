@@ -120,12 +120,19 @@
     </string-array>
 
     <!-- String used in Preferences -->
+
+
     <!-- Title for the preferences activity -->
     <string name="title_activity_preferences">Preferences</string>
     <!-- Locale preference title -->
     <string name="preferences_locale_title">Country</string>
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary"></string>
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">Send anonymous usage data</string>
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">Help us to improve the app by sending anonymous usage data</string>
 
     <!-- Items to be displayed in My Calendars -->
     <string-array name="my_calendars_sections">

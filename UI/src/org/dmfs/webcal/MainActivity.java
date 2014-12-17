@@ -43,6 +43,7 @@ import org.dmfs.webcal.utils.billing.Inventory;
 import org.dmfs.webcal.utils.billing.Purchase;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -127,9 +128,20 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 
 		if (savedInstanceState == null)
 		{
-			Analytics.enable();
 			Analytics.sessionStart("MAIN");
 		}
+
+		SharedPreferences prefs = getSharedPreferences(getPackageName() + "_preferences", 0);
+
+		if (prefs.getBoolean("enable_analytics", true))
+		{
+			Analytics.enable();
+		}
+		else
+		{
+			Analytics.disable();
+		}
+
 	}
 
 
