@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <!-- Strings for the Navigation Drawer Sidebar -->
+    <string name="drawer_open">打开侧面导航</string>
+    <string name="drawer_close">关闭侧面导航</string>
+
+    <!-- Button for new calendar subscription -->
+    <string name="calendar_item_subscribe_button">订阅</string>
+
+    <!-- Switch to sync calendar if already purchased. -->
+    <string name="calendar_item_add_to_calendar">同步此日历</string>
+
+    <!-- Title for description section of calendar once it is available. -->
+    <string name="calendar_item_description_title">描述</string>
+
+    <!-- Title for the small preview of events in a calendar -->
+    <string name="calendar_item_events_preview_title">最近事件</string>
+
+    <!-- Text on button to view the full preview of events of a calendar. -->
+    <string name="calendar_item_events_small_events">查看所有事件</string>
+
+    <!-- Fallback title for Events Preview Activity -->
+    <string name="activity_title_events_preview">事件预览</string>
+
+    <!-- Setting for a synced calendar -->
+    <string name="calendar_item_events_settings_title">设置</string>
+
+    <!-- Color for a synced calendar -->
+    <string name="calendar_settings_color">日历颜色</string>
+
+    <!-- Name for a synced calendar -->
+    <string name="calendar_settings_name">日历名称</string>
+
+    <!-- Title for calendar setting "reminder" -->
+    <string name="calendar_settings_reminder">提醒</string>
+
+    <!-- Text for dialog which prompts to pick a color for the calendar. -->
+    <string name="dialog_title_pick_a_color">选择颜色</string>
+
+    <!-- Text for dialog which prompts to pick a name for the calendar. -->
+    <string name="dialog_title_enter_calendar_name">输入日历名称</string>
+
+    <!-- Title of the Contact fragment -->
+    <string name="contact_us">联系我们</string>
+
+    <!-- Message to customers -->
+    <string name="contact_text">如果您有任何问题，可以随时向我们发送电子邮件。</string>
+
+    <!-- Button to send email -->
+    <string name="send_email">发送电子邮件</string>
+
+    <!-- Message which is displayed when the data cannot be retrived from the server. -->
+    <string name="loading_failed">无法加载数据。请稍后重试，或者检查您的网络连接。</string>
+
+    <!-- Message in "My Calendars" if there are no synced calendars yet -->
+    <string name="error_my_calendars_empty">目前，您没有同步任何日历。打开 \"所有日历\" 同步日历。</string>
+
+    <!-- Message in "Favorites" if there are no starred calendars yet -->
+    <string name="error_favorite_calendars_empty">您还没有任何收藏日历。</string>
+
+    <!-- Message in "Free" if there are no free calendars yet -->
+    <string name="error_free_calendars_empty">目前，没有可用的免费日历。</string>
+
+    <!-- Purchase statuses -->
+    <string name="status_synced">已同步</string>
+    <string name="status_free">免费</string>
+    <string name="status_unlocked">已解锁</string>
+    <string name="status_free_trial">免费试用</string>
+
+    <!-- Purchase header -->
+
+    <string name="purchase_header_unlock_no_price">解锁同步</string>
+    <string name="purchase_header_unlock">立即购买，只需 %s</string>
+    <string name="purchase_dialog_take_the_free_trial">免费试用</string>
+    <string name="purchase_header_buy_now">购买</string>
+    <string name="purchase_dialog_cancel">也许稍后</string>
+    <string name="purchase_dialog_teaser_text_free_trial">为 &lt;b&gt;%2$s&lt;/b&gt; 以下 %1$s 个日历解锁同步，只需 &lt;b&gt;%3$s&lt;/b&gt;，或者免费试用 &lt;b&gt;1 小时&lt;/b&gt;。</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">为 &lt;b&gt;%2$s&lt;/b&gt; 以下 %1$s 个日历解锁同步，只需 &lt;b&gt;%3$s&lt;/b&gt;。</string>
+    <string name="purchase_dialog_teaser_text_single_item_free_trial">为 &lt;b&gt;%1$s&lt;/b&gt; 解锁同步，只需 &lt;b&gt;%2$s&lt;/b&gt;，或者免费试用 &lt;b&gt;1 小时&lt;/b&gt;。</string>
+    <string name="purchase_dialog_teaser_text_single_item_no_free_trial">为 &lt;b&gt;%1$s&lt;/b&gt; 解锁同步，只需 &lt;b&gt;%2$s&lt;/b&gt;。</string>
+
+    <plurals name="purchase_header_free_trial_minutes">
+        <item quantity="one">您的免费试用 %s 分钟后到期</item>
+        <item quantity="two">您的免费试用 %s 分钟后到期</item>
+        <item quantity="other">您的免费试用 %s 分钟后到期</item>
+    </plurals>
+    <plurals name="purchase_header_free_trial_seconds">
+        <item quantity="one">您的免费试用 %s 秒钟后到期</item>
+        <item quantity="two">您的免费试用 %s 秒钟后到期</item>
+        <item quantity="other">您的免费试用 %s 秒钟后到期</item>
+    </plurals>
+
+    <string name="purchase_connection_error_title">错误</string>
+    <string name="purchase_connection_error_message">无法连接 Google Play 服务。\n请检查您到网络连接，或者稍后重试。</string>
+
+    <string-array name="alarm_names">
+        <item>服务器默认</item>
+        <item>不提醒</item>
+        <item>0 分钟</item>
+        <item>1 分钟</item>
+        <item>2 分钟</item>
+        <item>5 分钟</item>
+        <item>10 分钟</item>
+        <item>15 分钟</item>
+        <item>30 分钟</item>
+        <item>1 小时</item>
+        <item>2 小时</item>
+        <item>8 小时</item>
+        <item>12 小时</item>
+        <item>1 天</item>
+        <item>2 天</item>
+        <item>1 周</item>
+    </string-array>
+
+    <string name="title_activity_preferences">偏好设置</string>
+    <!-- Locale preference title -->
+    <string name="preferences_locale_title">国家</string>
+    <!-- Locale preference summary -->
+    <string name="preferences_locale_summary" />
+
+    <!-- Items to be displayed in My Calendars -->
+    <string-array name="my_calendars_sections">
+        <item>已同步</item>
+        <item>已解锁</item>
+    </string-array>
+
+    <!-- Title of the entry for the default content location in the settings -->
+    <string name="default_location">默认</string>
+
+    <!-- Season # -->
+    <string name="season">%s 季</string>
+
+    <!-- Title of favourite calendars section -->
+    <string name="side_nav_favorite_calendars">收藏</string>
+
+    <!-- Title of my calendars section -->
+    <string name="side_nav_my_calendars">我的日历</string>
+
+    <!-- Title of all calendars section -->
+    <string name="side_nav_all_calendars">所有日历</string>
+
+    <!-- Title of free calendars section -->
+    <string name="side_nav_free_calendars">免费日历</string>
+
+    <!-- Title of faq section -->
+    <string name="side_nav_faq">常见问题</string>
+
+    <!-- Title of feedback section -->
+    <string name="side_nav_feedback">反馈</string>
+
+    <!-- Title of settings section -->
+    <string name="side_nav_settings">设置</string>
+
+    <!-- Date & time strings -->
+    <string name="all_day">全天</string>
+    <string name="today">今天</string>
+    <string name="yesterday">昨天</string>
+    <string name="tomorrow">明天</string>
+
+    <!-- Main menu options -->
+    <string name="menu_favorite_short">收藏</string>
+    <string name="menu_favorite">标记收藏</string>
+    <string name="menu_settings_short">设置</string>
+    <string name="menu_settings">打开日历设置</string>
+
+</resources>

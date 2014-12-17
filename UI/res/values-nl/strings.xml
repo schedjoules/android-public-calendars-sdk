@@ -2,35 +2,35 @@
 <resources>
 
     <!-- Strings for the Navigation Drawer Sidebar -->
-    <string name="drawer_open">Open Navigatie</string>
-    <string name="drawer_close">Sluit Navigatie</string>
+    <string name="drawer_open">Menu openen</string>
+    <string name="drawer_close">Menu sluiten</string>
 
     <!-- Button for new calendar subscription -->
-    <string name="calendar_item_subscribe_button">Abonneer</string>
+    <string name="calendar_item_subscribe_button">Synchroniseren</string>
 
     <!-- Switch to sync calendar if already purchased. -->
-    <string name="calendar_item_add_to_calendar">Sync deze kalender</string>
+    <string name="calendar_item_add_to_calendar">Synchroniseer deze kalender</string>
 
     <!-- Title for description section of calendar once it is available. -->
-    <string name="calendar_item_description_title">Omschrijving</string>
+    <string name="calendar_item_description_title">Beschrijving</string>
 
     <!-- Title for the small preview of events in a calendar -->
-    <string name="calendar_item_events_preview_title">Events</string>
+    <string name="calendar_item_events_preview_title">Recente events</string>
 
     <!-- Text on button to view the full preview of events of a calendar. -->
     <string name="calendar_item_events_small_events">Alle events</string>
 
     <!-- Fallback title for Events Preview Activity -->
-    <string name="activity_title_events_preview">Events Preview</string>
+    <string name="activity_title_events_preview">Voorbeeld events</string>
 
     <!-- Setting for a synced calendar -->
     <string name="calendar_item_events_settings_title">Instellingen</string>
 
     <!-- Color for a synced calendar -->
-    <string name="calendar_settings_color">Kalender kleur</string>
+    <string name="calendar_settings_color">Kleur kalender</string>
 
     <!-- Name for a synced calendar -->
-    <string name="calendar_settings_name">Kalender naam</string>
+    <string name="calendar_settings_name">Naam kalender</string>
 
     <!-- Title for calendar setting "reminder" -->
     <string name="calendar_settings_reminder">Herinnering</string>
@@ -39,40 +39,46 @@
     <string name="dialog_title_pick_a_color">Kies een kleur …</string>
 
     <!-- Text for dialog which prompts to pick a name for the calendar. -->
-    <string name="dialog_title_enter_calendar_name">Je naam …</string>
+    <string name="dialog_title_enter_calendar_name">Naam kalender toevoegen</string>
 
     <!-- Title of the Contact fragment -->
-    <string name="contact_us">Contact</string>
+    <string name="contact_us">Neem contact op</string>
 
     <!-- Message to customers -->
-    <string name="contact_text">Als je een vraag hebt, aarzel niet en stuur ons een email.</string>
+    <string name="contact_text">Stuur ons een email als je een vraag hebt.</string>
 
     <!-- Button to send email -->
-    <string name="send_email">Zend email</string>
+    <string name="send_email">E-mail sturen</string>
 
     <!-- Message which is displayed when the data cannot be retrived from the server. -->
-    <string name="loading_failed">Het laden van kalenders lukt niet. Probeer het later nogmaals of check je internet verbinding.</string>
+    <string name="loading_failed">Het laden van kalenders lukt niet. Controleer je internetverbinding of probeer het later nog een keer.</string>
 
     <!-- Message in "My Calendars" if there are no synced calendars yet -->
-    <string name="error_my_calendars_empty">Op dit moment heb je geen agenda\'s synchroniseren. Open \"Alle Kalenders\" te synchroniseren kalenders.</string>
+    <string name="error_my_calendars_empty">Op dit moment synchroniseer je geen kalenders met je agenda. Open \"Alle Kalenders\" om kalenders te vinden die je aan je agenda wilt toevoegen.</string>
 
     <!-- Message in "Favorites" if there are no starred calendars yet -->
-    <string name="error_favorite_calendars_empty">You don\'t have starred any calendars yet.</string>
+    <string name="error_favorite_calendars_empty">Je hebt nog geen favoriete kalenders.</string>
 
     <!-- Message in "Free" if there are no free calendars yet -->
-    <string name="error_free_calendars_empty">At present there are no free calendars available.</string>
+    <string name="error_free_calendars_empty">Op dit moment zijn er geen gratis kalenders beschikbaar.</string>
 
     <!-- Purchase statuses -->
     <string name="status_synced">gesynchroniseerd</string>
     <string name="status_free">gratis</string>
     <string name="status_unlocked">ontgrendeld</string>
-    <string name="status_free_trial">gratis trial</string>
+    <string name="status_free_trial">gratis proberen</string>
 
     <!-- Purchase header -->
 
-    <string name="purchase_header_unlock_no_price">Ontgrendel sync</string>
-    <string name="purchase_header_unlock">Sync ontgrendelen voor %s</string>
+    <string name="purchase_header_unlock_no_price">Ontgrendel synchroniseren</string>
+    <string name="purchase_header_unlock">Synchroniseren ontgrendelen voor %s</string>
     <string name="purchase_dialog_take_the_free_trial">1 Uur gratis proberen</string>
+    <string name="purchase_header_buy_now">Kopen</string>
+    <string name="purchase_dialog_cancel">Misschien later</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Ontgrendel synchroniseren voor de volgende%1$s kalenders in &lt;b>%2$s&lt;/b> voor &lt;b>%3$s&lt;/b> of probeer de kalender eerst &lt;b>1 uur gratis&lt;/b>.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Ontgrendel synchroniseren voor de volgende%1$s calendars in &lt;b>%2$s&lt;/b> voor &lt;b>%3$s&lt;/b>.</string>
+    <string name="purchase_dialog_teaser_text_single_item_free_trial">Ontgrendel synchroniseren voor &lt;b>%1$s&lt;/b> voor &lt;b>%2$s&lt;/b> of probeer de kalender eerst &lt;b>1 uur gratis&lt;/b>.</string>
+    <string name="purchase_dialog_teaser_text_single_item_no_free_trial">Ontgrendel synchroniseren voor &lt;b>%1$s&lt;/b> voor &lt;b>%2$s&lt;/b>.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Trial eindigt over %s minuut</item>
@@ -82,6 +88,9 @@
         <item quantity="one">Trial eindigt over %s seconde</item>
         <item quantity="other">Trial eindigt over %s seconden</item>
     </plurals>
+
+    <string name="purchase_connection_error_title">Error</string>
+    <string name="purchase_connection_error_message">Kan geen verbinding maken met Google Play services.\nControleer je internetverbinding of probeer het later nog een keer.</string>
 
     <string-array name="alarm_names">
         <item>Server standaard</item>
@@ -103,7 +112,7 @@
 
     <!-- String used in Preferences -->
     <!-- Title for the preferences activity -->
-    <string name="title_activity_preferences">Instellingen</string>
+    <string name="title_activity_preferences">Voorkeuren</string>
     <!-- Locale preference title -->
     <string name="preferences_locale_title">Land</string>
     <!-- Locale preference summary -->
@@ -111,27 +120,27 @@
 
     <!-- Items to be displayed in My Calendars -->
     <string-array name="my_calendars_sections">
-        <item>Synced</item>
-        <item>Unlocked</item>
+        <item>Gesynchroniseerd</item>
+        <item>Ontgrendeld</item>
     </string-array>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Default</string>
 
     <!-- Season # -->
-    <string name="season">Season %s</string>
+    <string name="season">Seizoen %s</string>
 
     <!-- Title of favourite calendars section -->
-    <string name="side_nav_favorite_calendars">Starred calendars</string>
+    <string name="side_nav_favorite_calendars">Favorieten</string>
 
     <!-- Title of my calendars section -->
-    <string name="side_nav_my_calendars">My calendars</string>
+    <string name="side_nav_my_calendars">Mijn kalendars</string>
 
     <!-- Title of all calendars section -->
-    <string name="side_nav_all_calendars">All calendars</string>
+    <string name="side_nav_all_calendars">Alle kalendars</string>
 
     <!-- Title of free calendars section -->
-    <string name="side_nav_free_calendars">Free calendars</string>
+    <string name="side_nav_free_calendars">Gratis calendars</string>
 
     <!-- Title of faq section -->
     <string name="side_nav_faq">FAQ</string>
@@ -140,12 +149,18 @@
     <string name="side_nav_feedback">Feedback</string>
 
     <!-- Title of settings section -->
-    <string name="side_nav_settings">Settings</string>
+    <string name="side_nav_settings">Instellingen</string>
 
     <!-- Date & time strings -->
     <string name="all_day">hele dag</string>
     <string name="today">Vandaag</string>
     <string name="yesterday">Gisteren</string>
     <string name="tomorrow">Morgen</string>
+
+    <!-- Main menu options -->
+    <string name="menu_favorite_short">Favoriet</string>
+    <string name="menu_favorite">Favoriet markeren</string>
+    <string name="menu_settings_short">Instellingen</string>
+    <string name="menu_settings">Instellingen kalender openen</string>
 
 </resources>
