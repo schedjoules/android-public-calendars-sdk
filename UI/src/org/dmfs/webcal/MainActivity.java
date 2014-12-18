@@ -28,6 +28,7 @@ import java.util.TimeZone;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.secrets.ISecretProvider;
 import org.dmfs.android.calendarcontent.secrets.SecretProvider;
+import org.dmfs.android.calendarcontent.utils.PushHelper;
 import org.dmfs.android.retentionmagic.annotations.Retain;
 import org.dmfs.webcal.fragments.CalendarItemFragment;
 import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
@@ -142,6 +143,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 			Analytics.disable();
 		}
 
+		PushHelper.registerPush(this);
 	}
 
 
