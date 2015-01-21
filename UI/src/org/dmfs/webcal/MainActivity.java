@@ -33,7 +33,6 @@ import org.dmfs.android.retentionmagic.annotations.Retain;
 import org.dmfs.webcal.fragments.CalendarItemFragment;
 import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
 import org.dmfs.webcal.fragments.GenericListFragment;
-import org.dmfs.webcal.fragments.MyCalendarsFragment;
 import org.dmfs.webcal.fragments.PagerFragment;
 import org.dmfs.webcal.utils.billing.IabHelper;
 import org.dmfs.webcal.utils.billing.IabHelper.OnIabPurchaseFinishedListener;
@@ -66,6 +65,7 @@ import com.schedjoules.analytics.PurchaseState;
 public class MainActivity extends NavbarActivity implements CategoryNavigator, IBillingActivity, OnIabSetupFinishedListener, QueryInventoryFinishedListener
 {
 	private final static int REQUEST_CODE_LAUNCH_PURCHASE_FLOW = 10003;
+	private final static int REQUEST_CODE_LAUNCH_SUBSCRIPTION_FLOW = 10004;
 
 	private final static long MAX_INVENTORY_AGE = 15L * 60L * 1000L; // 15 minutes
 
@@ -259,7 +259,9 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		}
 		else if (id == R.id.side_nav_my_calendars)
 		{
-			fragment = MyCalendarsFragment.newInstance(getItemTitleById(id));
+			fragment = GenericListFragment.newInstance(CalendarContentContract.SubscribedCalendars.getContentUri(this),
+				getString(R.string.side_nav_my_calendars), R.string.error_my_calendars_empty, GenericListFragment.PROJECTION, true);
+
 			mSelectedItemId = id;
 			Analytics.event("my-calendars", "menu", null, null, null, null);
 		}
@@ -268,13 +270,6 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 			fragment = PagerFragment.newInstance(this, 0, getItemTitleById(id), -1);
 			mSelectedItemId = id;
 			Analytics.event("all-calendars", "menu", null, null, null, null);
-		}
-		else if (id == R.id.side_nav_free_calendars)
-		{
-			fragment = GenericListFragment.newInstance(CalendarContentContract.ContentItem.getFreeItemsContentUri(this),
-				getString(R.string.side_nav_free_calendars), R.string.error_free_calendars_empty, GenericListFragment.PROJECTION2, false);
-			mSelectedItemId = id;
-			Analytics.event("free-calendars", "menu", null, null, null, null);
 		}
 		else if (id == R.id.side_nav_faq)
 		{
@@ -358,7 +353,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		}
 
 		// add listener if not already known
-		addOnInventoryListener(onInventoryListener);
+		addOnInventoryListenerInternal(onInventoryListener);
 
 		if (mIabHelper == null)
 		{
@@ -459,9 +454,13 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	}
 
 
-	@Override
-	public synchronized void addOnInventoryListener(OnInventoryListener onInventoryListener)
+	public synchronized void addOnInventoryListenerInternal(OnInventoryListener onInventoryListener)
 	{
+		if (onInventoryListener == null)
+		{
+			return;
+		}
+
 		List<WeakReference<OnInventoryListener>> callbacks = mBillingCallbacks;
 		if (callbacks == null)
 		{
@@ -479,6 +478,17 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		}
 
 		callbacks.add(new WeakReference<OnInventoryListener>(onInventoryListener));
+	}
+
+
+	@Override
+	public synchronized void addOnInventoryListener(OnInventoryListener onInventoryListener)
+	{
+		if (onInventoryListener == null)
+		{
+			return;
+		}
+		addOnInventoryListenerInternal(onInventoryListener);
 
 		if (mInventoryCache == null || mInventoryTime + MAX_INVENTORY_AGE <= System.currentTimeMillis())
 		{
@@ -590,4 +600,36 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 			mHandler.postDelayed(mAnalyticsTrigger, MAX_ANALYTICS_AGE);
 		}
 	};
+
+
+	@Override
+	public void subscribe(final String subscriptionId, final OnIabPurchaseFinishedListener callback)
+	{
+		if (mIabHelper != null && mIabHelperReady && !mIabHelper.asyncInProgress())
+		{
+			Analytics.purchase(null, PurchaseState.STARTED, 0.0f, null, null, subscriptionId);
+			// we inject our own listener to update the inventory
+			mIabHelper.launchSubscriptionPurchaseFlow(this, subscriptionId, REQUEST_CODE_LAUNCH_SUBSCRIPTION_FLOW, new OnIabPurchaseFinishedListener()
+			{
+
+				@Override
+				public void onIabPurchaseFinished(IabResult result, Purchase info)
+				{
+					// forward result
+					callback.onIabPurchaseFinished(result, info);
+					if (result.isSuccess())
+					{
+						Analytics.purchase(info.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, subscriptionId);
+						// update inventory
+						mInventoryCache = null;
+						getInventory();
+					}
+					else if (result.isFailure())
+					{
+						Analytics.purchase(null, PurchaseState.FAILED, 0.0f, null, result.getMessage(), subscriptionId);
+					}
+				}
+			});
+		}
+	}
 }

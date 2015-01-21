@@ -90,4 +90,14 @@ public interface IBillingActivity
 	 */
 	public void purchase(String productId, OnIabPurchaseFinishedListener callback);
 
+
+	/**
+	 * Start a subscription flow for the given product id.
+	 * 
+	 * @param subscriptionId
+	 *            The subscription id.
+	 * @param callback
+	 *            The callback to call when the transaction has been completed or cancelled.
+	 */
+	public void subscribe(String subscriptionId, OnIabPurchaseFinishedListener callback);
 }

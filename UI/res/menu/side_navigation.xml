@@ -10,11 +10,6 @@
     <item
         android:id="@+id/side_nav_favorite_calendars"
         android:title="@string/side_nav_favorite_calendars"/>
-    <!-- The SDK doesn't support the free calendars section yet, so this one is not visible -->
-    <item
-        android:id="@+id/side_nav_free_calendars"
-        android:title="@string/side_nav_free_calendars"
-        android:visible="false"/>
     <item
         android:id="@+id/side_nav_faq"
         android:icon="@drawable/ic_faq"

@@ -18,8 +18,7 @@
 package org.dmfs.webcal.fragments;
 
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract.Products;
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract.PaymentStatus;
 import org.dmfs.android.retentionmagic.SupportFragment;
 import org.dmfs.asynctools.PetriNet;
 import org.dmfs.asynctools.PetriNet.Place;
@@ -29,7 +28,6 @@ import org.dmfs.webcal.IBillingActivity.OnInventoryListener;
 import org.dmfs.webcal.R;
 import org.dmfs.webcal.fragments.PurchaseDialogFragment.OnPurchaseListener;
 import org.dmfs.webcal.utils.ExpandAnimation;
-import org.dmfs.webcal.utils.PurchasedItemCache;
 import org.dmfs.webcal.utils.billing.IabHelper.OnIabPurchaseFinishedListener;
 import org.dmfs.webcal.utils.billing.IabResult;
 import org.dmfs.webcal.utils.billing.Inventory;
@@ -39,9 +37,9 @@ import org.dmfs.webcal.utils.billing.SkuDetails;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,11 +52,11 @@ import com.schedjoules.analytics.Analytics;
 
 
 /**
- * A Fragment that shows a header to initiate the purchase flow.
+ * A Fragment that shows a header to initiate the subscription flow.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public abstract class PurchasableItemFragment extends SupportFragment implements OnClickListener, OnInventoryListener, OnIabPurchaseFinishedListener,
+public abstract class SubscribeableItemFragment extends SupportFragment implements OnClickListener, OnInventoryListener, OnIabPurchaseFinishedListener,
 	OnPurchaseListener
 {
 	private static final String TAG = "PurchasableItemFragment";
@@ -70,26 +68,22 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 
 	private String mProductTitle;
 	private String mProductPrice;
-	private String mProductId;
-	private String mOrderId;
-	private String mUnlockCode;
+	private String mGoogleSubscriptionId;
 
 	private Inventory mInventory;
-	private Purchase mPurchase;
 
-	private Long mTrialExpiryTime;
+	private long mTrialExpiryTime = -1;
 
 	private Handler mHandler = new Handler();
 	private Resources mResources;
-
-	private int mGetPriceCounter = 2;
 
 	private Place mWaitingForInventory = new Place(1);
 	private Place mWaitingForCursor = new Place(1);
 	private Place mWaitingForUpdateView = new Place();
 
-	private boolean mAnimateHeader = false;
 	private boolean mEnforceHeaderHidden = false;
+
+	private boolean mIsPurchased = false;
 
 	private Transition<Inventory> mHandleInventory = new Transition<Inventory>(1, mWaitingForInventory, 1, mWaitingForUpdateView, mWaitingForInventory)
 	{
@@ -100,6 +94,13 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 			{
 				// update inventory
 				mInventory = inventory;
+
+				if (mInventory.hasDetails(mGoogleSubscriptionId))
+				{
+					SkuDetails details = mInventory.getSkuDetails(mGoogleSubscriptionId);
+					mProductPrice = details.getPrice();
+					mProductTitle = sanitizeGoogleProductTitle(details.getTitle());
+				}
 			}
 		}
 	};
@@ -109,18 +110,22 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 		@Override
 		protected void execute(Cursor cursor)
 		{
-			if (cursor != null && !cursor.isAfterLast() && !cursor.isBeforeFirst())
+			if (cursor != null)
 			{
-				// load data from cursor
-				mProductId = cursor.getString(cursor.getColumnIndex(ContentItem.GOOGLE_PLAY_PRODUCT_ID));
-				mProductTitle = sanitizeProductTitle(cursor.getString(cursor.getColumnIndex(ContentItem.PRODUCT_TITLE)));
-				mProductPrice = cursor.getString(cursor.getColumnIndex(ContentItem.PRODUCT_PRICE));
-				mOrderId = cursor.getString(cursor.getColumnIndex(ContentItem.GOOGLE_PLAY_ORDER_ID));
-				mUnlockCode = cursor.getString(cursor.getColumnIndex((ContentItem.APPTIVATE_ACTIVATION_RESPONSE)));
-				mTrialExpiryTime = cursor.getLong(cursor.getColumnIndex(ContentItem.FREE_TRIAL_END));
+				while (cursor.moveToNext())
+				{
+					if (PaymentStatus.PAYMENT_PROCESSOR_FREE_TRIAL.equals(cursor.getString(cursor.getColumnIndex(PaymentStatus.PAYMENT_PROCESSOR))))
+					{
+						mTrialExpiryTime = cursor.getLong(cursor.getColumnIndex(PaymentStatus.EXPIRATION_TIME));
+					}
+					else
+					{
+						mIsPurchased = true;
+					}
+				}
 			}
 
-			if (!isPurchased())
+			if (!mIsPurchased)
 			{
 				/*
 				 * We have no order cached, in most cased that means there is no order. If we show the header now, we may be able to reduce flickering. If it
@@ -145,73 +150,14 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 		@Override
 		protected void execute(Void param)
 		{
-			if (TextUtils.isEmpty(mProductId) || !TextUtils.isEmpty(mUnlockCode))
+			Log.e(TAG, "updateview");
+			if (mIsPurchased)
 			{
-				// free product or not a product at all, we shouldn't be here
-				showHeader(false, !mAnimateHeader);
+				showHeader(false, true);
 				return;
 			}
 
-			String actualOrderId = null;
-			SkuDetails skuDetails = null;
-			if (mInventory != null)
-			{
-				mPurchase = mInventory.getPurchase(mProductId);
-				skuDetails = mInventory.getSkuDetails(mProductId);
-
-				if (mPurchase != null)
-				{
-					actualOrderId = mPurchase.getOrderId();
-					PurchasedItemCache.INSTANCE.addItem(mProductId);
-				}
-
-				if (actualOrderId != null)
-				{
-					// already purchased - hide this view
-					Log.i(TAG, "product is already purchased");
-					showHeader(false, !mAnimateHeader);
-					return;
-				}
-
-				if (!TextUtils.equals(actualOrderId, mOrderId))
-				{
-					// mOrderId is not correct or up-to-date, update database
-					Products.updateProduct(getActivity(), mProductId, actualOrderId, mPurchase == null ? null : mPurchase.getToken());
-					mOrderId = actualOrderId;
-					if (!isPurchased())
-					{
-						PurchasedItemCache.INSTANCE.removeItem(mProductId);
-					}
-				}
-			}
-			else
-			{
-				// we can't connect to Google Play, so assume our local database is correct
-				if (isPurchased())
-				{
-					showHeader(false, true);
-					return;
-				}
-			}
-
-			if (skuDetails != null)
-			{
-				String title = skuDetails.getTitle();
-				if (title.startsWith("Sync "))
-				{
-					title = title.substring(5);
-				}
-			}
-			else
-			{
-				Activity activity = getActivity();
-				if (activity != null && mInventory != null && mGetPriceCounter-- > 0)
-				{
-					((IBillingActivity) activity).getSkuData(PurchasableItemFragment.this, mProductId);
-				}
-			}
-
-			if (mTrialExpiryTime != null && mTrialExpiryTime > System.currentTimeMillis())
+			if (mTrialExpiryTime > System.currentTimeMillis())
 			{
 				// already in trial
 				mHandler.post(mTrialButtonUpdater);
@@ -230,11 +176,15 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	private PetriNet mPetriNet = new PetriNet(mHandleInventory, mHandleCursor, mHandleOnCreateView, mHandleUpdateView);
 
 
+	public abstract String getGoogleSubscriptionId();
+
+
 	@Override
 	public void onAttach(final Activity activity)
 	{
 		super.onAttach(activity);
-		((IBillingActivity) activity).addOnInventoryListener(this);
+		mGoogleSubscriptionId = getGoogleSubscriptionId();
+		((IBillingActivity) getActivity()).getSkuData(this, mGoogleSubscriptionId);
 	}
 
 
@@ -268,24 +218,24 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 
 
 	@Override
-	public void onPause()
+	public void onResume()
 	{
-		super.onPause();
-		mAnimateHeader = false;
-	};
+		super.onResume();
+	}
 
 
 	@Override
-	public void onDetach()
+	public void onPause()
 	{
+		super.onPause();
 		mHandler.removeCallbacks(mTrialButtonUpdater);
-		super.onDetach();
-	}
+	};
 
 
 	@Override
 	public void onInventory(Inventory inventory)
 	{
+		Log.e(TAG, "onInventory");
 		mPetriNet.fire(mHandleInventory, inventory);
 	}
 
@@ -293,6 +243,7 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	@Override
 	public void onError()
 	{
+		Log.e(TAG, "onError " + this);
 		mPetriNet.fire(mHandleInventory, null);
 	}
 
@@ -315,7 +266,7 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 
 	public boolean isPurchased()
 	{
-		return !TextUtils.isEmpty(mOrderId) || TextUtils.isEmpty(mProductId) || !TextUtils.isEmpty(mUnlockCode)/* TODO verify unlock code */;
+		return mIsPurchased;
 	}
 
 
@@ -326,6 +277,9 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 
 
 	public abstract void onPurchase(boolean success, boolean freeTrial);
+
+
+	public abstract void onFreeTrialEnd();
 
 
 	@Override
@@ -345,21 +299,21 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	 */
 	public void startPurchaseFlow()
 	{
-		if (mInventory != null)
+		// if (mInventory != null)
 		{
 			Analytics.screen("purchase-dialog", null, null);
-			Analytics.event("open-purchase-dialog", "calendar-action", mProductId, null, null, null);
-			PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mProductId, getItemIcon(), mProductTitle, getItemTitle(), mProductPrice,
-				mTrialExpiryTime == null || mTrialExpiryTime < System.currentTimeMillis());
+			Analytics.event("open-purchase-dialog", "calendar-action", mGoogleSubscriptionId, null, null, null);
+			PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mGoogleSubscriptionId, mProductTitle, mProductPrice,
+				mTrialExpiryTime < System.currentTimeMillis());
 			purchaseDialog.show(getChildFragmentManager(), null);
 		}
-		else
-		{
-			Analytics.event("open-purchase-dialog-error", "calendar-action", "no connection to play services", null, null, null);
-			// mInventory is null, that means we can't connect to Google Play
-			MessageDialogFragment.show(getChildFragmentManager(), R.string.purchase_connection_error_title,
-				getString(R.string.purchase_connection_error_message));
-		}
+		// else
+		// {
+		// Analytics.event("open-purchase-dialog-error", "calendar-action", "no connection to play services", null, null, null);
+		// // mInventory is null, that means we can't connect to Google Play
+		// MessageDialogFragment.show(getChildFragmentManager(), R.string.purchase_connection_error_title,
+		// getString(R.string.purchase_connection_error_message));
+		// }
 	}
 
 
@@ -368,14 +322,14 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	{
 		if (freeTrial)
 		{
-			Analytics.event("free-trial-enabled", "calendar-action", mProductId, null, null, null);
-			CalendarContentContract.Products.updateProduct(getActivity(), mProductId, Products.MAX_FREE_TRIAL_PERIOD);
+			Analytics.event("free-trial-enabled", "calendar-action", mGoogleSubscriptionId, null, null, null);
+			CalendarContentContract.PaymentStatus.enableFreeTrial(getActivity());
 			onPurchase(true, true);
 		}
 		else
 		{
 			// trigger google services purchase flow
-			((IBillingActivity) getActivity()).purchase(mProductId, this);
+			((IBillingActivity) getActivity()).subscribe(mGoogleSubscriptionId, this);
 		}
 	}
 
@@ -385,16 +339,28 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	{
 		if (result.isSuccess())
 		{
-			mPurchase = info;
-
 			// invalidate inventory
 			mInventory = null;
 
 			// store order id and purchase token
-			mOrderId = info.getOrderId();
-			Products.updateProduct(getActivity(), info.getSku(), info.getOrderId(), info.getToken());
 
-			onPurchase(true, false);
+			new AsyncTask<Void, Void, Void>()
+			{
+				@Override
+				protected Void doInBackground(Void... params)
+				{
+					PaymentStatus.checkGoogle(getActivity());
+					return null;
+				}
+
+
+				@Override
+				protected void onPostExecute(Void result)
+				{
+					onPurchase(true, false);
+				}
+			}.execute();
+
 		}
 		else
 		{
@@ -434,7 +400,6 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 				v.startAnimation(new ExpandAnimation(v, true, 250));
 			}
 		}
-		mAnimateHeader = true;
 	}
 
 	private final Runnable mTrialButtonUpdater = new Runnable()
@@ -442,9 +407,8 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 		@Override
 		public void run()
 		{
-			if (mTrialExpiryTime == null)
+			if (mTrialExpiryTime == -1)
 			{
-				Log.e(TAG, "trial expiration time was null!");
 				return;
 			}
 
@@ -465,14 +429,16 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 			}
 			else
 			{
+				Log.v(TAG, "free trial end");
 				mFreeTrialCountDown.setText("");
 				Activity activity = getActivity();
 				if (activity != null)
 				{
-					// forcefully update trial period to 0 to refresh all views
-					Products.updateProduct(activity, mProductId, 0);
+					onFreeTrialEnd();
 				}
 				swapButtons(false);
+				mHandler.removeCallbacks(mTrialButtonUpdater);
+				mTrialExpiryTime = -1;
 			}
 		}
 	};
@@ -498,7 +464,7 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 	 *            The raw product title as returned by Google.
 	 * @return The sanitized product title.
 	 */
-	private static String sanitizeProductTitle(String productTitle)
+	private static String sanitizeGoogleProductTitle(String productTitle)
 	{
 		if (productTitle != null)
 		{
@@ -523,4 +489,9 @@ public abstract class PurchasableItemFragment extends SupportFragment implements
 		return productTitle;
 	}
 
+
+	public long getTrialExpiryTime()
+	{
+		return mTrialExpiryTime;
+	}
 }

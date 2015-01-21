@@ -50,10 +50,7 @@ public class MixedNavigationAdapter extends CursorAdapter
 {
 
 	public final static String[] PROJECTION = new String[] { CalendarContentContract.ContentItem._ID, CalendarContentContract.ContentItem.TITLE,
-		CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID, CalendarContentContract.ContentItem.GOOGLE_PLAY_ORDER_ID,
-		CalendarContentContract.ContentItem.GOOGLE_PLAY_PURCHASE_TOKEN, CalendarContentContract.ContentItem.GOOGLE_PLAY_PRODUCT_ID,
-		CalendarContentContract.Products.FREE_TRIAL_END, CalendarContentContract.Products.APPTIVATE_ACTIVATION_RESPONSE,
-		CalendarContentContract.Products.PRODUCT_PRICE, ContentItem.SEASON, ContentItem.STARRED };
+		CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID, ContentItem.SEASON, ContentItem.STARRED };
 
 	private LayoutInflater mInflater;
 	private boolean mShowMissingIcons = false;
@@ -106,7 +103,7 @@ public class MixedNavigationAdapter extends CursorAdapter
 		final long id = cursor.getLong(cursor.getColumnIndex(SubscribedCalendars.ITEM_ID) >= 0 ? cursor.getColumnIndex(SubscribedCalendars.ITEM_ID) : cursor
 			.getColumnIndex(ContentItem._ID));
 		String itemType = cursor.getString(2);
-		String season = cursor.getString(10);
+		String season = cursor.getString(4);
 		long img = cursor.getLong(3);
 		if (CalendarContentContract.ContentItem.TYPE_PAGE.equals(itemType))
 		{
@@ -129,34 +126,34 @@ public class MixedNavigationAdapter extends CursorAdapter
 		}
 
 		TextView status = (TextView) view.findViewById(android.R.id.text2);
-		if (status != null)
-		{
-			if (!TextUtils.isEmpty(cursor.getString(4)) || !TextUtils.isEmpty(cursor.getString(8)))
-			{
-				status.setText(R.string.status_unlocked);
-			}
-			else if (TextUtils.isEmpty(cursor.getString(6)) && !CalendarContentContract.ContentItem.TYPE_PAGE.equals(itemType))
-			{
-				status.setText(R.string.status_free);
-			}
-			else if ("".equals(cursor.getString(5)))
-			{
-				status.setText(R.string.status_free);
-			}
-			else if (cursor.getLong(7) > System.currentTimeMillis())
-			{
-				status.setText(R.string.status_free_trial);
-			}
-			else
-			{
-				status.setText("");
-				TextView price = (TextView) view.findViewById(R.id.content_item_price);
-				if (price != null && price.getVisibility() == View.VISIBLE)
-				{
-					price.setText(cursor.getString(9));
-				}
-			}
-		}
+		// if (status != null)
+		// {
+		// if (!TextUtils.isEmpty(cursor.getString(4)) || !TextUtils.isEmpty(cursor.getString(8)))
+		// {
+		// status.setText(R.string.status_unlocked);
+		// }
+		// else if (TextUtils.isEmpty(cursor.getString(6)) && !CalendarContentContract.ContentItem.TYPE_PAGE.equals(itemType))
+		// {
+		// status.setText(R.string.status_free);
+		// }
+		// else if ("".equals(cursor.getString(5)))
+		// {
+		// status.setText(R.string.status_free);
+		// }
+		// else if (cursor.getLong(7) > System.currentTimeMillis())
+		// {
+		// status.setText(R.string.status_free_trial);
+		// }
+		// else
+		// {
+		// status.setText("");
+		// TextView price = (TextView) view.findViewById(R.id.content_item_price);
+		// if (price != null && price.getVisibility() == View.VISIBLE)
+		// {
+		// price.setText(cursor.getString(9));
+		// }
+		// }
+		// }
 
 		CheckBox starred = (CheckBox) view.findViewById(R.id.menu_starred);
 		if (starred != null)
@@ -165,7 +162,7 @@ public class MixedNavigationAdapter extends CursorAdapter
 			{
 				starred.setVisibility(View.VISIBLE);
 				starred.setOnCheckedChangeListener(null);
-				starred.setChecked(cursor.getInt(11) > 0);
+				starred.setChecked(cursor.getInt(5) > 0);
 				starred.setOnCheckedChangeListener(new OnCheckedChangeListener()
 				{
 

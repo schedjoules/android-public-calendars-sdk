@@ -22,7 +22,7 @@ import java.util.TimeZone;
 
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract.Products;
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract.PaymentStatus;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.SubscribedCalendars;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.android.webcalreader.provider.WebCalReaderContract;
@@ -44,7 +44,6 @@ import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
 import org.dmfs.webcal.utils.ProtectedBackgroundJob;
 import org.dmfs.webcal.utils.billing.IabHelper.OnIabPurchaseFinishedListener;
 import org.dmfs.webcal.utils.billing.Inventory;
-import org.dmfs.webcal.utils.billing.Purchase;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -63,7 +62,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.util.Log;
@@ -81,8 +79,8 @@ import android.widget.ProgressBar;
 import com.schedjoules.analytics.Analytics;
 
 
-public class CalendarItemFragment extends PurchasableItemFragment implements OnInventoryListener, LoaderManager.LoaderCallbacks<Cursor>, SwitchStatusListener,
-	OnIabPurchaseFinishedListener, OnItemClickListener, ImageAvailableListener
+public class CalendarItemFragment extends SubscribeableItemFragment implements OnInventoryListener, LoaderManager.LoaderCallbacks<Cursor>,
+	SwitchStatusListener, OnIabPurchaseFinishedListener, OnItemClickListener, ImageAvailableListener
 {
 	/**
 	 * The time to wait before showing a progress indicator. Often the list loads much faster and we don't want the indicator to flash up.
@@ -97,27 +95,19 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 
 	private static final int LOADER_CALENDAR_ITEM = 24234;
 	private static final int LOADER_SUBSCRIBED_CALENDAR = LOADER_CALENDAR_ITEM + 1;
+	private static final int LOADER_SUBSCRIPTION = LOADER_CALENDAR_ITEM + 2;
 	private static final int LOADER_PREVIEW = -2;
 
-	private final static String[] PROJECTION = new String[] { CalendarContentContract.ContentItem.GOOGLE_PLAY_PRODUCT_ID,
-		CalendarContentContract.ContentItem.TITLE, CalendarContentContract.ContentItem.ICON_ID, CalendarContentContract.ContentItem.URL,
-		CalendarContentContract.ContentItem.GOOGLE_PLAY_ORDER_ID, CalendarContentContract.ContentItem.PRODUCT_TITLE,
-		CalendarContentContract.Products.FREE_TRIAL_END, CalendarContentContract.ContentItem.PRODUCT_PRICE,
-		CalendarContentContract.ContentItem.APPTIVATE_ACTIVATION_RESPONSE, ContentItem.STARRED, ContentItem._ID };
+	private final static String[] PROJECTION = new String[] { CalendarContentContract.ContentItem.TITLE, CalendarContentContract.ContentItem.ICON_ID,
+		CalendarContentContract.ContentItem.URL, ContentItem.STARRED, ContentItem._ID };
 
 	private interface COLUMNS
 	{
-		int IDENTIFIER = 0;
-		int TITLE = 1;
-		int ICON = 2;
-		int URL = 3;
-		int ORDER_ID = 4;
-		int PRODUCT_TITLE = 5;
-		int TRIAL_END = 6;
-		int PRODUCT_PRICE = 7;
-		int UNLOCK_CODE = 8;
-		int STARRED = 9;
-		int ID = 10;
+		int TITLE = 0;
+		int ICON = 1;
+		int URL = 2;
+		int STARRED = 3;
+		int ID = 4;
 	}
 
 	private CalendarTitleFragment mTitleFragment;
@@ -129,13 +119,14 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 	private final Place mSubscriptionChanged = new Place();
 	private final Place mInventoryReady = new Place();
 	private final Place mLoadingDone = new Place();
+	private final Place mWaitingForSubscription = new Place(1);
 
 	private Inventory mInventory;
 	private Uri mSubscriptionUri;
 	private String mCalendarName;
 	private URI mCalendarUrl;
-	private String mOrderId;
 	private String mProductId;
+	private boolean mSubscribed = false;
 
 	/**
 	 * The icon is initialized with the icon passed to {@link #newInstance(Uri, String, long)} or {@link #newInstance(Context, long, String, long)}. If the
@@ -145,7 +136,6 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 	private long mIcon;
 
 	private String mUnlockCode;
-	private Long mTrialPeriodEnd;
 	private boolean mSynced;
 	private Drawable mBackground = null;
 	private boolean mStarred;
@@ -182,10 +172,6 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 				}
 				mCalendarName = cursor.getString(COLUMNS.TITLE);
 				mCalendarUrl = URI.create(cursor.getString(COLUMNS.URL));
-				mOrderId = cursor.getString(COLUMNS.ORDER_ID);
-				mProductId = cursor.getString(COLUMNS.IDENTIFIER);
-				mTrialPeriodEnd = cursor.getLong(COLUMNS.TRIAL_END);
-				mUnlockCode = cursor.getString(COLUMNS.UNLOCK_CODE);
 				mId = cursor.getLong(COLUMNS.ID);
 				mStarred = cursor.getInt(COLUMNS.STARRED) > 0;
 
@@ -207,7 +193,7 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 				}
 
 				// mPurchaseHeaderFragment.onUpdateCursor(cursor);
-				setPurchaseableItem(cursor);
+				// setPurchaseableItem(cursor);
 
 				if (mListAdapter.getCursor() == null)
 				{
@@ -257,7 +243,7 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 				mSynced = cursor.getInt(cursor.getColumnIndex(SubscribedCalendars.SYNC_ENABLED)) > 0;
 			}
 			mTitleFragment.setSwitchChecked(mSynced);
-			mTitleFragment.enableSwitch(mSynced);
+			mTitleFragment.enableSwitch(isPurchased());
 
 			// invalidate options to show/hide settings option
 			getActivity().invalidateOptionsMenu();
@@ -271,28 +257,6 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 		protected void execute(Void data)
 		{
 			Activity activity = getActivity();
-
-			if (mInventory != null)
-			{
-				Purchase purchase = mInventory.getPurchase(mProductId);
-				if (purchase != null)
-				{
-					String orderId = purchase.getOrderId();
-					if (!TextUtils.equals(mOrderId, orderId))
-					{
-						Products.updateProduct(activity, mProductId, orderId, purchase.getToken());
-						mOrderId = orderId;
-					}
-				}
-				else
-				{
-					if (mOrderId != null)
-					{
-						Products.updateProduct(activity, mProductId, null, null);
-						mOrderId = null;
-					}
-				}
-			}
 		}
 	}.setAutoFire(true);
 
@@ -301,10 +265,22 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 		@Override
 		protected void execute(Void data)
 		{
-			mTitleFragment.enableSwitch(mOrderId != null || TextUtils.isEmpty(mProductId) || !TextUtils.isEmpty(mUnlockCode)
-				|| (mTrialPeriodEnd != null && mTrialPeriodEnd > System.currentTimeMillis()) || mSynced);
+			mTitleFragment.enableSwitch(isPurchased() || (getTrialExpiryTime() > System.currentTimeMillis()) || mSynced);
 		}
 	}.setAutoFire(true);
+
+	/**
+	 * A transition that is triggered when the subscription purchase status has been loaded or updated.
+	 * 
+	 * It adds one token to {@link #mLoadingDone} and recharges it's own input place {@link #mWaitingForSubscription}.
+	 */
+	private Transition<Cursor> mSubscriptionStatusLoaded = new Transition<Cursor>(1, mWaitingForSubscription, 1, mLoadingDone, mWaitingForSubscription)
+	{
+		protected void execute(Cursor data)
+		{
+			CalendarItemFragment.this.setPurchaseableItem(data);
+		};
+	};
 
 	private PetriNet mPetriNet = new PetriNet(mInventoryLoaded, mItemLoaded, mSubscriptionLoaded, mUpdateItem, mEnableSwitch);
 	private final Handler mHandler = new Handler();
@@ -343,8 +319,6 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 	public void onAttach(final Activity activity)
 	{
 		super.onAttach(activity);
-		((IBillingActivity) activity).addOnInventoryListener(this);
-
 		mActionBar = activity.getActionBar();
 		mActionBar.removeAllTabs();
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -420,6 +394,7 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 		LoaderManager lm = getLoaderManager();
 		lm.initLoader(LOADER_CALENDAR_ITEM, null, this);
 		lm.initLoader(LOADER_SUBSCRIBED_CALENDAR, null, this);
+		lm.initLoader(LOADER_SUBSCRIPTION, null, this);
 
 		// set this to true, so the menu is cleared automatically when leaving the fragment, otherwise the star icon will stay visible
 		setHasOptionsMenu(true);
@@ -484,6 +459,8 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 			case LOADER_PREVIEW:
 				mHandler.postDelayed(mProgressIndicator, PROGRESS_INDICATOR_DELAY);
 				return new CursorLoader(getActivity(), WebCalReaderContract.Events.getEventsUri(getActivity(), mCalendarUrl, 60 * 1000), null, null, null, null);
+			case LOADER_SUBSCRIPTION:
+				return new CursorLoader(activity, PaymentStatus.getContentUri(activity), null, null, null, null);
 			default:
 				return null;
 		}
@@ -542,6 +519,19 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 				{
 					oldCursor.close();
 				}
+				break;
+
+			case LOADER_SUBSCRIPTION:
+				Log.v(TAG, "SUBSCRIPTION LOADED  " + cursor.getCount());
+				mHandler.post(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						mPetriNet.fire(mSubscriptionStatusLoaded, cursor);
+					}
+				});
+				break;
 		}
 	}
 
@@ -598,8 +588,7 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 	{
 		if (isResumed() && status != mSynced)
 		{
-			if (mOrderId != null || mProductId == null || !TextUtils.isEmpty(mUnlockCode) || mTrialPeriodEnd != null
-				&& mTrialPeriodEnd > System.currentTimeMillis())
+			if (isPurchased() || getTrialExpiryTime() > System.currentTimeMillis())
 			{
 				Analytics.event("sync-enabled", "calendar-action", Boolean.toString(status), null, String.valueOf(ContentItem.getApiId(mId)), null);
 				setCalendarSynced(status);
@@ -613,7 +602,7 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 			{
 				Analytics.event("sync-enabled", "calendar-action", Boolean.toString(status), null, String.valueOf(ContentItem.getApiId(mId)), null);
 				setCalendarSynced(false);
-				mTitleFragment.enableSwitch(mOrderId != null || !TextUtils.isEmpty(mUnlockCode));
+				mTitleFragment.enableSwitch(isPurchased());
 				setEnforceHeaderHidden(false);
 			}
 		}
@@ -744,6 +733,21 @@ public class CalendarItemFragment extends PurchasableItemFragment implements OnI
 	public long getItemIcon()
 	{
 		return mIcon;
+	}
+
+
+	@Override
+	public void onFreeTrialEnd()
+	{
+		LoaderManager lm = getLoaderManager();
+		// lm.restartLoader(LOADER_SUBSCRIPTION, null, this);
+	}
+
+
+	@Override
+	public String getGoogleSubscriptionId()
+	{
+		return PaymentStatus.getGoogleSubscriptionId(getActivity());
 	}
 
 }

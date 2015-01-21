@@ -391,8 +391,11 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences arg0, String arg1)
 	{
-		// the shared preferences have been changed, restart the loader to
-		getLoaderManager().restartLoader(ID_URL_LOADER, null, this);
+		if (isAdded())
+		{
+			// the shared preferences have been changed, restart the loader to
+			getLoaderManager().restartLoader(ID_URL_LOADER, null, this);
+		}
 	}
 
 }

@@ -76,6 +76,7 @@
 
     <!-- Purchase header -->
 
+	<string name="purchase_header_enable_sync">Enable sync</string>
     <string name="purchase_header_unlock_no_price">Unlock sync</string>
     <string name="purchase_header_unlock">Buy now for %s</string>
     <string name="purchase_dialog_take_the_free_trial">Take the free trial</string>
@@ -83,8 +84,6 @@
     <string name="purchase_dialog_cancel">Maybe later</string>
     <string name="purchase_dialog_teaser_text_free_trial">Unlock sync for the following%1$s calendars in &lt;b>%2$s&lt;/b> for just &lt;b>%3$s&lt;/b> or take the &lt;b>1 hour free trial&lt;/b>.</string>
     <string name="purchase_dialog_teaser_text_no_free_trial">Unlock sync for the following%1$s calendars in &lt;b>%2$s&lt;/b> for just &lt;b>%3$s&lt;/b>.</string>
-    <string name="purchase_dialog_teaser_text_single_item_free_trial">Unlock sync for &lt;b>%1$s&lt;/b> for just &lt;b>%2$s&lt;/b> or take the &lt;b>1 hour free trial&lt;/b>.</string>
-    <string name="purchase_dialog_teaser_text_single_item_no_free_trial">Unlock sync for &lt;b>%1$s&lt;/b> for just &lt;b>%2$s&lt;/b>.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Your free trial ends in %s minute</item>
@@ -133,12 +132,6 @@
     <string name="preferences_enable_analytics_title">Send anonymous usage data</string>
     <!-- Summary of the preference to enable analytics -->
     <string name="preferences_enable_analytics_summary">Help us to improve the app by sending anonymous usage data</string>
-
-    <!-- Items to be displayed in My Calendars -->
-    <string-array name="my_calendars_sections">
-        <item>Synced</item>
-        <item>Unlocked</item>
-    </string-array>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Default</string>

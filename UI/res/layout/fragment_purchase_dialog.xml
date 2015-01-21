@@ -16,13 +16,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <org.dmfs.webcal.views.RemoteImageView
-                android:id="@android:id/icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                android:antialias="true" />
-
             <TextView
                 android:id="@android:id/title"
                 style="@style/dialog_text_title"
@@ -33,7 +26,8 @@
                 android:layout_weight="1"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:text="@string/purchase_header_enable_sync" />
         </LinearLayout>
 
         <TextView

@@ -19,6 +19,7 @@ package org.dmfs.webcal.fragments;
 
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract.SubscribedCalendars;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.webcal.R;
 import org.dmfs.webcal.adapters.MixedNavigationAdapter;
@@ -62,16 +63,10 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
 
 	public final static String[] PROJECTION = new String[] { CalendarContentContract.ContentItem._ID,
 		CalendarContentContract.SubscribedCalendars.CALENDAR_NAME, CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID,
-		CalendarContentContract.ContentItem.GOOGLE_PLAY_ORDER_ID, CalendarContentContract.ContentItem.GOOGLE_PLAY_PURCHASE_TOKEN,
-		CalendarContentContract.ContentItem.GOOGLE_PLAY_PRODUCT_ID, CalendarContentContract.Products.FREE_TRIAL_END,
-		CalendarContentContract.ContentItem.APPTIVATE_ACTIVATION_RESPONSE, CalendarContentContract.Products.PRODUCT_PRICE, ContentItem.SEASON,
-		ContentItem.STARRED, CalendarContentContract.SubscribedCalendars.ITEM_ID };
+		ContentItem.SEASON, ContentItem.STARRED, CalendarContentContract.SubscribedCalendars.ITEM_ID };
 
 	public final static String[] PROJECTION2 = new String[] { CalendarContentContract.ContentItem._ID, CalendarContentContract.ContentItem.TITLE,
-		CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID, CalendarContentContract.ContentItem.GOOGLE_PLAY_ORDER_ID,
-		CalendarContentContract.ContentItem.GOOGLE_PLAY_PURCHASE_TOKEN, CalendarContentContract.ContentItem.GOOGLE_PLAY_PRODUCT_ID,
-		CalendarContentContract.Products.FREE_TRIAL_END, CalendarContentContract.ContentItem.APPTIVATE_ACTIVATION_RESPONSE,
-		CalendarContentContract.Products.PRODUCT_PRICE, ContentItem.SEASON, ContentItem.STARRED };
+		CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID, ContentItem.SEASON, ContentItem.STARRED };
 
 	@Parameter(key = ARG_URI)
 	private Uri mUri;
@@ -226,7 +221,7 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
 			long selectedId = cursor.getLong(0);
 			if (cursor.getColumnIndex(CalendarContentContract.SubscribedCalendars.ITEM_ID) >= 0)
 			{
-				selectedId = cursor.getLong(12);
+				selectedId = cursor.getLong(cursor.getColumnIndex(SubscribedCalendars.ITEM_ID));
 			}
 			Activity activity = getActivity();
 			if (activity instanceof CategoryNavigator)

@@ -119,12 +119,6 @@
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary"></string>
 
-    <!-- Items to be displayed in My Calendars -->
-    <string-array name="my_calendars_sections">
-        <item>Synchronisiert</item>
-        <item>Freigeschaltet</item>
-    </string-array>
-
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Standard</string>
 
