@@ -35,6 +35,9 @@ public class SecretProvider implements ISecretProvider
 		else if (KEY_API_TOKEN.equals(key))
 		{
 			return new Secret(context, keyFragment, API_TOKEN);
+		}else if (KEY_PUSH_SENDER_ID.equals(key))
+		{
+			return new Secret(context, keyFragment, "");
 		}
 		throw new IllegalArgumentException("unknown key '" + key + "'");
 	}

@@ -83,6 +83,8 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 
 	@Parameter(key = ARG_ENABLE_FREE_TRIAL)
 	private boolean mEnableFreeTrial;
+	
+	private String mAppName;
 
 
 	/**
@@ -118,7 +120,9 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 
 		// get the progress bar
 		mProgressBar = (ProgressBar) returnView.findViewById(android.R.id.progress);
-
+		
+		mAppName = getString(R.string.app_name);
+		
 		TextView purchaseButton = (TextView) returnView.findViewById(R.id.purchase_button);
 		purchaseButton.setOnClickListener(this);
 		purchaseButton.setText(getString(R.string.purchase_header_unlock, mPrice));
@@ -133,7 +137,7 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 
 		mTeaserView = (TextView) returnView.findViewById(android.R.id.text1);
 		mTeaserView.setText(Html.fromHtml(getString(mEnableFreeTrial ? R.string.purchase_dialog_teaser_text_free_trial
-			: R.string.purchase_dialog_teaser_text_no_free_trial, "", mProductTitle, mPrice)));
+			: R.string.purchase_dialog_teaser_text_no_free_trial, "", mAppName, mPrice)));
 
 		return returnView;
 	}

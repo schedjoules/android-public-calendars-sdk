@@ -38,42 +38,27 @@
             android:layout_below="@id/dialog_title"
             android:layout_margin="4dp"
             android:text="" />
-    </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/list_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp" >
-
-        <ListView
-            android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@null"
-            android:dividerHeight="2dp"
-            android:fadeScrollbars="false"
-            android:scrollbarAlwaysDrawVerticalTrack="true" >
-        </ListView>
-
-        <ProgressBar
-            android:id="@android:id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true"
-            android:padding="4dp"
-            android:visibility="gone" />
 
         <TextView
-            android:id="@android:id/message"
-            style="@style/small_text"
+            android:id="@+id/title_benefits"
+            style="@style/dialog_text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loading_failed"
-            android:visibility="gone" />
-    </FrameLayout>
+            android:layout_below="@android:id/text1"
+            android:layout_margin="4dp"
+            android:paddingTop="8dp"
+            android:singleLine="true"
+            android:text="@string/purchase_header_benefits" />
+
+        <TextView
+            android:id="@android:id/text2"
+            style="@style/small_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_benefits"
+            android:layout_margin="4dp"
+            android:text="@string/purchase_dialog_benefits" />
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
