@@ -19,6 +19,7 @@ package org.dmfs.webcal;
 
 import org.dmfs.webcal.utils.billing.IabHelper.OnIabPurchaseFinishedListener;
 import org.dmfs.webcal.utils.billing.Inventory;
+import org.dmfs.webcal.utils.billing.SkuDetails;
 
 import android.app.Activity;
 
@@ -65,19 +66,22 @@ public interface IBillingActivity
 	/**
 	 * Request an inventory update. Once the inventory has been received all {@link OnInventoryListener}s will be notified.
 	 */
-	public void getInventory();
+	public void startLoadingInventory();
 
 
 	/**
-	 * Get the details of one ore more SKUs. Upon reception of a result the given {@link OnInventoryListener} will be notified. Note that the result will
-	 * contain all items owned by the user plus the requested ones.
+	 * Get the details of the valid SKU. Upon reception of a result the given {@link OnInventoryListener} will be notified. Note that the result will
+	 * contain all items owned by the user plus the current valid.
 	 * 
 	 * @param onInventoryListener
 	 *            The {@link OnInventoryListener} to notify.
-	 * @param productId
-	 *            The product ids to query.
 	 */
-	public void getSkuData(OnInventoryListener onInventoryListener, String... productIds);
+	public void getSkuData(OnInventoryListener onInventoryListener);
+	
+	/**
+	 * Get the details of the valid SKU.
+	 */
+	public SkuDetails getSkuData();
 
 
 	/**

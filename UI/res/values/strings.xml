@@ -85,8 +85,12 @@
     <string name="purchase_dialog_cancel">Maybe later</string>
     <string name="purchase_dialog_teaser_text_free_trial">Unlock sync for all calendars in &lt;b>%2$s&lt;/b> for just &lt;b>%3$s&lt;/b> per year or take the &lt;b>1 hour free trial&lt;/b>.</string>
     <string name="purchase_dialog_teaser_text_no_free_trial">Unlock sync for all calendars in &lt;b>%2$s&lt;/b> for just &lt;b>%3$s&lt;/b> per year.</string>
-	<string name="purchase_dialog_benefits">- access to thousands of interesting calendars\n- enjoy automatic updates in your calendar\n- with (live) sport results added to your events\n- and lots of other extra info\n- works with all calendar applications\n </string>
-	
+    <string name="purchase_dialog_benefits1">access to thousands of interesting calendars</string>
+    <string name="purchase_dialog_benefits2">enjoy automatic updates in your calendar</string>
+    <string name="purchase_dialog_benefits3">with (live) sport results added to your events</string>
+    <string name="purchase_dialog_benefits4">lots of other extra info</string>
+    <string name="purchase_dialog_benefits5">works with all calendar applications</string>
+
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Your free trial ends in %s minute</item>
         <item quantity="two">Your free trial ends in %s minutes</item>

@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract.PaymentStatus;
 import org.dmfs.android.calendarcontent.secrets.ISecretProvider;
 import org.dmfs.android.calendarcontent.secrets.SecretProvider;
 import org.dmfs.android.calendarcontent.utils.PushHelper;
@@ -41,6 +42,7 @@ import org.dmfs.webcal.utils.billing.IabHelper.QueryInventoryFinishedListener;
 import org.dmfs.webcal.utils.billing.IabResult;
 import org.dmfs.webcal.utils.billing.Inventory;
 import org.dmfs.webcal.utils.billing.Purchase;
+import org.dmfs.webcal.utils.billing.SkuDetails;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -66,8 +68,12 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 {
 	private final static int REQUEST_CODE_LAUNCH_PURCHASE_FLOW = 10003;
 	private final static int REQUEST_CODE_LAUNCH_SUBSCRIPTION_FLOW = 10004;
-
-	private final static long MAX_INVENTORY_AGE = 15L * 60L * 1000L; // 15 minutes
+	
+	/** The interval in milliseconds to retry to load the inventory in case of an error. **/
+	private static final long RELOAD_INVENTORY_INTERVAL = 15000;
+	
+	private final static long MAX_INVENTORY_AGE = 15L * 60L * 1000L; // 15
+																		// minutes
 
 	private final static long MAX_ANALYTICS_AGE = 60L * 1000L; // 1 minute
 
@@ -91,6 +97,8 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 
 	private Inventory mInventoryCache = null;
 	private long mInventoryTime = 0;
+	private String mGoogleSubscriptionId;
+	private SkuDetails mSkuData;
 
 	@Retain
 	private long mSelectedItemId = 0;
@@ -99,8 +107,8 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	private boolean mFirstStart = true;
 
 	private final Handler mHandler = new Handler();
-
-
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -144,6 +152,9 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		}
 
 		PushHelper.registerPush(this);
+
+		// load the data of in app subscription
+		startLoadingInventory();
 	}
 
 
@@ -175,7 +186,8 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 			}
 			catch (Exception e)
 			{
-				// ignore, it seems to throw an exception every now and then in the emulator
+				// ignore, it seems to throw an exception every now and then in
+				// the emulator
 			}
 		}
 		Analytics.sessionEnd();
@@ -333,16 +345,16 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 
 
 	@Override
-	public void getInventory()
+	public void startLoadingInventory()
 	{
 		getSkuData(null);
 	}
 
 
 	@Override
-	public synchronized void getSkuData(OnInventoryListener onInventoryListener, String... productIds)
+	public synchronized void getSkuData(OnInventoryListener onInventoryListener)
 	{
-		if (mInventoryCache != null && mInventoryTime + MAX_INVENTORY_AGE > System.currentTimeMillis() && !addProductIds(productIds))
+		if (mInventoryCache != null && mInventoryTime + MAX_INVENTORY_AGE > System.currentTimeMillis() && !addProductIds(getGoogleSubscriptionId()))
 		{
 			// nothing has changed, just inform the calling listener
 			if (onInventoryListener != null)
@@ -442,7 +454,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 						Analytics.purchase(info.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, productId);
 						// update inventory
 						mInventoryCache = null;
-						getInventory();
+						startLoadingInventory();
 					}
 					else if (result.isFailure())
 					{
@@ -451,6 +463,17 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 				}
 			});
 		}
+	}
+	
+	@Override
+	public synchronized SkuDetails getSkuData()
+	{
+		return mSkuData;
+	}
+	
+	public String getGoogleSubscriptionId()
+	{
+		return PaymentStatus.getGoogleSubscriptionId(this);
 	}
 
 
@@ -492,7 +515,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 
 		if (mInventoryCache == null || mInventoryTime + MAX_INVENTORY_AGE <= System.currentTimeMillis())
 		{
-			getInventory();
+			startLoadingInventory();
 		}
 		else
 		{
@@ -518,11 +541,18 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		{
 			mInventoryCache = inv;
 			mInventoryTime = System.currentTimeMillis();
+			
+			mGoogleSubscriptionId = getGoogleSubscriptionId();
+			if (mInventoryCache != null && mInventoryCache.hasDetails(mGoogleSubscriptionId))
+			{
+				mSkuData  = mInventoryCache.getSkuDetails(mGoogleSubscriptionId);
+			}
 
 			notifyInventoryListeners();
 		}
 		else
 		{
+			//inform listener
 			Iterator<WeakReference<OnInventoryListener>> iterator = mBillingCallbacks.iterator();
 			OnInventoryListener callback = iterator.next().get();
 			if (callback != null)
@@ -534,6 +564,10 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 				// remove garbage collected callback
 				iterator.remove();
 			}
+			
+			//retry later
+			mHandler.postDelayed(mReloadInventoryRunnable, RELOAD_INVENTORY_INTERVAL);
+			
 
 		}
 	}
@@ -544,22 +578,26 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	 */
 	private synchronized void notifyInventoryListeners()
 	{
-		Inventory inventory = mInventoryCache;
-		List<WeakReference<OnInventoryListener>> listenerRefs = new ArrayList<WeakReference<OnInventoryListener>>(mBillingCallbacks);
-
-		for (WeakReference<OnInventoryListener> listenerRef : listenerRefs)
+		if (mBillingCallbacks != null)
 		{
-			OnInventoryListener callback = listenerRef.get();
+			Inventory inventory = mInventoryCache;
+			List<WeakReference<OnInventoryListener>> listenerRefs = new ArrayList<WeakReference<OnInventoryListener>>(mBillingCallbacks);
 
-			if (callback != null)
+			for (WeakReference<OnInventoryListener> listenerRef : listenerRefs)
 			{
-				callback.onInventory(inventory);
-			}
-			else
-			{
-				mBillingCallbacks.remove(listenerRef);
+				OnInventoryListener callback = listenerRef.get();
+
+				if (callback != null)
+				{
+					callback.onInventory(inventory);
+				}
+				else
+				{
+					mBillingCallbacks.remove(listenerRef);
+				}
 			}
 		}
+
 	}
 
 
@@ -568,21 +606,25 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	 */
 	private synchronized void notifyInventoryListenersAboutError()
 	{
-		List<WeakReference<OnInventoryListener>> listenerRefs = new ArrayList<WeakReference<OnInventoryListener>>(mBillingCallbacks);
-
-		for (WeakReference<OnInventoryListener> listenerRef : listenerRefs)
+		if (mBillingCallbacks != null)
 		{
-			OnInventoryListener callback = listenerRef.get();
+			List<WeakReference<OnInventoryListener>> listenerRefs = new ArrayList<WeakReference<OnInventoryListener>>(mBillingCallbacks);
 
-			if (callback != null)
+			for (WeakReference<OnInventoryListener> listenerRef : listenerRefs)
 			{
-				callback.onError();
-			}
-			else
-			{
-				mBillingCallbacks.remove(listenerRef);
+				OnInventoryListener callback = listenerRef.get();
+
+				if (callback != null)
+				{
+					callback.onError();
+				}
+				else
+				{
+					mBillingCallbacks.remove(listenerRef);
+				}
 			}
 		}
+
 	}
 
 	/**
@@ -598,6 +640,20 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		{
 			Analytics.triggerSendBatch();
 			mHandler.postDelayed(mAnalyticsTrigger, MAX_ANALYTICS_AGE);
+		}
+	};
+	
+	/**
+	 * A {@link Runnable} that triggers the inventory loading.
+	 * 
+	 */
+	private final Runnable mReloadInventoryRunnable = new Runnable()
+	{
+
+		@Override
+		public void run()
+		{
+			startLoadingInventory();
 		}
 	};
 
@@ -622,7 +678,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 						Analytics.purchase(info.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, subscriptionId);
 						// update inventory
 						mInventoryCache = null;
-						getInventory();
+						startLoadingInventory();
 					}
 					else if (result.isFailure())
 					{

@@ -17,6 +17,10 @@
 
 package org.dmfs.webcal.fragments;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.PaymentStatus;
 import org.dmfs.android.retentionmagic.SupportFragment;
@@ -66,10 +70,6 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
 	private View mBuyButton;
 	private TextView mFreeTrialCountDown;
 
-	private String mProductTitle;
-	private String mProductPrice;
-	private String mGoogleSubscriptionId;
-
 	private Inventory mInventory;
 
 	private long mTrialExpiryTime = -1;
@@ -84,9 +84,13 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
 	private boolean mEnforceHeaderHidden = false;
 
 	private boolean mIsPurchased = false;
+	private String mGoogleSubscriptionId;
+	
 
 	private Transition<Inventory> mHandleInventory = new Transition<Inventory>(1, mWaitingForInventory, 1, mWaitingForUpdateView, mWaitingForInventory)
 	{
+		
+
 		@Override
 		protected void execute(Inventory inventory)
 		{
@@ -94,13 +98,6 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
 			{
 				// update inventory
 				mInventory = inventory;
-
-				if (mInventory.hasDetails(mGoogleSubscriptionId))
-				{
-					SkuDetails details = mInventory.getSkuDetails(mGoogleSubscriptionId);
-					mProductPrice = details.getPrice();
-					mProductTitle = sanitizeGoogleProductTitle(details.getTitle());
-				}
 			}
 		}
 	};
@@ -175,6 +172,8 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
 
 	private PetriNet mPetriNet = new PetriNet(mHandleInventory, mHandleCursor, mHandleOnCreateView, mHandleUpdateView);
 
+	
+
 
 	public abstract String getGoogleSubscriptionId();
 
@@ -184,7 +183,6 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
 	{
 		super.onAttach(activity);
 		mGoogleSubscriptionId = getGoogleSubscriptionId();
-		((IBillingActivity) getActivity()).getSkuData(this, mGoogleSubscriptionId);
 	}
 
 
@@ -299,21 +297,13 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
 	 */
 	public void startPurchaseFlow()
 	{
-		// if (mInventory != null)
 		{
 			Analytics.screen("purchase-dialog", null, null);
 			Analytics.event("open-purchase-dialog", "calendar-action", mGoogleSubscriptionId, null, null, null);
-			PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mGoogleSubscriptionId, mProductTitle, mProductPrice,
+			PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(
 				mTrialExpiryTime < System.currentTimeMillis());
 			purchaseDialog.show(getChildFragmentManager(), null);
 		}
-		// else
-		// {
-		// Analytics.event("open-purchase-dialog-error", "calendar-action", "no connection to play services", null, null, null);
-		// // mInventory is null, that means we can't connect to Google Play
-		// MessageDialogFragment.show(getChildFragmentManager(), R.string.purchase_connection_error_title,
-		// getString(R.string.purchase_connection_error_message));
-		// }
 	}
 
 
