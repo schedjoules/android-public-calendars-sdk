@@ -16,8 +16,7 @@
 	* {location} - will be replaced by the current or selected location
     -->
     <string name="org_dmfs_android_calendarcontent_start_page_url">https://api.schedjoules.com/pages/113525?locale={locale}&amp;location={location}</string>
-	
-    
+
     <!--
     The general form of a page url with a placeholder for the id.
 	
@@ -27,7 +26,7 @@
 	* {location} - will be replaced by the current or selected location
     -->
     <string name="org_dmfs_android_calendarcontent_page_url">https://api.schedjoules.com/pages/{itemid}?locale={locale}&amp;location={location}</string>
-    
+
     <!-- The account type of your account. This has to be unique, so add your namespace. -->
     <string name="org_dmfs_android_calendarcontent_account_type">com.schedjoules.demo.ACCOUNT</string>
 

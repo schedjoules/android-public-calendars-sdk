@@ -19,14 +19,11 @@ package org.dmfs.webcal.fragments;
 
 import org.dmfs.android.retentionmagic.SupportDialogFragment;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
-import org.dmfs.webcal.IBillingActivity;
 import org.dmfs.webcal.R;
-import org.dmfs.webcal.utils.billing.SkuDetails;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -34,7 +31,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -51,6 +47,8 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 {
 	private final static String ARG_ENABLE_FREE_TRIAL = "enableFreeTrial";
 
+	private final static String ARG_PRICE = "price";
+
 	/**
 	 * A listener for purchase events.
 	 */
@@ -66,13 +64,11 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 		public void onPurchase(boolean freeTrial);
 	}
 
-	private TextView mTeaserView;
-	private SkuDetails mSkuDetails;
-
 	@Parameter(key = ARG_ENABLE_FREE_TRIAL)
 	private boolean mEnableFreeTrial;
 
-	private String mAppName;
+	@Parameter(key = ARG_PRICE)
+	private String mPrice;
 
 
 	/**
@@ -80,13 +76,17 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 	 * 
 	 * @param enableFreeTrial
 	 *            Whether to allow to take a free trial.
-	 * @return
+	 * 
+	 * @param price
+	 *            The price of the product.
+	 * @return A new {@link PurchaseDialogFragment}.
 	 */
-	public static PurchaseDialogFragment newInstance(boolean enableFreeTrial)
+	public static PurchaseDialogFragment newInstance(boolean enableFreeTrial, String price)
 	{
 		PurchaseDialogFragment result = new PurchaseDialogFragment();
 		Bundle args = new Bundle();
 		args.putBoolean(ARG_ENABLE_FREE_TRIAL, enableFreeTrial);
+		args.putString(ARG_PRICE, price);
 		result.setArguments(args);
 		return result;
 	}
@@ -95,56 +95,26 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 	@Override
 	public final View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		View returnView = inflater.inflate(R.layout.fragment_purchase_dialog, container, false);
 
-		if (mSkuDetails != null)
-		{
-			//information about the product are available
-			View returnView = inflater.inflate(R.layout.fragment_purchase_dialog, container, false);
+		String appName = getString(R.string.app_name);
 
-			mAppName = getString(R.string.app_name);
+		TextView purchaseButton = (TextView) returnView.findViewById(R.id.purchase_button);
+		purchaseButton.setOnClickListener(this);
+		purchaseButton.setText(getString(R.string.purchase_header_unlock, mPrice));
 
-			TextView purchaseButton = (TextView) returnView.findViewById(R.id.purchase_button);
-			purchaseButton.setOnClickListener(this);
-			purchaseButton.setText(getString(R.string.purchase_header_unlock, mSkuDetails.getPrice()));
+		TextView freeTrialButton = (TextView) returnView.findViewById(R.id.free_trial_button);
+		freeTrialButton.setVisibility(mEnableFreeTrial ? View.VISIBLE : View.GONE);
+		freeTrialButton.setOnClickListener(this);
 
-			TextView freeTrialButton = (TextView) returnView.findViewById(R.id.free_trial_button);
-			freeTrialButton.setVisibility(mEnableFreeTrial ? View.VISIBLE : View.GONE);
-			freeTrialButton.setOnClickListener(this);
+		TextView cancelButton = (TextView) returnView.findViewById(R.id.cancel_button);
+		cancelButton.setVisibility(mEnableFreeTrial ? View.GONE : View.VISIBLE);
+		cancelButton.setOnClickListener(this);
 
-			TextView cancelButton = (TextView) returnView.findViewById(R.id.cancel_button);
-			cancelButton.setVisibility(mEnableFreeTrial ? View.GONE : View.VISIBLE);
-			cancelButton.setOnClickListener(this);
-
-			mTeaserView = (TextView) returnView.findViewById(android.R.id.text1);
-			mTeaserView.setText(Html.fromHtml(getString(mEnableFreeTrial ? R.string.purchase_dialog_teaser_text_free_trial
-				: R.string.purchase_dialog_teaser_text_no_free_trial, "", mAppName, mSkuDetails.getPrice())));
-			return returnView;
-
-		}else{
-			//information about the product aren't available
-			
-			//Analytics.event("open-purchase-dialog-error", "calendar-action", "no connection to play services", null, null, null);
-			View view = inflater.inflate(R.layout.fragment_message_dialog, container);
-
-			String message = getString(R.string.purchase_connection_error_message);
-			TextView messageView = (TextView) view.findViewById(android.R.id.text1);
-			messageView.setText(message != null && message.contains("</") ? Html.fromHtml(message) : message);
-
-			((TextView) view.findViewById(android.R.id.title)).setText( R.string.purchase_connection_error_title);
-
-			view.findViewById(android.R.id.button1).setOnClickListener(new OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					PurchaseDialogFragment.this.dismiss();
-				}
-			});
-			
-			return view;
-			
-		}
-
+		TextView teaserView = (TextView) returnView.findViewById(android.R.id.text1);
+		teaserView.setText(Html.fromHtml(getString(mEnableFreeTrial ? R.string.purchase_dialog_teaser_text_free_trial
+			: R.string.purchase_dialog_teaser_text_no_free_trial, "", appName, mPrice)));
+		return returnView;
 	}
 
 
@@ -206,16 +176,5 @@ public class PurchaseDialogFragment extends SupportDialogFragment implements OnC
 		{
 			listener.onPurchase(freeTrial);
 		}
-
 	}
-
-
-	private void loadSkuDetails()
-	{
-		Activity activity = getActivity();
-		if (activity != null && activity instanceof IBillingActivity)
-		{
-		}
-	}
-
 }

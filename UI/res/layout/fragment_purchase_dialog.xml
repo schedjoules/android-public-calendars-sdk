@@ -58,7 +58,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/title_benefits"
+                android:layout_alignStart="@id/title_benefits"
                 android:layout_below="@id/title_benefits"
+                android:layout_margin="4dp"
                 android:orientation="vertical" >
 
                 <LinearLayout

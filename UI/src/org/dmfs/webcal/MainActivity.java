@@ -20,16 +20,14 @@ package org.dmfs.webcal;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract.PaymentStatus;
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract.SubscriptionId;
 import org.dmfs.android.calendarcontent.secrets.ISecretProvider;
 import org.dmfs.android.calendarcontent.secrets.SecretProvider;
-import org.dmfs.android.calendarcontent.utils.PushHelper;
 import org.dmfs.android.retentionmagic.annotations.Retain;
 import org.dmfs.webcal.fragments.CalendarItemFragment;
 import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
@@ -42,38 +40,43 @@ import org.dmfs.webcal.utils.billing.IabHelper.QueryInventoryFinishedListener;
 import org.dmfs.webcal.utils.billing.IabResult;
 import org.dmfs.webcal.utils.billing.Inventory;
 import org.dmfs.webcal.utils.billing.Purchase;
-import org.dmfs.webcal.utils.billing.SkuDetails;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.util.Log;
 
 import com.schedjoules.analytics.Analytics;
 import com.schedjoules.analytics.PurchaseState;
+import com.schedjoules.android.sdk.utils.PushHelper;
 
 
 /**
  * The Home Activity is used to display the main page along with the subsections.
  */
-public class MainActivity extends NavbarActivity implements CategoryNavigator, IBillingActivity, OnIabSetupFinishedListener, QueryInventoryFinishedListener
+public class MainActivity extends NavbarActivity implements CategoryNavigator, IBillingActivity, OnIabSetupFinishedListener, QueryInventoryFinishedListener,
+	LoaderCallbacks<Cursor>
 {
 	private final static int REQUEST_CODE_LAUNCH_PURCHASE_FLOW = 10003;
 	private final static int REQUEST_CODE_LAUNCH_SUBSCRIPTION_FLOW = 10004;
-	
-	/** The interval in milliseconds to retry to load the inventory in case of an error. **/
+
+	/**
+	 * The interval in milliseconds to retry to load the inventory in case of an error.
+	 **/
 	private static final long RELOAD_INVENTORY_INTERVAL = 15000;
-	
-	private final static long MAX_INVENTORY_AGE = 15L * 60L * 1000L; // 15
-																		// minutes
 
 	private final static long MAX_ANALYTICS_AGE = 60L * 1000L; // 1 minute
 
@@ -84,9 +87,10 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	/**
 	 * List of callbacks for inventory results.
 	 */
-	private List<WeakReference<OnInventoryListener>> mBillingCallbacks = null;
+	private final List<WeakReference<OnInventoryListener>> mBillingCallbacks = Collections
+		.synchronizedList(new ArrayList<WeakReference<OnInventoryListener>>(8));
 
-	private List<String> mMoreItemSkus = Collections.synchronizedList(new ArrayList<String>());
+	private final List<String> mMoreItemSkus = Collections.synchronizedList(new ArrayList<String>());
 
 	/**
 	 * Helper for billing services.
@@ -96,10 +100,6 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	private boolean mIabHelperReady = false;
 
 	private Inventory mInventoryCache = null;
-	private long mInventoryTime = 0;
-	private String mGoogleSubscriptionId;
-	private SkuDetails mSkuData;
-
 	@Retain
 	private long mSelectedItemId = 0;
 
@@ -107,8 +107,8 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	private boolean mFirstStart = true;
 
 	private final Handler mHandler = new Handler();
-	
-	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -153,8 +153,10 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 
 		PushHelper.registerPush(this);
 
-		// load the data of in app subscription
-		startLoadingInventory();
+		LoaderManager lm = getSupportLoaderManager();
+		lm.initLoader(-2, null, this);
+
+		initIabHelper();
 	}
 
 
@@ -189,6 +191,8 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 				// ignore, it seems to throw an exception every now and then in
 				// the emulator
 			}
+			mIabHelper = null;
+			mIabHelperReady = false;
 		}
 		Analytics.sessionEnd();
 	}
@@ -344,78 +348,38 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	}
 
 
-	@Override
-	public void startLoadingInventory()
+	private void initIabHelper()
 	{
-		getSkuData(null);
-	}
-
-
-	@Override
-	public synchronized void getSkuData(OnInventoryListener onInventoryListener)
-	{
-		if (mInventoryCache != null && mInventoryTime + MAX_INVENTORY_AGE > System.currentTimeMillis() && !addProductIds(getGoogleSubscriptionId()))
+		if (mIabHelper != null)
 		{
-			// nothing has changed, just inform the calling listener
-			if (onInventoryListener != null)
-			{
-				onInventoryListener.onInventory(mInventoryCache);
-			}
+			// nothing to do
 			return;
 		}
 
-		// add listener if not already known
-		addOnInventoryListenerInternal(onInventoryListener);
+		// helper has not been set up yet, do that now
+		mIabHelper = new IabHelper(this, SecretProvider.INSTANCE.getSecret(this, ISecretProvider.KEY_LICENSE_KEY));
 
-		if (mIabHelper == null)
+		try
 		{
-			// helper has not been set up yet, do that now
-			mIabHelper = new IabHelper(this, SecretProvider.INSTANCE.getSecret(this, ISecretProvider.KEY_LICENSE_KEY));
-
+			mIabHelper.startSetup(this);
+		}
+		catch (Exception e)
+		{
 			try
 			{
-				mIabHelper.startSetup(this);
+				mIabHelper.dispose();
 			}
-			catch (Exception e)
+			catch (Exception e2)
 			{
-				try
-				{
-					mIabHelper.dispose();
-				}
-				catch (Exception e2)
-				{
-					// ignore
-				}
-				mIabHelper = null;
-
-				notifyInventoryListenersAboutError();
+				// ignore
 			}
-		}
-		else
-		{
-			if (mIabHelperReady)
-			{
-				if (!mIabHelper.asyncInProgress())
-				{
-					queryIfPurchased();
-				}
-			}
-		}
-	}
+			mIabHelper = null;
 
+			notifyInventoryListenersAboutError();
 
-	private boolean addProductIds(String... productIds)
-	{
-		boolean result = false;
-		for (String productId : productIds)
-		{
-			if (!TextUtils.isEmpty(productId) && !mMoreItemSkus.contains(productId))
-			{
-				mMoreItemSkus.add(productId);
-				result = true;
-			}
+			// try again
+			mHandler.postDelayed(mReloadInventoryRunnable, RELOAD_INVENTORY_INTERVAL);
 		}
-		return result;
 	}
 
 
@@ -425,12 +389,139 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		if (result.isSuccess())
 		{
 			mIabHelperReady = true;
-			queryIfPurchased();
+
+			// initialize mMoreItemSkus with subscription id if we have any
+			String subscriptionId = SubscriptionId.getSubscriptionId(this);
+			if (subscriptionId != null)
+			{
+				mMoreItemSkus.add(subscriptionId);
+			}
+
+			refreshInventory();
 		}
 		else
 		{
 			notifyInventoryListenersAboutError();
 		}
+	}
+
+
+	@Override
+	public void onQueryInventoryFinished(IabResult result, Inventory inv)
+	{
+		if (result.isSuccess())
+		{
+			mInventoryCache = inv;
+			notifyInventoryListeners();
+		}
+		else
+		{
+			Log.e(TAG, "can't load inventory " + result.getMessage());
+			notifyInventoryListenersAboutError();
+
+			// try again
+			mHandler.postDelayed(mReloadInventoryRunnable, RELOAD_INVENTORY_INTERVAL);
+		}
+	}
+
+	/**
+	 * A {@link Runnable} that triggers a transmission of analytics hits at least every {@value #MAX_INVENTORY_AGE} milliseconds.
+	 * 
+	 * @see #MAX_ANALYTICS_AGE
+	 */
+	private final Runnable mAnalyticsTrigger = new Runnable()
+	{
+
+		@Override
+		public void run()
+		{
+			Analytics.triggerSendBatch();
+			mHandler.postDelayed(mAnalyticsTrigger, MAX_ANALYTICS_AGE);
+		}
+	};
+
+	/**
+	 * A {@link Runnable} that triggers the inventory loading.
+	 * 
+	 */
+	private final Runnable mReloadInventoryRunnable = new Runnable()
+	{
+
+		@Override
+		public void run()
+		{
+			refreshInventory();
+		}
+	};
+
+
+	@Override
+	public void refreshInventory()
+	{
+		if (mIabHelper != null && mIabHelperReady && !mIabHelper.asyncInProgress())
+		{
+			Log.v(TAG, "refeshing inventory");
+			mIabHelper.queryInventoryAsync(true, mMoreItemSkus, this);
+		}
+	}
+
+
+	@Override
+	public Inventory getInventory()
+	{
+		return mInventoryCache;
+	}
+
+
+	@Override
+	public synchronized void addOnInventoryListener(OnInventoryListener onInventoryListener)
+	{
+		if (onInventoryListener == null)
+		{
+			return;
+		}
+
+		for (WeakReference<OnInventoryListener> cb : mBillingCallbacks)
+		{
+			if (onInventoryListener == cb.get())
+			{
+				// callback already in list
+				return;
+			}
+		}
+
+		mBillingCallbacks.add(new WeakReference<OnInventoryListener>(onInventoryListener));
+	}
+
+
+	@Override
+	public synchronized void removeOnInventoryListener(OnInventoryListener onInventoryListener)
+	{
+		if (onInventoryListener == null)
+		{
+			return;
+		}
+
+		for (WeakReference<OnInventoryListener> cb : mBillingCallbacks)
+		{
+			if (onInventoryListener == cb.get())
+			{
+				mBillingCallbacks.remove(cb);
+				return;
+			}
+		}
+	}
+
+
+	@Override
+	public boolean requestSkuData(String sku)
+	{
+		if (!mMoreItemSkus.contains(sku))
+		{
+			mMoreItemSkus.add(sku);
+			return true;
+		}
+		return false;
 	}
 
 
@@ -443,132 +534,55 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 			// we inject our own listener to update the inventory
 			mIabHelper.launchPurchaseFlow(this, productId, REQUEST_CODE_LAUNCH_PURCHASE_FLOW, new OnIabPurchaseFinishedListener()
 			{
-
 				@Override
 				public void onIabPurchaseFinished(IabResult result, Purchase info)
 				{
-					// forward result
-					callback.onIabPurchaseFinished(result, info);
 					if (result.isSuccess())
 					{
 						Analytics.purchase(info.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, productId);
 						// update inventory
-						mInventoryCache = null;
-						startLoadingInventory();
+						refreshInventory();
 					}
 					else if (result.isFailure())
 					{
 						Analytics.purchase(null, PurchaseState.FAILED, 0.0f, null, result.getMessage(), productId);
 					}
+
+					// forward result
+					callback.onIabPurchaseFinished(result, info);
 				}
 			});
 		}
 	}
-	
-	@Override
-	public synchronized SkuDetails getSkuData()
-	{
-		return mSkuData;
-	}
-	
-	public String getGoogleSubscriptionId()
-	{
-		return PaymentStatus.getGoogleSubscriptionId(this);
-	}
-
-
-	public synchronized void addOnInventoryListenerInternal(OnInventoryListener onInventoryListener)
-	{
-		if (onInventoryListener == null)
-		{
-			return;
-		}
-
-		List<WeakReference<OnInventoryListener>> callbacks = mBillingCallbacks;
-		if (callbacks == null)
-		{
-			callbacks = Collections.synchronizedList(new ArrayList<WeakReference<OnInventoryListener>>());
-			mBillingCallbacks = callbacks;
-		}
-
-		for (WeakReference<OnInventoryListener> cb : callbacks)
-		{
-			if (onInventoryListener == cb.get())
-			{
-				// callback already in list
-				return;
-			}
-		}
-
-		callbacks.add(new WeakReference<OnInventoryListener>(onInventoryListener));
-	}
 
 
 	@Override
-	public synchronized void addOnInventoryListener(OnInventoryListener onInventoryListener)
+	public void subscribe(final String subscriptionId, final OnIabPurchaseFinishedListener callback)
 	{
-		if (onInventoryListener == null)
+		if (mIabHelper != null && mIabHelperReady && !mIabHelper.asyncInProgress())
 		{
-			return;
-		}
-		addOnInventoryListenerInternal(onInventoryListener);
-
-		if (mInventoryCache == null || mInventoryTime + MAX_INVENTORY_AGE <= System.currentTimeMillis())
-		{
-			startLoadingInventory();
-		}
-		else
-		{
-			// notify new listener about inventory
-			onInventoryListener.onInventory(mInventoryCache);
-		}
-	}
-
-
-	private void queryIfPurchased()
-	{
-		if (mIabHelper != null && mIabHelperReady)
-		{
-			mIabHelper.queryInventoryAsync(true, mMoreItemSkus, this);
-		}
-	}
-
-
-	@Override
-	public void onQueryInventoryFinished(IabResult result, Inventory inv)
-	{
-		if (result.isSuccess())
-		{
-			mInventoryCache = inv;
-			mInventoryTime = System.currentTimeMillis();
-			
-			mGoogleSubscriptionId = getGoogleSubscriptionId();
-			if (mInventoryCache != null && mInventoryCache.hasDetails(mGoogleSubscriptionId))
+			Analytics.purchase(null, PurchaseState.STARTED, 0.0f, null, null, subscriptionId);
+			// we inject our own listener to update the inventory
+			mIabHelper.launchSubscriptionPurchaseFlow(this, subscriptionId, REQUEST_CODE_LAUNCH_SUBSCRIPTION_FLOW, new OnIabPurchaseFinishedListener()
 			{
-				mSkuData  = mInventoryCache.getSkuDetails(mGoogleSubscriptionId);
-			}
+				@Override
+				public void onIabPurchaseFinished(IabResult result, Purchase info)
+				{
+					if (result.isSuccess())
+					{
+						Analytics.purchase(info.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, subscriptionId);
+						// update inventory
+						refreshInventory();
+					}
+					else if (result.isFailure())
+					{
+						Analytics.purchase(null, PurchaseState.FAILED, 0.0f, null, result.getMessage(), subscriptionId);
+					}
 
-			notifyInventoryListeners();
-		}
-		else
-		{
-			//inform listener
-			Iterator<WeakReference<OnInventoryListener>> iterator = mBillingCallbacks.iterator();
-			OnInventoryListener callback = iterator.next().get();
-			if (callback != null)
-			{
-				callback.onError();
-			}
-			else
-			{
-				// remove garbage collected callback
-				iterator.remove();
-			}
-			
-			//retry later
-			mHandler.postDelayed(mReloadInventoryRunnable, RELOAD_INVENTORY_INTERVAL);
-			
-
+					// forward result
+					callback.onIabPurchaseFinished(result, info);
+				}
+			});
 		}
 	}
 
@@ -580,7 +594,6 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	{
 		if (mBillingCallbacks != null)
 		{
-			Inventory inventory = mInventoryCache;
 			List<WeakReference<OnInventoryListener>> listenerRefs = new ArrayList<WeakReference<OnInventoryListener>>(mBillingCallbacks);
 
 			for (WeakReference<OnInventoryListener> listenerRef : listenerRefs)
@@ -589,7 +602,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 
 				if (callback != null)
 				{
-					callback.onInventory(inventory);
+					callback.onInventoryLoaded();
 				}
 				else
 				{
@@ -616,7 +629,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 
 				if (callback != null)
 				{
-					callback.onError();
+					callback.onInventoryError();
 				}
 				else
 				{
@@ -627,65 +640,31 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 
 	}
 
-	/**
-	 * A {@link Runnable} that triggers a transmission of analytics hits at least every {@value #MAX_INVENTORY_AGE} milliseconds.
-	 * 
-	 * @see #MAX_ANALYTICS_AGE
-	 */
-	private final Runnable mAnalyticsTrigger = new Runnable()
-	{
 
-		@Override
-		public void run()
-		{
-			Analytics.triggerSendBatch();
-			mHandler.postDelayed(mAnalyticsTrigger, MAX_ANALYTICS_AGE);
-		}
-	};
-	
-	/**
-	 * A {@link Runnable} that triggers the inventory loading.
-	 * 
-	 */
-	private final Runnable mReloadInventoryRunnable = new Runnable()
+	@Override
+	public Loader<Cursor> onCreateLoader(int loaderId, Bundle extras)
 	{
-
-		@Override
-		public void run()
-		{
-			startLoadingInventory();
-		}
-	};
+		return new CursorLoader(this, SubscriptionId.getContentUri(this), null, null, null, null);
+	}
 
 
 	@Override
-	public void subscribe(final String subscriptionId, final OnIabPurchaseFinishedListener callback)
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
 	{
-		if (mIabHelper != null && mIabHelperReady && !mIabHelper.asyncInProgress())
+		if (cursor != null && cursor.moveToFirst())
 		{
-			Analytics.purchase(null, PurchaseState.STARTED, 0.0f, null, null, subscriptionId);
-			// we inject our own listener to update the inventory
-			mIabHelper.launchSubscriptionPurchaseFlow(this, subscriptionId, REQUEST_CODE_LAUNCH_SUBSCRIPTION_FLOW, new OnIabPurchaseFinishedListener()
+			String subscriptionId = cursor.getString(1);
+			if (subscriptionId != null && !mMoreItemSkus.contains(subscriptionId))
 			{
-
-				@Override
-				public void onIabPurchaseFinished(IabResult result, Purchase info)
-				{
-					// forward result
-					callback.onIabPurchaseFinished(result, info);
-					if (result.isSuccess())
-					{
-						Analytics.purchase(info.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, subscriptionId);
-						// update inventory
-						mInventoryCache = null;
-						startLoadingInventory();
-					}
-					else if (result.isFailure())
-					{
-						Analytics.purchase(null, PurchaseState.FAILED, 0.0f, null, result.getMessage(), subscriptionId);
-					}
-				}
-			});
+				mMoreItemSkus.add(subscriptionId);
+				refreshInventory();
+			}
 		}
+	}
+
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0)
+	{
 	}
 }

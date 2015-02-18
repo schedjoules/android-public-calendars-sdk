@@ -9,7 +9,12 @@
         android:layout_height="wrap_content"
         android:background="?attr/primaryColor"
         android:orientation="horizontal"
-        android:padding="8dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="14dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="14dp"
+        android:paddingStart="18dp"
+        android:paddingTop="8dp"
         android:visibility="gone" >
 
         <TextView
