@@ -65,6 +65,8 @@
     <string name="purchase_dialog_take_the_free_trial">Ücretsiz deneme</string>
     <string name="purchase_header_buy_now">Satın Al</string>
     <string name="purchase_dialog_cancel">Daha Sonra</string>
+    <string name="purchase_dialog_teaser_text_free_trial">&lt;b&gt;%2$s&lt;/b&gt; içindeki bir sonraki%1$s takvimin eşzamanlama kilidini &lt;b&gt;%3$s&lt;/b&gt; ödeyerek açın veya &lt;b&gt;1 saat ücretsiz deneme&lt;/b&gt;yi edinin.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">&lt;b&gt;%2$s&lt;/b&gt; içindeki bir sonraki%1$s takvimin eşzamanlama kilidini &lt;b&gt;%3$s&lt;/b&gt; ödeyerek açın.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Ücretsiz deneme %@ dakika içinde sona eriyor</item>

@@ -65,6 +65,8 @@
     <string name="purchase_dialog_take_the_free_trial">1 Uur gratis proberen</string>
     <string name="purchase_header_buy_now">Kopen</string>
     <string name="purchase_dialog_cancel">Misschien later</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Ontgrendel synchroniseren voor de volgende%1$s kalenders in &lt;b>%2$s&lt;/b> voor &lt;b>%3$s&lt;/b> of probeer de kalender eerst &lt;b>1 uur gratis&lt;/b>.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Ontgrendel synchroniseren voor de volgende%1$s calendars in &lt;b>%2$s&lt;/b> voor &lt;b>%3$s&lt;/b>.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Trial eindigt over %s minuut</item>

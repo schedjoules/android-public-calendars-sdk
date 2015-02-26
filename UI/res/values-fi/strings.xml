@@ -65,6 +65,8 @@
     <string name="purchase_dialog_take_the_free_trial">Aloita ilmainen kokeilu</string>
     <string name="purchase_header_buy_now">Osta</string>
     <string name="purchase_dialog_cancel">Ehkä myöhemmin</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Ota käyttöön näiden %1$s &lt;b&gt;%2$s&lt;/b&gt;-kalenterin synkronointi hintaan &lt;b&gt;%3$s&lt;/b&gt; tai aloita &lt;b&gt;1 tunnin ilmainen kokeilu&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Ota käyttöön näiden%1$s &lt;b&gt;%2$s&lt;/b&gt;-kalenterin synkronointi vain hintaan &lt;b&gt;%3$s&lt;/b&gt;.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Ilmainen kokeilusi päättyy %s minuutin kuluttua</item>

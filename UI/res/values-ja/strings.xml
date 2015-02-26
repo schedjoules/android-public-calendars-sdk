@@ -65,6 +65,8 @@
     <string name="purchase_dialog_take_the_free_trial">無料体験を試す</string>
     <string name="purchase_header_buy_now">購入</string>
     <string name="purchase_dialog_cancel">後で</string>
+    <string name="purchase_dialog_teaser_text_free_trial">&lt;b&gt;%2$s&lt;/b&gt;の以下の%1$s件のカレンダーの同期機能を&lt;b&gt;%3$s&lt;/b&gt;でロック解除できます。また、&lt;b&gt;1時間無料体験&lt;/b&gt;をお試しいただくことも可能です。</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">&lt;b&gt;%2$s&lt;/b&gt;の以下の%1$s件のカレンダーの同期機能を&lt;b&gt;%3$s&lt;/b&gt;でロック解除できます。</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">無料体験はあと%s分で終了します</item>

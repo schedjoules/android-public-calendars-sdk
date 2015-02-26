@@ -65,6 +65,8 @@
     <string name="purchase_dialog_take_the_free_trial">Usar período de teste grátis</string>
     <string name="purchase_header_buy_now">Comprar</string>
     <string name="purchase_dialog_cancel">Talvez mais tarde</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Desbloqueie a sincronização dos%1$s seguintes calendários em &lt;b&gt;%2$s&lt;/b&gt; por apenas &lt;b&gt;%3$s&lt;/b&gt; ou use o &lt;b&gt;período de teste grátis de 1 hora&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Desbloqueie a sincronização dos%1$s seguintes calendários em &lt;b&gt;%2$s&lt;/b&gt; por apenas &lt;b&gt;%3$s&lt;/b&gt;.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">O seu período de teste grátis termina dentro de %s minuto</item>
