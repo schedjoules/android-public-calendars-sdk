@@ -61,7 +61,6 @@
 
     <!-- Purchase header -->
 
-    <string name="purchase_header_unlock_no_price">Lås sync op</string>
     <string name="purchase_header_unlock">Køb nu for %s</string>
     <string name="purchase_dialog_take_the_free_trial">Brug den gratis prøve</string>
     <string name="purchase_header_buy_now">Køb</string>
