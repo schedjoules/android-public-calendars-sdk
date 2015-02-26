@@ -67,8 +67,8 @@
     <string name="purchase_dialog_take_the_free_trial">Gratis testen</string>
     <string name="purchase_header_buy_now">Abonnieren</string>
     <string name="purchase_dialog_cancel">Vielleicht später</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Aktiviere die Synchronisation für alle Kalender in &lt;b>%2$s&lt;/b> für nur &lt;b>%3$s&lt;/b> pro Jahr frei oder teste sie &lt;b>1 Stunde kostenlos&lt;/b>.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Aktiviere die Synchronisation für alle Kalender in &lt;b>%2$s&lt;/b> für nur &lt;b>%3$s&lt;/b> pro Jahr frei.</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Aktiviere die Synchronisation für alle Kalender in &lt;b>%2$s&lt;/b> für nur &lt;b>%3$s&lt;/b> pro Jahr oder teste sie &lt;b>1 Stunde kostenlos&lt;/b>.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Aktiviere die Synchronisation für alle Kalender in &lt;b>%2$s&lt;/b> für nur &lt;b>%3$s&lt;/b> pro Jahr.</string>
     <string name="purchase_dialog_benefits1">Zugang zu tausenden interessanter Kalender</string>
     <string name="purchase_dialog_benefits2">automatische Updates der Termine im Kalender</string>
     <string name="purchase_dialog_benefits3">aktuelle Sportergebnisse direkt im Kalener</string>
