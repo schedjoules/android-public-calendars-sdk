@@ -14,12 +14,6 @@
     <!-- Title for description section of calendar once it is available. -->
     <string name="calendar_item_description_title">Beschreibung</string>
 
-    <!-- Title for the small preview of events in a calendar -->
-    <string name="calendar_item_events_preview_title">Aktuelle Termine</string>
-
-    <!-- Text on button to view the full preview of events of a calendar. -->
-    <string name="calendar_item_events_small_events">Alle Termine</string>
-
     <!-- Fallback title for Events Preview Activity -->
     <string name="activity_title_events_preview">Terminvorschau</string>
 
@@ -59,9 +53,6 @@
     <!-- Message in "Favorites" if there are no starred calendars yet -->
     <string name="error_favorite_calendars_empty">Derzeit haben Sie keine Kalender zu den Favoriten hinzugefügt. Berühren Sie den Stern eines Kalenders um ihn zu den Favoriten hinzuzufügen.</string>
 
-    <!-- Message in "Free" if there are no free calendars yet -->
-    <string name="error_free_calendars_empty">Derzeit sind keine kostenlosen Kalender verfügbar.</string>
-
     <!-- Purchase statuses -->
     <string name="status_synced">Synchronisiert</string>
     <string name="status_free">Kostenlos</string>
@@ -70,15 +61,17 @@
 
     <!-- Purchase header -->
 
-    <string name="purchase_header_unlock_no_price">Synchronisation freischalten</string>
-    <string name="purchase_header_unlock">Für %s kaufen</string>
+    <string name="purchase_header_enable_sync">Synchronisation aktivieren</string>
+    <string name="purchase_header_unlock">Für %s/Jahr abonnieren</string>
+    <string name="purchase_header_benefits">Vorteile</string>
     <string name="purchase_dialog_take_the_free_trial">Gratis testen</string>
-    <string name="purchase_header_buy_now">Kaufen</string>
+    <string name="purchase_header_buy_now">Abonnieren</string>
     <string name="purchase_dialog_cancel">Vielleicht später</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Schalte die Synchronisation für die folgenden%1$s Kalender in &lt;b>%2$s&lt;/b> für nur &lt;b>%3$s&lt;/b> frei oder teste sie &lt;b>1 Stunde kostenlos&lt;/b>.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Schalte die Synchronisation für die folgenden%1$s Kalender in &lt;b>%2$s&lt;/b> für nur &lt;b>%3$s&lt;/b> frei.</string>
-    <string name="purchase_dialog_teaser_text_single_item_free_trial">Schalte die Synchronisation für &lt;b>%1$s&lt;/b> für nur &lt;b>%2$s&lt;/b> frei oder teste die Synchronisation &lt;b>1 Stunde kostenlos&lt;/b>.</string>
-    <string name="purchase_dialog_teaser_text_single_item_no_free_trial">Schalte die Synchronisation für &lt;b>%1$s&lt;/b> für nur &lt;b>%2$s&lt;/b> frei.</string>
+    <string name="purchase_dialog_benefits1">Zugang zu tausenden interessanter Kalender</string>
+    <string name="purchase_dialog_benefits2">automatische Updates der Termine im Kalender</string>
+    <string name="purchase_dialog_benefits3">aktuelle Sportergebnisse direkt im Kalener</string>
+    <string name="purchase_dialog_benefits4">viele zusätzliche Informationen</string>
+    <string name="purchase_dialog_benefits5">funktioniert mit allen Kalender-Apps</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Kostenloser Test endet in %s Minute</item>
@@ -112,12 +105,19 @@
     </string-array>
 
     <!-- String used in Preferences -->
+
+
     <!-- Title for the preferences activity -->
     <string name="title_activity_preferences">Einstellungen</string>
     <!-- Locale preference title -->
     <string name="preferences_locale_title">Land</string>
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary"></string>
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">Anonyme Nutzungsstatistiken senden</string>
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">Hilf uns die App anhand von anonymen Statistiken zu verbessern</string>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Standard</string>
@@ -133,9 +133,6 @@
 
     <!-- Title of all calendars section -->
     <string name="side_nav_all_calendars">Alle Kalender</string>
-
-    <!-- Title of free calendars section -->
-    <string name="side_nav_free_calendars">Kostenlose Kalender</string>
 
     <!-- Title of faq section -->
     <string name="side_nav_faq">FAQ</string>

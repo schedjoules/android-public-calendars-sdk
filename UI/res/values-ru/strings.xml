@@ -14,12 +14,6 @@
     <!-- Title for description section of calendar once it is available. -->
     <string name="calendar_item_description_title">Описание</string>
 
-    <!-- Title for the small preview of events in a calendar -->
-    <string name="calendar_item_events_preview_title">Недавние события</string>
-
-    <!-- Text on button to view the full preview of events of a calendar. -->
-    <string name="calendar_item_events_small_events">Все события</string>
-
     <!-- Fallback title for Events Preview Activity -->
     <string name="activity_title_events_preview">Предпросмотр событий</string>
 
@@ -59,9 +53,6 @@
     <!-- Message in "Favorites" if there are no starred calendars yet -->
     <string name="error_favorite_calendars_empty">У вас нет избранных календарей.</string>
 
-    <!-- Message in "Free" if there are no free calendars yet -->
-    <string name="error_free_calendars_empty">Сейчас нет доступных свободных календарей.</string>
-
     <!-- Purchase statuses -->
     <string name="status_synced">синхронизировано</string>
     <string name="status_free">свободно</string>
@@ -70,15 +61,10 @@
 
     <!-- Purchase header -->
 
-    <string name="purchase_header_unlock_no_price">Разблокировать синхронизацию</string>
     <string name="purchase_header_unlock">Купить сейчас за %s</string>
     <string name="purchase_dialog_take_the_free_trial">Получить бесплатную пробную версию</string>
     <string name="purchase_header_buy_now">Купить</string>
     <string name="purchase_dialog_cancel">Возможно, позже</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Разблокировать синхронизацию для следующ. %1$s календ. в &lt;b&gt;%2$s&lt;/b&gt; только за &lt;b&gt;%3$s&lt;/b&gt; или взять &lt;b&gt; на 1 час пробную версию&lt;/b&gt;.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Разблокировать синхронизацию для следующ. %1$s календ. в &lt;b&gt;%2$s&lt;/b&gt; только за &lt;b&gt;%3$s&lt;/b&gt;.</string>
-    <string name="purchase_dialog_teaser_text_single_item_free_trial">Разблокировать синхронизацию на &lt;b&gt;%1$s&lt;/b&gt; только за &lt;b&gt;%2$s&lt;/b&gt; или взять &lt;b&gt; на 1 час пробную версию&lt;/b&gt;.</string>
-    <string name="purchase_dialog_teaser_text_single_item_no_free_trial">Разблокировать синхронизацию на &lt;b&gt;%1$s&lt;/b&gt; только за &lt;b&gt;%2$s&lt;/b&gt;.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Бесплатная пробная версия истекает через %s мин</item>
@@ -119,12 +105,6 @@
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary" />
 
-    <!-- Items to be displayed in My Calendars -->
-    <string-array name="my_calendars_sections">
-        <item>Синхронизировано</item>
-        <item>Разблокировано</item>
-    </string-array>
-
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">По умолчанию</string>
 
@@ -139,9 +119,6 @@
 
     <!-- Title of all calendars section -->
     <string name="side_nav_all_calendars">Все календари</string>
-
-    <!-- Title of free calendars section -->
-    <string name="side_nav_free_calendars">Свободные календари</string>
 
     <!-- Title of faq section -->
     <string name="side_nav_faq">Часто задаваемые вопросы</string>

@@ -14,12 +14,6 @@
     <!-- Title for description section of calendar once it is available. -->
     <string name="calendar_item_description_title">説明</string>
 
-    <!-- Title for the small preview of events in a calendar -->
-    <string name="calendar_item_events_preview_title">最近のイベント</string>
-
-    <!-- Text on button to view the full preview of events of a calendar. -->
-    <string name="calendar_item_events_small_events">すべてのイベントを表示</string>
-
     <!-- Fallback title for Events Preview Activity -->
     <string name="activity_title_events_preview">イベントプレビュー</string>
 
@@ -59,9 +53,6 @@
     <!-- Message in "Favorites" if there are no starred calendars yet -->
     <string name="error_favorite_calendars_empty">まだお気に入りのカレンダーがありません。</string>
 
-    <!-- Message in "Free" if there are no free calendars yet -->
-    <string name="error_free_calendars_empty">現在利用可能な無料カレンダーがありません。</string>
-
     <!-- Purchase statuses -->
     <string name="status_synced">同期済み</string>
     <string name="status_free">無料</string>
@@ -70,15 +61,10 @@
 
     <!-- Purchase header -->
 
-    <string name="purchase_header_unlock_no_price">同期をロック解除</string>
     <string name="purchase_header_unlock">%sで今すぐ購入</string>
     <string name="purchase_dialog_take_the_free_trial">無料体験を試す</string>
     <string name="purchase_header_buy_now">購入</string>
     <string name="purchase_dialog_cancel">後で</string>
-    <string name="purchase_dialog_teaser_text_free_trial">&lt;b&gt;%2$s&lt;/b&gt;の以下の%1$s件のカレンダーの同期機能を&lt;b&gt;%3$s&lt;/b&gt;でロック解除できます。また、&lt;b&gt;1時間無料体験&lt;/b&gt;をお試しいただくことも可能です。</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">&lt;b&gt;%2$s&lt;/b&gt;の以下の%1$s件のカレンダーの同期機能を&lt;b&gt;%3$s&lt;/b&gt;でロック解除できます。</string>
-    <string name="purchase_dialog_teaser_text_single_item_free_trial">&lt;b&gt;%1$s&lt;/b&gt;の同期機能を&lt;b&gt;%2$s&lt;/b&gt;でロック解除できます。または、&lt;b&gt;1時間無料体験&lt;/b&gt;をお試しいただくことも可能です。</string>
-    <string name="purchase_dialog_teaser_text_single_item_no_free_trial">&lt;b&gt;%1$s&lt;/b&gt;の同期機能を&lt;b&gt;%2$s&lt;/b&gt;でロック解除できます。</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">無料体験はあと%s分で終了します</item>
@@ -119,12 +105,6 @@
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary" />
 
-    <!-- Items to be displayed in My Calendars -->
-    <string-array name="my_calendars_sections">
-        <item>同期済み</item>
-        <item>ロック解除済み</item>
-    </string-array>
-
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">デフォルト</string>
 
@@ -139,9 +119,6 @@
 
     <!-- Title of all calendars section -->
     <string name="side_nav_all_calendars">すべてのカレンダー</string>
-
-    <!-- Title of free calendars section -->
-    <string name="side_nav_free_calendars">無料カレンダー</string>
 
     <!-- Title of faq section -->
     <string name="side_nav_faq">よくある質問</string>

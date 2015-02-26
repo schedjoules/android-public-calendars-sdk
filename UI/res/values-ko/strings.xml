@@ -14,12 +14,6 @@
     <!-- Title for description section of calendar once it is available. -->
     <string name="calendar_item_description_title">추가정보</string>
 
-    <!-- Title for the small preview of events in a calendar -->
-    <string name="calendar_item_events_preview_title">최근 이벤트</string>
-
-    <!-- Text on button to view the full preview of events of a calendar. -->
-    <string name="calendar_item_events_small_events">모든 이벤트 보기</string>
-
     <!-- Fallback title for Events Preview Activity -->
     <string name="activity_title_events_preview">이벤트 미리보기</string>
 
@@ -59,9 +53,6 @@
     <!-- Message in "Favorites" if there are no starred calendars yet -->
     <string name="error_favorite_calendars_empty">아직 즐겨찾기에 추가한 캘린더가 없습니다.</string>
 
-    <!-- Message in "Free" if there are no free calendars yet -->
-    <string name="error_free_calendars_empty">현재 무료로 사용할 수 있는 캘린더가 등록되지 않았습니다.</string>
-
     <!-- Purchase statuses -->
     <string name="status_synced">동기화 됨</string>
     <string name="status_free">무료</string>
@@ -70,15 +61,10 @@
 
     <!-- Purchase header -->
 
-    <string name="purchase_header_unlock_no_price">동기화 잠금해제</string>
     <string name="purchase_header_unlock">%s에 앱 구매하기</string>
     <string name="purchase_dialog_take_the_free_trial">무료 트라이얼 사용하기</string>
     <string name="purchase_header_buy_now">구매</string>
     <string name="purchase_dialog_cancel">나중에</string>
-    <string name="purchase_dialog_teaser_text_free_trial">&lt;b&gt;%3$s&lt;/b&gt;을 지불하면 &lt;b&gt;%2$s&lt;/b&gt;에 있는%1$s 캘린더가 동기화됩니다. 또는 &lt;b&gt;1시간 무료 트라이얼&lt;/b&gt;을 사용할 수 있습니다.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">&lt;b&gt;%3$s&lt;/b&gt;을 지불하면 &lt;b&gt;%2$s&lt;/b&gt;에 있는%1$s 캘린더를 동기화할 수 있습니다.</string>
-    <string name="purchase_dialog_teaser_text_single_item_free_trial">&lt;b&gt;%1$s&lt;/b&gt; 항목을  &lt;b&gt;%2$s&lt;/b&gt; 지불 후 잠금해제하세요. 또는 &lt;b&gt;1시간 무료 트라이얼&lt;/b&gt;을 사용할 수 있습니다.</string>
-    <string name="purchase_dialog_teaser_text_single_item_no_free_trial">&lt;b&gt;%1$s&lt;/b&gt; 항목을  &lt;b&gt;%2$s&lt;/b&gt; 지불 후 잠금해제할 수 있습니다.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">무료 트라이얼 기간이 %s분 후 만료됩니다</item>
@@ -119,12 +105,6 @@
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary" />
 
-    <!-- Items to be displayed in My Calendars -->
-    <string-array name="my_calendars_sections">
-        <item>동기화 됨</item>
-        <item>잠금해제 됨</item>
-    </string-array>
-
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">기본</string>
 
@@ -139,9 +119,6 @@
 
     <!-- Title of all calendars section -->
     <string name="side_nav_all_calendars">모든 캘린더</string>
-
-    <!-- Title of free calendars section -->
-    <string name="side_nav_free_calendars">무료 캘린더</string>
 
     <!-- Title of faq section -->
     <string name="side_nav_faq">자주묻는질문</string>

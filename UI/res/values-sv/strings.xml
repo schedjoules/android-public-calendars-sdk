@@ -14,12 +14,6 @@
     <!-- Title for description section of calendar once it is available. -->
     <string name="calendar_item_description_title">Beskrivning</string>
 
-    <!-- Title for the small preview of events in a calendar -->
-    <string name="calendar_item_events_preview_title">Senaste aktiviteter</string>
-
-    <!-- Text on button to view the full preview of events of a calendar. -->
-    <string name="calendar_item_events_small_events">Visa alla aktiviteter</string>
-
     <!-- Fallback title for Events Preview Activity -->
     <string name="activity_title_events_preview">Förhandsvisa aktivitet</string>
 
@@ -59,9 +53,6 @@
     <!-- Message in "Favorites" if there are no starred calendars yet -->
     <string name="error_favorite_calendars_empty">Du har inga favoritkalendrar än.</string>
 
-    <!-- Message in "Free" if there are no free calendars yet -->
-    <string name="error_free_calendars_empty">Det finns inga kostnadsfria kalendrar tillgängliga just nu.</string>
-
     <!-- Purchase statuses -->
     <string name="status_synced">synkroniserad</string>
     <string name="status_free">kostnadsfri</string>
@@ -70,15 +61,10 @@
 
     <!-- Purchase header -->
 
-    <string name="purchase_header_unlock_no_price">Lås upp synkronisering</string>
     <string name="purchase_header_unlock">Köp nu för %s</string>
     <string name="purchase_dialog_take_the_free_trial">Använd kostnadsfritt test</string>
     <string name="purchase_header_buy_now">Köp</string>
     <string name="purchase_dialog_cancel">Kanske senare</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Lås upp synkronisering för följande%1$s kalandrar i &lt;b&gt;%2$s&lt;/b&gt; för endast &lt;b&gt;%3$s&lt;/b&gt;, eller prova &lt;b&gt;kostnadsfritt i en timme&lt;/b&gt;.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Lås upp synkronisering för följande%1$s kalendrar i &lt;b&gt;%2$s&lt;/b&gt; för endast &lt;b&gt;%3$s&lt;/b&gt;.</string>
-    <string name="purchase_dialog_teaser_text_single_item_free_trial">Lås upp synkronisering för &lt;b&gt;%1$s&lt;/b&gt; för endast &lt;b&gt;%2$s&lt;/b&gt;, eller prova &lt;b&gt;kostnadsfritt i en timmel&lt;/b&gt;.</string>
-    <string name="purchase_dialog_teaser_text_single_item_no_free_trial">Lås upp synkronisering för &lt;b&gt;%1$s&lt;/b&gt; för endast &lt;b&gt;%2$s&lt;/b&gt;.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Ditt kostnadsfria test slutar om %s minut</item>
@@ -119,12 +105,6 @@
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary" />
 
-    <!-- Items to be displayed in My Calendars -->
-    <string-array name="my_calendars_sections">
-        <item>Synkroniserad</item>
-        <item>Upplåst</item>
-    </string-array>
-
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Förval</string>
 
@@ -139,9 +119,6 @@
 
     <!-- Title of all calendars section -->
     <string name="side_nav_all_calendars">Alla kalendrar</string>
-
-    <!-- Title of free calendars section -->
-    <string name="side_nav_free_calendars">Kostnadsfria kalendrar</string>
 
     <!-- Title of faq section -->
     <string name="side_nav_faq">FAQ</string>

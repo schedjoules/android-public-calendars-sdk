@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- The name of the app. -->
-    <string name="app_name">SDK</string>
-
-    <!-- The name of the app launcher. -->
-    <string name="title_activity_home">SDK</string>
-
     <!-- Strings for the Navigation Drawer Sidebar -->
     <string name="drawer_open">Open Side Navigation</string>
     <string name="drawer_close">Close Side Navigation</string>
@@ -19,12 +13,6 @@
 
     <!-- Title for description section of calendar once it is available. -->
     <string name="calendar_item_description_title">Description</string>
-
-    <!-- Title for the small preview of events in a calendar -->
-    <string name="calendar_item_events_preview_title">Recent events</string>
-
-    <!-- Text on button to view the full preview of events of a calendar. -->
-    <string name="calendar_item_events_small_events">See all events</string>
 
     <!-- Fallback title for Events Preview Activity -->
     <string name="activity_title_events_preview">Events Preview</string>
@@ -63,10 +51,7 @@
     <string name="error_my_calendars_empty">Currently, you don\'t sync any calendars. Open \"All Calendars\" to sync calendars.</string>
 
     <!-- Message in "Favorites" if there are no starred calendars yet -->
-    <string name="error_favorite_calendars_empty">You don\'t have any favorite calendars yet.</string>
-
-    <!-- Message in "Free" if there are no free calendars yet -->
-    <string name="error_free_calendars_empty">At present there are no free calendars available.</string>
+    <string name="error_favorite_calendars_empty">You don\'t have any favorite calendars yet. Hit the star on a calendar page to add it to the favorites.</string>
 
     <!-- Purchase statuses -->
     <string name="status_synced">synced</string>
@@ -77,14 +62,11 @@
     <!-- Purchase header -->
 
     <string name="purchase_header_enable_sync">Enable sync</string>
-    <string name="purchase_header_unlock_no_price">Unlock sync</string>
     <string name="purchase_header_unlock">Enable now for %s p/y</string>
     <string name="purchase_header_benefits">Benefits</string>
     <string name="purchase_dialog_take_the_free_trial">Take the free trial</string>
     <string name="purchase_header_buy_now">Buy</string>
     <string name="purchase_dialog_cancel">Maybe later</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Unlock sync for all calendars in &lt;b>%2$s&lt;/b> for just &lt;b>%3$s&lt;/b> per year or take the &lt;b>1 hour free trial&lt;/b>.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Unlock sync for all calendars in &lt;b>%2$s&lt;/b> for just &lt;b>%3$s&lt;/b> per year.</string>
     <string name="purchase_dialog_benefits1">access to thousands of interesting calendars</string>
     <string name="purchase_dialog_benefits2">enjoy automatic updates in your calendar</string>
     <string name="purchase_dialog_benefits3">with (live) sport results added to your events</string>
@@ -135,9 +117,9 @@
     <string name="preferences_locale_summary"></string>
 
     <!-- Title of the preference to enable analytics -->
-    <string name="preferences_enable_analytics_title">Send anonymous usage data</string>
+    <string name="preferences_enable_analytics_title">Send anonymous usage statistics</string>
     <!-- Summary of the preference to enable analytics -->
-    <string name="preferences_enable_analytics_summary">Help us to improve the app by sending anonymous usage data</string>
+    <string name="preferences_enable_analytics_summary">Help us to improve the app by sending anonymous statistics.</string>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Default</string>
@@ -153,9 +135,6 @@
 
     <!-- Title of all calendars section -->
     <string name="side_nav_all_calendars">All calendars</string>
-
-    <!-- Title of free calendars section -->
-    <string name="side_nav_free_calendars">Free calendars</string>
 
     <!-- Title of faq section -->
     <string name="side_nav_faq">FAQ</string>

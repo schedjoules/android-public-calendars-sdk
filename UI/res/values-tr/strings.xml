@@ -14,12 +14,6 @@
     <!-- Title for description section of calendar once it is available. -->
     <string name="calendar_item_description_title">Tanım</string>
 
-    <!-- Title for the small preview of events in a calendar -->
-    <string name="calendar_item_events_preview_title">Son etkinlikler</string>
-
-    <!-- Text on button to view the full preview of events of a calendar. -->
-    <string name="calendar_item_events_small_events">Tüm etkinlikleri gör</string>
-
     <!-- Fallback title for Events Preview Activity -->
     <string name="activity_title_events_preview">Etkinlik Önizleme</string>
 
@@ -59,9 +53,6 @@
     <!-- Message in "Favorites" if there are no starred calendars yet -->
     <string name="error_favorite_calendars_empty">Henüz favori takviminiz yok.</string>
 
-    <!-- Message in "Free" if there are no free calendars yet -->
-    <string name="error_free_calendars_empty">Şu anda ücretsiz takvim yok.</string>
-
     <!-- Purchase statuses -->
     <string name="status_synced">eşzamanlandı</string>
     <string name="status_free">ücretsiz</string>
@@ -70,15 +61,10 @@
 
     <!-- Purchase header -->
 
-    <string name="purchase_header_unlock_no_price">Eşzamanlama kilidini aç</string>
     <string name="purchase_header_unlock">Şimdi satın al: %s</string>
     <string name="purchase_dialog_take_the_free_trial">Ücretsiz deneme</string>
     <string name="purchase_header_buy_now">Satın Al</string>
     <string name="purchase_dialog_cancel">Daha Sonra</string>
-    <string name="purchase_dialog_teaser_text_free_trial">&lt;b&gt;%2$s&lt;/b&gt; içindeki bir sonraki%1$s takvimin eşzamanlama kilidini &lt;b&gt;%3$s&lt;/b&gt; ödeyerek açın veya &lt;b&gt;1 saat ücretsiz deneme&lt;/b&gt;yi edinin.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">&lt;b&gt;%2$s&lt;/b&gt; içindeki bir sonraki%1$s takvimin eşzamanlama kilidini &lt;b&gt;%3$s&lt;/b&gt; ödeyerek açın.</string>
-    <string name="purchase_dialog_teaser_text_single_item_free_trial">&lt;b&gt;%1$s&lt;/b&gt; takvimin eşzamanlama kilidini &lt;b&gt;%2$s&lt;/b&gt; ödeyerek açın veya &lt;b&gt;1 saat ücretsiz deneme&lt;/b&gt;yi edinin.</string>
-    <string name="purchase_dialog_teaser_text_single_item_no_free_trial">&lt;b&gt;%1$s&lt;/b&gt; takvimin eşzamanlama kilidini &lt;b&gt;%2$s&lt;/b&gt; ödeyerek açın.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Ücretsiz deneme %@ dakika içinde sona eriyor</item>
@@ -119,12 +105,6 @@
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary" />
 
-    <!-- Items to be displayed in My Calendars -->
-    <string-array name="my_calendars_sections">
-        <item>Eşzamanlandı</item>
-        <item>Kilit açıldı</item>
-    </string-array>
-
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Saptanmış</string>
 
@@ -139,9 +119,6 @@
 
     <!-- Title of all calendars section -->
     <string name="side_nav_all_calendars">Tüm Takvimler</string>
-
-    <!-- Title of free calendars section -->
-    <string name="side_nav_free_calendars">Ücretsiz Takvimler</string>
 
     <!-- Title of faq section -->
     <string name="side_nav_faq">SSS</string>

@@ -14,12 +14,6 @@
     <!-- Title for description section of calendar once it is available. -->
     <string name="calendar_item_description_title">Beschrijving</string>
 
-    <!-- Title for the small preview of events in a calendar -->
-    <string name="calendar_item_events_preview_title">Recente events</string>
-
-    <!-- Text on button to view the full preview of events of a calendar. -->
-    <string name="calendar_item_events_small_events">Alle events</string>
-
     <!-- Fallback title for Events Preview Activity -->
     <string name="activity_title_events_preview">Voorbeeld events</string>
 
@@ -59,9 +53,6 @@
     <!-- Message in "Favorites" if there are no starred calendars yet -->
     <string name="error_favorite_calendars_empty">Je hebt nog geen favoriete kalenders.</string>
 
-    <!-- Message in "Free" if there are no free calendars yet -->
-    <string name="error_free_calendars_empty">Op dit moment zijn er geen gratis kalenders beschikbaar.</string>
-
     <!-- Purchase statuses -->
     <string name="status_synced">gesynchroniseerd</string>
     <string name="status_free">gratis</string>
@@ -70,15 +61,10 @@
 
     <!-- Purchase header -->
 
-    <string name="purchase_header_unlock_no_price">Ontgrendel synchroniseren</string>
     <string name="purchase_header_unlock">Synchroniseren ontgrendelen voor %s</string>
     <string name="purchase_dialog_take_the_free_trial">1 Uur gratis proberen</string>
     <string name="purchase_header_buy_now">Kopen</string>
     <string name="purchase_dialog_cancel">Misschien later</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Ontgrendel synchroniseren voor de volgende%1$s kalenders in &lt;b>%2$s&lt;/b> voor &lt;b>%3$s&lt;/b> of probeer de kalender eerst &lt;b>1 uur gratis&lt;/b>.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Ontgrendel synchroniseren voor de volgende%1$s calendars in &lt;b>%2$s&lt;/b> voor &lt;b>%3$s&lt;/b>.</string>
-    <string name="purchase_dialog_teaser_text_single_item_free_trial">Ontgrendel synchroniseren voor &lt;b>%1$s&lt;/b> voor &lt;b>%2$s&lt;/b> of probeer de kalender eerst &lt;b>1 uur gratis&lt;/b>.</string>
-    <string name="purchase_dialog_teaser_text_single_item_no_free_trial">Ontgrendel synchroniseren voor &lt;b>%1$s&lt;/b> voor &lt;b>%2$s&lt;/b>.</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Trial eindigt over %s minuut</item>
@@ -118,12 +104,6 @@
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary"></string>
 
-    <!-- Items to be displayed in My Calendars -->
-    <string-array name="my_calendars_sections">
-        <item>Gesynchroniseerd</item>
-        <item>Ontgrendeld</item>
-    </string-array>
-
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Default</string>
 
@@ -138,9 +118,6 @@
 
     <!-- Title of all calendars section -->
     <string name="side_nav_all_calendars">Alle kalendars</string>
-
-    <!-- Title of free calendars section -->
-    <string name="side_nav_free_calendars">Gratis calendars</string>
 
     <!-- Title of faq section -->
     <string name="side_nav_faq">FAQ</string>
