@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Strings for the Navigation Drawer Sidebar -->
+    <string name="drawer_open">측면 탐색창 열기</string>
+    <string name="drawer_close">측면 탐색창 닫기</string>
+
+    <!-- Button for new calendar subscription -->
+    <string name="calendar_item_subscribe_button">구독하기</string>
+
+    <!-- Switch to sync calendar if already purchased. -->
+    <string name="calendar_item_add_to_calendar">이 캘린더 동기화하기</string>
+
+    <!-- Title for description section of calendar once it is available. -->
+    <string name="calendar_item_description_title">추가정보</string>
+
+    <!-- Fallback title for Events Preview Activity -->
+    <string name="activity_title_events_preview">이벤트 미리보기</string>
+
+    <!-- Setting for a synced calendar -->
+    <string name="calendar_item_events_settings_title">설정</string>
+
+    <!-- Color for a synced calendar -->
+    <string name="calendar_settings_color">캘린더 색상</string>
+
+    <!-- Name for a synced calendar -->
+    <string name="calendar_settings_name">캘린더 이름</string>
+
+    <!-- Title for calendar setting "reminder" -->
+    <string name="calendar_settings_reminder">미리알림</string>
+
+    <!-- Text for dialog which prompts to pick a color for the calendar. -->
+    <string name="dialog_title_pick_a_color">색상 선택</string>
+
+    <!-- Text for dialog which prompts to pick a name for the calendar. -->
+    <string name="dialog_title_enter_calendar_name">캘린더 이름 입력</string>
+
+    <!-- Title of the Contact fragment -->
+    <string name="contact_us">고객 지원</string>
+
+    <!-- Message to customers -->
+    <string name="contact_text">질문이나 의견이 있으면 저희에게 이메일로 알려주시기 바랍니다. </string>
+
+    <!-- Button to send email -->
+    <string name="send_email">이메일 보내기</string>
+
+    <!-- Message which is displayed when the data cannot be retrived from the server. -->
+    <string name="loading_failed">데이터를 불러올 수 없습니다. 인터넷 연결 확인 후 다시 시도하시기 바랍니다.</string>
+
+    <!-- Message in "My Calendars" if there are no synced calendars yet -->
+    <string name="error_my_calendars_empty">현재 동기화 중인 캘린더가 없습니다. 캘린더를 동기화 하기 위해 \”모든 캘린더\”를 펼칩니다.</string>
+
+    <!-- Message in "Favorites" if there are no starred calendars yet -->
+    <string name="error_favorite_calendars_empty">아직 즐겨찾기에 추가한 캘린더가 없습니다.</string>
+
+    <!-- Purchase statuses -->
+    <string name="status_synced">동기화 됨</string>
+    <string name="status_free">무료</string>
+    <string name="status_unlocked">잠금해제 됨</string>
+    <string name="status_free_trial">트라이얼</string>
+
+    <!-- Purchase header -->
+
+    <string name="purchase_header_unlock">%s에 앱 구매하기</string>
+    <string name="purchase_dialog_take_the_free_trial">무료 트라이얼 사용하기</string>
+    <string name="purchase_header_buy_now">구매</string>
+    <string name="purchase_dialog_cancel">나중에</string>
+    <string name="purchase_dialog_teaser_text_free_trial">&lt;b&gt;%3$s&lt;/b&gt;을 지불하면 &lt;b&gt;%2$s&lt;/b&gt;에 있는%1$s 캘린더가 동기화됩니다. 또는 &lt;b&gt;1시간 무료 트라이얼&lt;/b&gt;을 사용할 수 있습니다.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">&lt;b&gt;%3$s&lt;/b&gt;을 지불하면 &lt;b&gt;%2$s&lt;/b&gt;에 있는%1$s 캘린더를 동기화할 수 있습니다.</string>
+
+    <plurals name="purchase_header_free_trial_minutes">
+        <item quantity="one">무료 트라이얼 기간이 %s분 후 만료됩니다</item>
+        <item quantity="two">무료 트라이얼 기간이 %s분 후 만료됩니다</item>
+        <item quantity="other">무료 트라이얼 기간이 %s분 후 만료됩니다</item>
+    </plurals>
+    <plurals name="purchase_header_free_trial_seconds">
+        <item quantity="one">무료 트라이얼 기간이 %s초 후 만료됩니다</item>
+        <item quantity="two">무료 트라이얼 기간이 %s초 후 만료됩니다</item>
+        <item quantity="other">무료 트라이얼 기간이 %s초 후 만료됩니다</item>
+    </plurals>
+
+    <string name="purchase_connection_error_title">오류</string>
+    <string name="purchase_connection_error_message">Google Play 서비스에 연결할 수 없습니다./n인터넷 연결 상태를 확인하신 후 다시 시도하시기 바랍니다.</string>
+
+    <string-array name="alarm_names">
+        <item>서버 기본상태</item>
+        <item>미리알림 없음</item>
+        <item>0분</item>
+        <item>1분</item>
+        <item>2분</item>
+        <item>5분</item>
+        <item>10분</item>
+        <item>15분</item>
+        <item>30분</item>
+        <item>1시간</item>
+        <item>2시간</item>
+        <item>8시간</item>
+        <item>12시간</item>
+        <item>1일</item>
+        <item>2일</item>
+        <item>1주일</item>
+    </string-array>
+
+    <string name="title_activity_preferences">환경설정</string>
+    <!-- Locale preference title -->
+    <string name="preferences_locale_title">국가</string>
+    <!-- Locale preference summary -->
+    <string name="preferences_locale_summary" />
+
+    <!-- Title of the entry for the default content location in the settings -->
+    <string name="default_location">기본</string>
+
+    <!-- Season # -->
+    <string name="season">시즌 %s</string>
+
+    <!-- Title of favourite calendars section -->
+    <string name="side_nav_favorite_calendars">즐겨찾기</string>
+
+    <!-- Title of my calendars section -->
+    <string name="side_nav_my_calendars">나의 캘린더</string>
+
+    <!-- Title of all calendars section -->
+    <string name="side_nav_all_calendars">모든 캘린더</string>
+
+    <!-- Title of faq section -->
+    <string name="side_nav_faq">자주묻는질문</string>
+
+    <!-- Title of feedback section -->
+    <string name="side_nav_feedback">피드백</string>
+
+    <!-- Title of settings section -->
+    <string name="side_nav_settings">설정</string>
+
+    <!-- Date & time strings -->
+    <string name="all_day">하루 종일</string>
+    <string name="today">오늘</string>
+    <string name="yesterday">어제</string>
+    <string name="tomorrow">내일</string>
+
+    <!-- Main menu options -->
+    <string name="menu_favorite_short">즐겨찾기</string>
+    <string name="menu_favorite">즐겨찾기 추가</string>
+    <string name="menu_settings_short">설정</string>
+    <string name="menu_settings">캘린더 설정 열기</string>
+
+</resources>

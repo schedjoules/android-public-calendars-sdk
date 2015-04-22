@@ -1,0 +1,3 @@
+include ':UI', ':colorpicker'
+include ':Demo'
+project(':colorpicker').projectDir = new File('color-picker/colorpicker')
