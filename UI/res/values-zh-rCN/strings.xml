@@ -51,7 +51,7 @@
     <string name="error_my_calendars_empty">目前，您没有同步任何日历。打开 \"所有日历\" 同步日历。</string>
 
     <!-- Message in "Favorites" if there are no starred calendars yet -->
-    <string name="error_favorite_calendars_empty">您还没有任何收藏日历。</string>
+    <string name="error_favorite_calendars_empty">您还没有任何收藏日历。轻点日历页面上的星星，将其添加到收藏中。</string>
 
     <!-- Purchase statuses -->
     <string name="status_synced">已同步</string>
@@ -60,13 +60,19 @@
     <string name="status_free_trial">免费试用</string>
 
     <!-- Purchase header -->
-
-    <string name="purchase_header_unlock">立即购买，只需 %s</string>
+    <string name="purchase_header_enable_sync">启用同步</string>
+    <string name="purchase_header_unlock">立即启用，每年仅需 %s</string>
+    <string name="purchase_header_benefits">优势</string>
     <string name="purchase_dialog_take_the_free_trial">免费试用</string>
     <string name="purchase_header_buy_now">购买</string>
     <string name="purchase_dialog_cancel">也许稍后</string>
-    <string name="purchase_dialog_teaser_text_free_trial">为 &lt;b&gt;%2$s&lt;/b&gt; 以下 %1$s 个日历解锁同步，只需 &lt;b&gt;%3$s&lt;/b&gt;，或者免费试用 &lt;b&gt;1 小时&lt;/b&gt;。</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">为 &lt;b&gt;%2$s&lt;/b&gt; 以下 %1$s 个日历解锁同步，只需 &lt;b&gt;%3$s&lt;/b&gt;。</string>
+    <string name="purchase_dialog_teaser_text_free_trial">为 &lt;b&gt;%2$s&lt;/b&gt; 中的所有日历解锁同步，每年只需 &lt;b&gt;%3$s&lt;/b&gt;，或者&lt;b&gt;免费试用&lt;/b&gt; 1 小时。</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">为 &lt;b&gt;%2$s&lt;/b&gt; 中的所有日历解锁同步，每年只需 &lt;b&gt;%3$s&lt;/b&gt;。</string>
+    <string name="purchase_dialog_benefits1">访问成千上万个有趣的日历</string>
+    <string name="purchase_dialog_benefits2">享受日历自动更新</string>
+    <string name="purchase_dialog_benefits3">体育实况比赛结果添加到活动中</string>
+    <string name="purchase_dialog_benefits4">其他更多信息</string>
+    <string name="purchase_dialog_benefits5">支持所有日历应用程序</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">您的免费试用 %s 分钟后到期</item>
@@ -101,11 +107,23 @@
         <item>1 周</item>
     </string-array>
 
+    <!-- String used in Preferences -->
+
+
+    <!-- Title for the preferences activity -->
     <string name="title_activity_preferences">偏好设置</string>
+
     <!-- Locale preference title -->
     <string name="preferences_locale_title">国家</string>
+
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary" />
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">发送匿名使用统计数据</string>
+
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">通过发送匿名统计数据帮助我们改进此应用程序。</string>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">默认</string>

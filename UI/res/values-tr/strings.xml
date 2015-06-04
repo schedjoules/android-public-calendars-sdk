@@ -51,7 +51,7 @@
     <string name="error_my_calendars_empty">Şu an hiçbir takvim eşzamanlanamıyor. Takvimleri eşzamanlamak için \"Tüm Takvimler\"i açın.</string>
 
     <!-- Message in "Favorites" if there are no starred calendars yet -->
-    <string name="error_favorite_calendars_empty">Henüz favori takviminiz yok.</string>
+    <string name="error_favorite_calendars_empty">Henüz favori takviminiz yok. Favorilere eklemek için bir takvim sayfasındaki yıldıza dokunun.</string>
 
     <!-- Purchase statuses -->
     <string name="status_synced">eşzamanlandı</string>
@@ -60,13 +60,19 @@
     <string name="status_free_trial">ücretsiz deneme</string>
 
     <!-- Purchase header -->
-
-    <string name="purchase_header_unlock">Şimdi satın al: %s</string>
+    <string name="purchase_header_enable_sync">Eşzamanlamayı etkinleştir</string>
+    <string name="purchase_header_unlock">Yılda %s karşılığında etkinleştir</string>
+    <string name="purchase_header_benefits">Yararlar</string>
     <string name="purchase_dialog_take_the_free_trial">Ücretsiz deneme</string>
     <string name="purchase_header_buy_now">Satın Al</string>
     <string name="purchase_dialog_cancel">Daha Sonra</string>
-    <string name="purchase_dialog_teaser_text_free_trial">&lt;b&gt;%2$s&lt;/b&gt; içindeki bir sonraki%1$s takvimin eşzamanlama kilidini &lt;b&gt;%3$s&lt;/b&gt; ödeyerek açın veya &lt;b&gt;1 saat ücretsiz deneme&lt;/b&gt;yi edinin.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">&lt;b&gt;%2$s&lt;/b&gt; içindeki bir sonraki%1$s takvimin eşzamanlama kilidini &lt;b&gt;%3$s&lt;/b&gt; ödeyerek açın.</string>
+    <string name="purchase_dialog_teaser_text_free_trial">&lt;b&gt;%2$s&lt;/b&gt; içindeki tüm takvimlerin eşzamanlama kilidini yılda &lt;b&gt;%3$s&lt;/b&gt; ödeyerek açın veya &lt;b&gt;1 saat ücretsiz deneme&lt;/b&gt;yi edinin.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">&lt;b&gt;%2$s&lt;/b&gt; içindeki tüm takvimlerin eşzamanlama kilidini yılda &lt;b&gt;%3$s&lt;/b&gt; ödeyerek açın.</string>
+    <string name="purchase_dialog_benefits1">binlerce ilginç takvime erişim sağlayın</string>
+    <string name="purchase_dialog_benefits2">takviminizdeki otomatik güncellemelerin tadını çıkarın</string>
+    <string name="purchase_dialog_benefits3">etkinliklerinize eklenen (canlı) spor sonuçları ile</string>
+    <string name="purchase_dialog_benefits4">başka bir sürü ek bilgi</string>
+    <string name="purchase_dialog_benefits5">tüm takvim uygulamaları ile çalışır</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Ücretsiz deneme %@ dakika içinde sona eriyor</item>
@@ -101,11 +107,23 @@
         <item>1 hafta</item>
     </string-array>
 
+    <!-- String used in Preferences -->
+
+
+    <!-- Title for the preferences activity -->
     <string name="title_activity_preferences">Tercihler</string>
+
     <!-- Locale preference title -->
     <string name="preferences_locale_title">Ülke</string>
+
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary" />
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">Anonim kullanım istatistikleri gönderin</string>
+
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">Anonim kullanım istatistikleri göndererek uygulamayı geliştirmemize yardımcı olun.</string>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Saptanmış</string>
