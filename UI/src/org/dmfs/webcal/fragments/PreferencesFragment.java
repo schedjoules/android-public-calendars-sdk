@@ -57,27 +57,32 @@ public class PreferencesFragment extends PreferenceFragment
 
 		locales.setOnPreferenceChangeListener(PrefUpdater);
 
-		try
+		if (locales != null)
 		{
-			getCountries();
+			locales.setOnPreferenceChangeListener(PrefUpdater);
 
-			locales.setEntries(mCountryNames);
-			locales.setEntryValues(mCountryCodes);
-		}
-		catch (Exception e)
-		{
-			Log.e(TAG, "could not load country list", e);
-		}
+			try
+			{
+				getCountries();
 
-		int index = locales.findIndexOfValue(locales.getValue());
-		if (index >= 0)
-		{
-			locales.setSummary(locales.getEntries()[index]);
-		}
-		else
-		{
-			locales.setSummary(locales.getEntries()[0]);
-			locales.setValueIndex(0);
+				locales.setEntries(mCountryNames);
+				locales.setEntryValues(mCountryCodes);
+			}
+			catch (Exception e)
+			{
+				Log.e(TAG, "could not load country list", e);
+			}
+
+			int index = locales.findIndexOfValue(locales.getValue());
+			if (index >= 0)
+			{
+				locales.setSummary(locales.getEntries()[index]);
+			}
+			else
+			{
+				locales.setSummary(locales.getEntries()[0]);
+				locales.setValueIndex(0);
+			}
 		}
 	}
 
