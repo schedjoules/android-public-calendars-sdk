@@ -55,8 +55,6 @@ public class PreferencesFragment extends PreferenceFragment
 		addPreferencesFromResource(R.xml.webcal_preference);
 		ListPreference locales = (ListPreference) findPreference("content_location");
 
-		locales.setOnPreferenceChangeListener(PrefUpdater);
-
 		if (locales != null)
 		{
 			locales.setOnPreferenceChangeListener(PrefUpdater);

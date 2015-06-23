@@ -14,18 +14,20 @@
 	Allowed placeholders are:
 	* {locale}   - will be replaced by the current language
 	* {location} - will be replaced by the current or selected location
+	* {uuid} - will be replaced by a uuid identifying the current installation. This value is mandatory.
     -->
-    <string name="org_dmfs_android_calendarcontent_start_page_url">https://api.schedjoules.com/pages/113525?locale={locale}&amp;location={location}</string>
+    <string name="org_dmfs_android_calendarcontent_start_page_url">https://api.schedjoules.com/pages/113525?locale={locale}&amp;location={location}&amp;u={uuid}</string>
 
     <!--
     The general form of a page url with a placeholder for the id.
 	
 	Allowed placeholders are:
-	* {itemid}   - will be replaced by an item id
+	* {itemid}   - will be replaced by an item id. This value is mandatory.
 	* {locale}   - will be replaced by the current language
 	* {location} - will be replaced by the current or selected location
+	* {uuid} - will be replaced by a uuid identifying the current installation. This value is mandatory.
     -->
-    <string name="org_dmfs_android_calendarcontent_page_url">https://api.schedjoules.com/pages/{itemid}?locale={locale}&amp;location={location}</string>
+    <string name="org_dmfs_android_calendarcontent_page_url">https://api.schedjoules.com/pages/{itemid}?locale={locale}&amp;location={location}&amp;u={uuid}</string>
 
     <!-- The account type of your account. This has to be unique, so add your package namespace. -->
     <string name="org_dmfs_android_calendarcontent_account_type">your.package.name.ACCOUNT</string>
@@ -43,6 +45,6 @@
 	
     May be omitted or empty to use the location configured on the device.
     -->
-    <string name="org_dmfs_android_calendarcontent_default_location">DE</string>
+    <string name="org_dmfs_android_calendarcontent_default_location"></string>
 
 </resources>

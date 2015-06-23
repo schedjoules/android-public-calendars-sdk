@@ -20,6 +20,7 @@ package org.dmfs.webcal.fragments;
 import java.net.URI;
 import java.util.TimeZone;
 
+import org.apache.http.message.BasicHeader;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.PaymentStatus;
@@ -492,8 +493,8 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 				mHandler.postDelayed(mProgressIndicator, PROGRESS_INDICATOR_DELAY);
 				if (mCalendarUrl != null)
 				{
-					return new CursorLoader(getActivity(), WebCalReaderContract.Events.getEventsUri(getActivity(), mCalendarUrl, 60 * 1000), null, null, null,
-						null);
+					return new CursorLoader(getActivity(), WebCalReaderContract.Events.getEventsUri(getActivity(), mCalendarUrl, 60 * 1000, new BasicHeader(
+						"X-Context", "preview")), null, null, null, null);
 				}
 				else
 				{
