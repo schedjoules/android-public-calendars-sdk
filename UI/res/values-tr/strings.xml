@@ -75,14 +75,14 @@
     <string name="purchase_dialog_benefits5">tüm takvim uygulamaları ile çalışır</string>
 
     <plurals name="purchase_header_free_trial_minutes">
-        <item quantity="one">Ücretsiz deneme %@ dakika içinde sona eriyor</item>
-        <item quantity="two">Ücretsiz deneme %@ dakika içinde sona eriyor</item>
-        <item quantity="other">Ücretsiz deneme %@ dakika içinde sona eriyor</item>
+        <item quantity="one">Ücretsiz deneme %s dakika içinde sona eriyor</item>
+        <item quantity="two">Ücretsiz deneme %s dakika içinde sona eriyor</item>
+        <item quantity="other">Ücretsiz deneme %s dakika içinde sona eriyor</item>
     </plurals>
     <plurals name="purchase_header_free_trial_seconds">
-        <item quantity="one">Ücretsiz deneme %@ saniye içinde sona eriyor</item>
-        <item quantity="two">Ücretsiz deneme %@ saniye içinde sona eriyor</item>
-        <item quantity="other">Ücretsiz deneme %@ saniye içinde sona eriyor</item>
+        <item quantity="one">Ücretsiz deneme %s saniye içinde sona eriyor</item>
+        <item quantity="two">Ücretsiz deneme %s saniye içinde sona eriyor</item>
+        <item quantity="other">Ücretsiz deneme %s saniye içinde sona eriyor</item>
     </plurals>
 
     <string name="purchase_connection_error_title">Hata</string>
