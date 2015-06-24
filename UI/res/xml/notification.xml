@@ -1,0 +1,22 @@
+<notification xmlns="http://dmfs.org/ns/android-xml-magic"
+    auto-cancel="true"
+    title="{@bundle:title}"
+    small-icon="@drawable/ic_24_settings_white"
+    content="{@bundle:message}">
+
+    <content-intent flag-update-current="true">
+        <intent>
+            <package>{@app.package}</package>
+            <class>org.dmfs.webcal.MainActivity</class>
+	        <data>
+	            <scheme>content</scheme>
+	            <authority>{@app.package}.calendarcontentprovider</authority>
+	            <path>/contentitem/{@bundle:page_id}</path>
+	        </data>
+	        <extras>
+	            <bundle-value key="parent">{@bundle:parent_id}</bundle-value>
+	        </extras>
+        </intent>
+    </content-intent>
+
+</notification>

@@ -42,6 +42,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -73,7 +74,8 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	public static final String ARG_PAGE_TITLE = "title";
 	private static final String ARG_PAGE_ICON = "icon";
 
-	private final static int ID_URL_LOADER = 0;
+	private final static int ID_SECTION_LOADER = 0;
+	private final static int ID_PAGE_LOADER = 1;
 
 	private ViewPager mViewPager;
 	private SectionsPagerAdapter mAdapter;
@@ -91,7 +93,6 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	/**
 	 * The id is used to store the selected tab for this page, don't remove it.
 	 */
-	@SuppressWarnings("unused")
 	private long mId;
 
 	@Retain(permanent = true, classNS = TAG, instanceNSField = "mId", key = "selectedTab")
@@ -192,24 +193,11 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		mViewPager.setAdapter(mAdapter);
 
 		// start loading the pages
-		getLoaderManager().initLoader(ID_URL_LOADER, null, this);
+		LoaderManager loaderManager = getLoaderManager();
+		loaderManager.initLoader(ID_SECTION_LOADER, null, this);
+		loaderManager.initLoader(ID_PAGE_LOADER, null, this);
 
-		// set the page title and clear the subtitle if any
-		ActionBar actionBar = getActivity().getActionBar();
-		actionBar.setTitle(mTitle);
-		actionBar.setSubtitle(null);
-
-		// load the icon and set it if we get any, otherwise insert a placeholder and set it later
-		Drawable icon = ImageProxy.getInstance(this.getActivity()).getImage(mIcon, this);
-		if (icon != null)
-		{
-			// we need to pre-scale the icon, apparently Android doesn't do that for us
-			actionBar.setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) icon, 36, 36));
-		}
-		else
-		{
-			actionBar.setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
-		}
+		updateTitleAndIcon();
 
 		return returnView;
 	}
@@ -218,36 +206,61 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle extras)
 	{
-		return new CursorLoader(getActivity().getApplicationContext(), mUri, SectionsPagerAdapter.PROJECTION, null, null, null);
+		switch (id)
+		{
+			case ID_SECTION_LOADER:
+				return new CursorLoader(getActivity().getApplicationContext(), mUri, SectionsPagerAdapter.PROJECTION, null, null, null);
+
+			case ID_PAGE_LOADER:
+				return new CursorLoader(getActivity().getApplicationContext(), ContentItem.getItemContentUri(getActivity(), mId), null, null, null, null);
+		}
+		return null;
 	}
 
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
 	{
-		mAdapter.swapCursor(cursor);
-		if (cursor == null)
+		switch (cursorLoader.getId())
 		{
-			// this indicates an error when loading the page, show an error message
-			mMessageText.setVisibility(View.VISIBLE);
-			mProgressBar.setVisibility(View.GONE);
-			mViewPager.setVisibility(View.GONE);
-		}
-		else if (cursor.getCount() > 0)
-		{
-			// indicates the page has been loaded, hide progress indicator and show pager
-			mMessageText.setVisibility(View.GONE);
-			mProgressBar.setVisibility(View.GONE);
-			mViewPager.setVisibility(View.VISIBLE);
-			setupActionBarTabs();
-		}
-		else
-		{
-			// all pages must have at least one section, 0 results means we're still waiting for the page to load, show a progress indicator
-			Activity activity = getActivity();
-			mProgressBar.setVisibility(View.VISIBLE);
-			activity.getActionBar().removeAllTabs();
-			activity.getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			case ID_SECTION_LOADER:
+			{
+				mAdapter.swapCursor(cursor);
+				if (cursor == null)
+				{
+					// this indicates an error when loading the page, show an error message
+					mMessageText.setVisibility(View.VISIBLE);
+					mProgressBar.setVisibility(View.GONE);
+					mViewPager.setVisibility(View.GONE);
+				}
+				else if (cursor.getCount() > 0)
+				{
+					// indicates the page has been loaded, hide progress indicator and show pager
+					mMessageText.setVisibility(View.GONE);
+					mProgressBar.setVisibility(View.GONE);
+					mViewPager.setVisibility(View.VISIBLE);
+					setupActionBarTabs();
+				}
+				else
+				{
+					// all pages must have at least one section, 0 results means we're still waiting for the page to load, show a progress indicator
+					Activity activity = getActivity();
+					mProgressBar.setVisibility(View.VISIBLE);
+					activity.getActionBar().removeAllTabs();
+					activity.getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+				}
+
+				break;
+			}
+			case ID_PAGE_LOADER:
+			{
+				if (cursor != null && cursor.moveToFirst())
+				{
+					mTitle = cursor.getString(cursor.getColumnIndex(ContentItem.TITLE));
+					mIcon = cursor.getLong(cursor.getColumnIndex(ContentItem.ICON_ID));
+					updateTitleAndIcon();
+				}
+			}
 		}
 	}
 
@@ -277,6 +290,28 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		{
 			setupActionBarTabs();
 		}
+	}
+
+
+	private void updateTitleAndIcon()
+	{
+		// set the page title and clear the subtitle if any
+		ActionBar actionBar = getActivity().getActionBar();
+		actionBar.setTitle(mTitle);
+		actionBar.setSubtitle(null);
+
+		// load the icon and set it if we get any, otherwise insert a placeholder and set it later
+		Drawable icon = ImageProxy.getInstance(this.getActivity()).getImage(mIcon, this);
+		if (icon != null)
+		{
+			// we need to pre-scale the icon, apparently Android doesn't do that for us
+			actionBar.setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) icon, 36, 36));
+		}
+		else
+		{
+			actionBar.setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+		}
+
 	}
 
 
@@ -393,8 +428,10 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	{
 		if (isAdded())
 		{
-			// the shared preferences have been changed, restart the loader to
-			getLoaderManager().restartLoader(ID_URL_LOADER, null, this);
+			// the shared preferences have been changed, restart the loaders
+			LoaderManager loaderManager = getLoaderManager();
+			loaderManager.restartLoader(ID_SECTION_LOADER, null, this);
+			loaderManager.restartLoader(ID_PAGE_LOADER, null, this);
 		}
 	}
 

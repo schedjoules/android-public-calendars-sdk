@@ -41,6 +41,7 @@ import org.dmfs.webcal.utils.billing.IabResult;
 import org.dmfs.webcal.utils.billing.Inventory;
 import org.dmfs.webcal.utils.billing.Purchase;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -57,6 +58,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.schedjoules.analytics.Analytics;
@@ -157,6 +159,40 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		lm.initLoader(-2, null, this);
 
 		initIabHelper();
+
+		if (savedInstanceState == null)
+		{
+			handleIntent(getIntent());
+		}
+	}
+
+
+	@Override
+	protected void onNewIntent(Intent intent)
+	{
+		super.onNewIntent(intent);
+		handleIntent(intent);
+	}
+
+
+	private void handleIntent(Intent intent)
+	{
+		if (intent.getData() != null)
+		{
+			Bundle extras = intent.getExtras();
+			extras.isEmpty();
+			String parent = intent.getCharSequenceExtra("parent").toString();
+			if (parent != null && TextUtils.isDigitsOnly(parent))
+			{
+				openCategory(Integer.parseInt(parent), "", -1);
+			}
+
+			long page_id = ContentUris.parseId(intent.getData());
+			if (page_id >= 0)
+			{
+				openCategory(page_id, "", -1);
+			}
+		}
 	}
 
 
