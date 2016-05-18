@@ -18,10 +18,21 @@
 package org.dmfs.webcal.push;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v4.app.NotificationManagerCompat;
+import android.text.TextUtils;
+
+import org.dmfs.android.xmlmagic.XmlLoader;
+import org.dmfs.android.xmlmagic.tokenresolvers.BundleTokenResolver;
+import org.dmfs.webcal.R;
+import org.dmfs.xmlobjects.pull.XmlObjectPullParserException;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 
 
 /**
@@ -69,8 +80,90 @@ public class PushHelperService extends IntentService
 		{
 			Bundle message = intent.getParcelableExtra(EXTRA_PUSH_MESSAGE);
 
-			// TODO: handle the message & show a notification
-			Toast.makeText(this, message.getString("message", "no message"), Toast.LENGTH_LONG).show();
+			if (message == null || discardMessage(message))
+			{
+				return;
+			}
+
+			try
+			{
+				NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+				Notification notification = XmlLoader.loadNotification(this, R.xml.schedjoules_notification, new BundleTokenResolver(message));
+				notificationManager.notify(1, notification);
+			}
+			catch (IOException | XmlPullParserException | XmlObjectPullParserException e)
+			{
+				// ignore
+			}
+		}
+	}
+
+
+	/**
+	 * Checks whether the message should be discarded or shown.
+	 * 
+	 * @param message
+	 *            The message
+	 * @return <code>true</code> if the message should be discarded, <code>false</code> if it should be presented to the user.
+	 */
+	private boolean discardMessage(Bundle message)
+	{
+		try
+		{
+			int versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+
+			if (message.containsKey("target-version") && versionCode != toInt(message.getString("target-version"), 0))
+			{
+				// this is directed to a different app version
+				return true;
+			}
+
+			if (message.containsKey("max-target-version") && versionCode > toInt(message.getString("max-target-version"), Integer.MAX_VALUE))
+			{
+				// this is directed to a different app version
+				return true;
+			}
+
+			if (message.containsKey("min-target-version") && versionCode < toInt(message.getString("min-target-version"), 0))
+			{
+				// this is directed to a different app version
+				return true;
+			}
+
+			if (message.containsKey("show") && !Boolean.parseBoolean(message.getString("show")))
+			{
+				return true;
+			}
+
+			return TextUtils.isEmpty(message.getString("title")) || TextUtils.isEmpty(message.getString("message"));
+		}
+		catch (NameNotFoundException e)
+		{
+			// this should be impossible
+		}
+
+		return false;
+	}
+
+
+	/**
+	 * Convert the given {@link String} to an int with a fallback value if the conversion fails.
+	 * 
+	 * @param string
+	 *            The String to convert.
+	 * @param defaultValue
+	 *            The value to return if the string didn't contain an int.
+	 * @return Either the converted value or the default value.
+	 */
+	private int toInt(String string, int defaultValue)
+	{
+		try
+		{
+			return Integer.parseInt(string);
+		}
+		catch (NumberFormatException e)
+		{
+			return defaultValue;
 		}
 	}
 

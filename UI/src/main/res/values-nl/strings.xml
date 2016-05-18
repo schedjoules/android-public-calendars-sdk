@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
     <!-- Strings for the Navigation Drawer Sidebar -->
@@ -51,7 +51,7 @@
     <string name="error_my_calendars_empty">Op dit moment synchroniseer je geen kalenders met je agenda. Open \"Alle Kalenders\" om kalenders te vinden die je aan je agenda wilt toevoegen.</string>
 
     <!-- Message in "Favorites" if there are no starred calendars yet -->
-    <string name="error_favorite_calendars_empty">Je hebt nog geen favoriete kalenders.</string>
+    <string name="error_favorite_calendars_empty">Je hebt nog geen favoriete kalenders. Vink het sterretje aan op een pagina met events om de kalender toe te voegen aan je favorieten.</string>
 
     <!-- Purchase statuses -->
     <string name="status_synced">gesynchroniseerd</string>
@@ -61,12 +61,19 @@
 
     <!-- Purchase header -->
 
-    <string name="purchase_header_unlock">Synchroniseren ontgrendelen voor %s</string>
-    <string name="purchase_dialog_take_the_free_trial">1 Uur gratis proberen</string>
+    <string name="purchase_header_enable_sync">Synchroniseren ontsluiten</string>
+    <string name="purchase_header_unlock">Synchroniseren ontsluiten voor %s</string>
+    <string name="purchase_header_benefits">Geniet van</string>
+    <string name="purchase_dialog_take_the_free_trial">1 uur gratis proberen</string>
     <string name="purchase_header_buy_now">Kopen</string>
     <string name="purchase_dialog_cancel">Misschien later</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Ontgrendel synchroniseren voor de volgende%1$s kalenders in &lt;b>%2$s&lt;/b> voor &lt;b>%3$s&lt;/b> of probeer de kalender eerst &lt;b>1 uur gratis&lt;/b>.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Ontgrendel synchroniseren voor de volgende%1$s calendars in &lt;b>%2$s&lt;/b> voor &lt;b>%3$s&lt;/b>.</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Ontsluit synchroniseren voor de volgende%1$s kalenders in &lt;b&gt;%2$s&lt;/b&gt; voor &lt;b&gt;%3$s&lt;/b&gt; of probeer de kalender eerst &lt;b&gt;1 uur gratis&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Ontsluit synchroniseren voor de volgende%1$s kalendars in &lt;b&gt;%2$s&lt;/b&gt; voor &lt;b&gt;%3$s&lt;/b&gt;.</string>
+    <string name="purchase_dialog_benefits1">Toegang tot duizenden interessante kalenders.</string>
+    <string name="purchase_dialog_benefits2">De kalenders in je agenda worden automatisch bijgewerkt.</string>
+    <string name="purchase_dialog_benefits3">(Live) sportresultaten in je agenda.</string>
+    <string name="purchase_dialog_benefits4">Heel veel extra informatie bij events</string>
+    <string name="purchase_dialog_benefits5">Werkt met alle agenda-applicaties</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Trial eindigt over %s minuut</item>
@@ -99,12 +106,19 @@
     </string-array>
 
     <!-- String used in Preferences -->
+
+
     <!-- Title for the preferences activity -->
     <string name="title_activity_preferences">Voorkeuren</string>
     <!-- Locale preference title -->
     <string name="preferences_locale_title">Land</string>
     <!-- Locale preference summary -->
-    <string name="preferences_locale_summary"></string>
+    <string name="preferences_locale_summary" />
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">Stuur anonieme gebruiksstatistieken</string>
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">Help ons om de app te verbeteren door het sturen van anonieme statistieken.</string>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Default</string>

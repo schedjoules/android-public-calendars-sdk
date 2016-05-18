@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
     <!-- Strings for the Navigation Drawer Sidebar -->
@@ -51,7 +51,7 @@
     <string name="error_my_calendars_empty">Du synkroniserer for øyeblikket ingen kalendere. Åpne \"Alle kalendere\" for å synkronisere kalendere.</string>
 
     <!-- Message in "Favorites" if there are no starred calendars yet -->
-    <string name="error_favorite_calendars_empty">Du har ikke noen favorittkalendere ennå.</string>
+    <string name="error_favorite_calendars_empty">Du har ikke noen favorittkalendere ennå. Trykk på stjernen på en kalenderside for å legge den til favoritter.</string>
 
     <!-- Purchase statuses -->
     <string name="status_synced">synkronisert</string>
@@ -60,13 +60,19 @@
     <string name="status_free_trial">gratis prøveperiode</string>
 
     <!-- Purchase header -->
-
-    <string name="purchase_header_unlock">Kjøp nå for %s</string>
+    <string name="purchase_header_enable_sync">Aktiver synk</string>
+    <string name="purchase_header_unlock">Aktiver nå for %s p/å</string>
+    <string name="purchase_header_benefits">Fordeler</string>
     <string name="purchase_dialog_take_the_free_trial">Ta prøveperiode</string>
     <string name="purchase_header_buy_now">Kjøp</string>
     <string name="purchase_dialog_cancel">Kanskje senere</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Lås opp synkronisering for følgende$1$s kalendere i &lt;b&gt;%2$s&lt;/b&gt; for bare &lt;b&gt;%3$s&lt;/b&gt;, eller velg &lt;b&gt;1 timers prøveperiode&lt;/b&gt;.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Lås opp synkronisering for følgende$1$s kalendere i &lt;b&gt;%2$s&lt;/b&gt; for bare &lt;b&gt;%3$s&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Lås opp synkronisering for alle kalendere i &lt;b&gt;%2$s&lt;/b&gt; for bare &lt;b&gt;%3$s&lt;/b&gt; i året, eller eller velg &lt;b&gt;1 timers prøveperiode&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Lås opp synkronisering for alle kalendere i &lt;b&gt;%2$s&lt;/b&gt; for bare &lt;b&gt;%3$s&lt;/b&gt; i året.</string>
+    <string name="purchase_dialog_benefits1">tilgang til tusenvis av interessante kalendere</string>
+    <string name="purchase_dialog_benefits2">dra nytte av automatiske oppdateringer til kalenderen din</string>
+    <string name="purchase_dialog_benefits3">med (live) sportsresultater lagt til i dine hendelser</string>
+    <string name="purchase_dialog_benefits4">masse ekstra informasjon</string>
+    <string name="purchase_dialog_benefits5">fungerer med alle kalenderapplikasjoner</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Din prøveperiode slutter om %s minutt</item>
@@ -101,11 +107,23 @@
         <item>1 uke</item>
     </string-array>
 
+    <!-- String used in Preferences -->
+
+
+    <!-- Title for the preferences activity -->
     <string name="title_activity_preferences">Valg</string>
+
     <!-- Locale preference title -->
     <string name="preferences_locale_title">Land</string>
+
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary" />
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">Send anonym bruksstatistikk</string>
+
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">Hjelp oss å forbedre applikasjonen ved å sende anonym statistikk</string>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Standard</string>

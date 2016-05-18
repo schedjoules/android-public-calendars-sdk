@@ -18,6 +18,7 @@
 package org.dmfs.webcal;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import org.dmfs.webcal.fragments.PreferencesFragment;
@@ -32,6 +33,8 @@ public class PreferencesActivity extends ActionBarActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preferences);
 		getFragmentManager().beginTransaction().replace(R.id.pref_fragment_container, new PreferencesFragment()).commit();
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 

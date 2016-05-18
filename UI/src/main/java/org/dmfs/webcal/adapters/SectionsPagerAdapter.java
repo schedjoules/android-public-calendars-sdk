@@ -17,13 +17,13 @@
 
 package org.dmfs.webcal.adapters;
 
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
-import org.dmfs.webcal.fragments.CategoriesListFragment;
-
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
+import org.dmfs.webcal.fragments.CategoriesListFragment;
 
 
 /**
@@ -103,10 +103,7 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter
 		{
 			return mSectionsCursor.getCount();
 		}
-		else
-		{
-			return 0;
-		}
+		return 0;
 	}
 
 
@@ -118,7 +115,7 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter
 	 */
 	public void swapCursor(Cursor cursor)
 	{
-		if (mSectionsCursor != null && mSectionsCursor != cursor)
+		if (mSectionsCursor != null && !mSectionsCursor.equals(cursor))
 		{
 			mSectionsCursor.close();
 		}

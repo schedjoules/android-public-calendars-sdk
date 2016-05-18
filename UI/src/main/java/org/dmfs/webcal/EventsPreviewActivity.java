@@ -17,10 +17,16 @@
 
 package org.dmfs.webcal;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.MenuItem;
 
 import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.webcal.IBillingActivity.OnInventoryListener;
@@ -29,15 +35,10 @@ import org.dmfs.webcal.utils.Event;
 import org.dmfs.webcal.utils.billing.IabHelper;
 import org.dmfs.webcal.utils.billing.Inventory;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.text.TextUtils;
-import android.view.MenuItem;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -120,6 +121,8 @@ public class EventsPreviewActivity extends ActionBarActivity
 			transaction.commit();
 		}
 
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 		ActionBar actionBar = getSupportActionBar();
 
 		if (TextUtils.equals(mTitle, mCalendarName))

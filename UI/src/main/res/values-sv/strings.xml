@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
     <!-- Strings for the Navigation Drawer Sidebar -->
@@ -51,7 +51,7 @@
     <string name="error_my_calendars_empty">Synkroniserar inga kalendrar just nu. Synkronisera kalendrar genom att öppna \"Alla kalendrar\"</string>
 
     <!-- Message in "Favorites" if there are no starred calendars yet -->
-    <string name="error_favorite_calendars_empty">Du har inga favoritkalendrar än.</string>
+    <string name="error_favorite_calendars_empty">Du har inga favoritkalendrar än. Lägg till en kalendersida till favoriter genom att trycka på stjärnan.</string>
 
     <!-- Purchase statuses -->
     <string name="status_synced">synkroniserad</string>
@@ -60,13 +60,19 @@
     <string name="status_free_trial">kostnadsfritt test</string>
 
     <!-- Purchase header -->
-
-    <string name="purchase_header_unlock">Köp nu för %s</string>
+    <string name="purchase_header_enable_sync">Aktivera synk</string>
+    <string name="purchase_header_unlock">Aktivera nu för %s per år</string>
+    <string name="purchase_header_benefits">Fördelar</string>
     <string name="purchase_dialog_take_the_free_trial">Använd kostnadsfritt test</string>
     <string name="purchase_header_buy_now">Köp</string>
     <string name="purchase_dialog_cancel">Kanske senare</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Lås upp synkronisering för följande%1$s kalandrar i &lt;b&gt;%2$s&lt;/b&gt; för endast &lt;b&gt;%3$s&lt;/b&gt;, eller prova &lt;b&gt;kostnadsfritt i en timme&lt;/b&gt;.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Lås upp synkronisering för följande%1$s kalendrar i &lt;b&gt;%2$s&lt;/b&gt; för endast &lt;b&gt;%3$s&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Lås upp synkronisering för alla kalandrar i &lt;b&gt;%2$s&lt;/b&gt; för endast &lt;b&gt;%3$s&lt;/b&gt;, eller prova &lt;b&gt;kostnadsfritt i en timme&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Lås upp synkronisering alla kalendrar i &lt;b&gt;%2$s&lt;/b&gt; för endast &lt;b&gt;%3$s&lt;/b&gt; per år.</string>
+    <string name="purchase_dialog_benefits1">kom åt tusentals intressanta kalendrar</string>
+    <string name="purchase_dialog_benefits2">få automatisk uppdateringar av dina kalendrar</string>
+    <string name="purchase_dialog_benefits3">med sportresultat direkt i dina händelser, när de händer</string>
+    <string name="purchase_dialog_benefits4">massor av annan extrainformation</string>
+    <string name="purchase_dialog_benefits5">fungerar med alla kalenderprogram</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">Ditt kostnadsfria test slutar om %s minut</item>
@@ -101,11 +107,23 @@
         <item>1 vecka</item>
     </string-array>
 
+    <!-- String used in Preferences -->
+
+
+    <!-- Title for the preferences activity -->
     <string name="title_activity_preferences">Inställningar</string>
+
     <!-- Locale preference title -->
     <string name="preferences_locale_title">Land</string>
+
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary" />
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">Skicka anonym användningsstatistik</string>
+
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">Hjälp oss att förbättra appen genom att skicka anonym statistik.</string>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Förval</string>

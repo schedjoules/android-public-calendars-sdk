@@ -28,7 +28,7 @@
     <string name="org_dmfs_android_calendarcontent_page_url">https://api.schedjoules.com/pages/{itemid}?locale={locale}&amp;location={location}</string>
 
     <!-- The account type of your account. This has to be unique, so add your namespace. -->
-    <string name="org_dmfs_android_calendarcontent_account_type">com.schedjoules.demo.ACCOUNT</string>
+  <!--  <string name="org_dmfs_android_calendarcontent_account_type">com.schedjoules.demo.ACCOUNT</string>-->
 
     <!--
     The class name of a class that returns the secrets required to access the API or the Play services.

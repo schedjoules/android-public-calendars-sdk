@@ -77,29 +77,32 @@ public class PreferencesFragment extends PreferenceFragment
 		addPreferencesFromResource(R.xml.webcal_preference);
 		ListPreference locales = (ListPreference) findPreference("content_location");
 
-		locales.setOnPreferenceChangeListener(PrefUpdater);
+		if (locales != null)
+		{
+			locales.setOnPreferenceChangeListener(PrefUpdater);
 
-		try
-		{
-			getCountries();
+			try
+			{
+				getCountries();
 
-			locales.setEntries(mCountryNames);
-			locales.setEntryValues(mCountryCodes);
-		}
-		catch (Exception e)
-		{
-			Log.e(TAG, "could not load country list", e);
-		}
+				locales.setEntries(mCountryNames);
+				locales.setEntryValues(mCountryCodes);
+			}
+			catch (Exception e)
+			{
+				Log.e(TAG, "could not load country list", e);
+			}
 
-		int index = locales.findIndexOfValue(locales.getValue());
-		if (index >= 0)
-		{
-			locales.setSummary(locales.getEntries()[index]);
-		}
-		else
-		{
-			locales.setSummary(locales.getEntries()[0]);
-			locales.setValueIndex(0);
+			int index = locales.findIndexOfValue(locales.getValue());
+			if (index >= 0)
+			{
+				locales.setSummary(locales.getEntries()[index]);
+			}
+			else
+			{
+				locales.setSummary(locales.getEntries()[0]);
+				locales.setValueIndex(0);
+			}
 		}
 	}
 

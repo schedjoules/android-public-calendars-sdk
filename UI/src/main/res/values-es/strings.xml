@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
     <!-- Strings for the Navigation Drawer Sidebar -->
@@ -51,7 +51,7 @@
     <string name="error_my_calendars_empty">Actualmente no está sincronizando ningún calendario. Abra \«Todos los calendarios\» para sincronizar los calendarios.</string>
 
     <!-- Message in "Favorites" if there are no starred calendars yet -->
-    <string name="error_favorite_calendars_empty">Aún no tiene ningún calendario favorito.</string>
+    <string name="error_favorite_calendars_empty">Aún no tiene ningún calendario favorito. Pulse la estrella de la página del calendario para añadirlo a los favoritos.</string>
 
     <!-- Purchase statuses -->
     <string name="status_synced">sincronizado</string>
@@ -60,13 +60,19 @@
     <string name="status_free_trial">prueba gratuita</string>
 
     <!-- Purchase header -->
-
-    <string name="purchase_header_unlock">Comprar ahora por %s</string>
+    <string name="purchase_header_enable_sync">Activar sincronización</string>
+    <string name="purchase_header_unlock">Activar ahora por %s al año</string>
+    <string name="purchase_header_benefits">Ventajas</string>
     <string name="purchase_dialog_take_the_free_trial">Usar la prueba gratuita</string>
     <string name="purchase_header_buy_now">Comprar</string>
     <string name="purchase_dialog_cancel">Quizá después</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Desbloquee la sincronización en los siguientes%1$s calendarios de &lt;b&gt;%2$s&lt;/b&gt; por solo &lt;b&gt;%3$s&lt;/b&gt; o usa la &lt;b&gt;prueba gratuita de 1 hora&lt;/b&gt;.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Desbloquee la sincronización en los siguientes%1$s calendarios de &lt;b&gt;%2$s&lt;/b&gt; por solo &lt;b&gt;%3$s&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Desbloquee la sincronización de todos los calendarios de &lt;b&gt;%2$s&lt;/b&gt; por solo &lt;b&gt;%3$s&lt;/b&gt; o use la &lt;b&gt;prueba gratuita de 1 hora&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Desbloquee la sincronización de todos los calendarios de &lt;b&gt;%2$s&lt;/b&gt; por solo &lt;b&gt;%3$s&lt;/b&gt; al año.</string>
+    <string name="purchase_dialog_benefits1">acceso a miles de calendarios interesantes</string>
+    <string name="purchase_dialog_benefits2">reciba actualizaciones automáticas en su calendario</string>
+    <string name="purchase_dialog_benefits3">con resultados deportivos (en directo) añadidos a sus eventos</string>
+    <string name="purchase_dialog_benefits4">montones de información adicional</string>
+    <string name="purchase_dialog_benefits5">funciona con todas las aplicaciones de calendario</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">La prueba gratuita termina en %s minuto</item>
@@ -101,11 +107,23 @@
         <item>1 semana</item>
     </string-array>
 
+    <!-- String used in Preferences -->
+
+
+    <!-- Title for the preferences activity -->
     <string name="title_activity_preferences">Preferencias</string>
+
     <!-- Locale preference title -->
     <string name="preferences_locale_title">País</string>
+
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary" />
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">Enviar estadísticas anónimas de uso</string>
+
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">Ayúdenos a mejorar la aplicación enviando estadísticas anónimas.</string>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">Predeterminado</string>

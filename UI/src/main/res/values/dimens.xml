@@ -10,4 +10,5 @@
 
     <!-- Toolbar dimens -->
     <dimen name="toolbar_shadow_height">4dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

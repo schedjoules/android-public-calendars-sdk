@@ -17,18 +17,6 @@
 
 package org.dmfs.webcal.fragments;
 
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
-import org.dmfs.android.retentionmagic.annotations.Parameter;
-import org.dmfs.android.retentionmagic.annotations.Retain;
-import org.dmfs.webcal.ActionBarActivity;
-import org.dmfs.webcal.R;
-import org.dmfs.webcal.adapters.SectionsPagerAdapter;
-import org.dmfs.webcal.utils.BitmapUtils;
-import org.dmfs.webcal.utils.ImageProxy;
-import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
-import org.dmfs.webcal.views.TabBarLayout;
-
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
@@ -40,6 +28,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -52,6 +41,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.schedjoules.analytics.Analytics;
+
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
+import org.dmfs.android.retentionmagic.annotations.Parameter;
+import org.dmfs.android.retentionmagic.annotations.Retain;
+import org.dmfs.webcal.ActionBarActivity;
+import org.dmfs.webcal.R;
+import org.dmfs.webcal.adapters.SectionsPagerAdapter;
+import org.dmfs.webcal.utils.BitmapUtils;
+import org.dmfs.webcal.utils.ImageProxy;
+import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
+import org.dmfs.webcal.views.TabBarLayout;
 
 
 /**
@@ -69,7 +70,8 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	private final static String ARG_SECTIONS_URI = "uri";
 	private static final String ARG_PAGE_ICON = "icon";
 
-	private final static int ID_URL_LOADER = 0;
+	private final static int ID_SECTION_LOADER = 0;
+	private final static int ID_PAGE_LOADER = 1;
 
 	private ViewPager mViewPager;
 	private SectionsPagerAdapter mAdapter;
@@ -204,7 +206,11 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		setupActionBar(returnView);
 
 		// start loading the pages
-		getLoaderManager().initLoader(ID_URL_LOADER, null, this);
+		LoaderManager loaderManager = getLoaderManager();
+		loaderManager.initLoader(ID_SECTION_LOADER, null, this);
+		loaderManager.initLoader(ID_PAGE_LOADER, null, this);
+
+		// updateTitleAndIcon();
 
 		return returnView;
 	}
@@ -213,13 +219,26 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle extras)
 	{
-		return new CursorLoader(getActivity().getApplicationContext(), mUri, SectionsPagerAdapter.PROJECTION, null, null, null);
+		switch (id)
+		{
+			case ID_SECTION_LOADER:
+				return new CursorLoader(getActivity().getApplicationContext(), mUri, SectionsPagerAdapter.PROJECTION, null, null, null);
+
+			case ID_PAGE_LOADER:
+				return new CursorLoader(getActivity().getApplicationContext(), ContentItem.getItemContentUri(getActivity(), mId), null, null, null, null);
+		}
+		return null;
 	}
 
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
 	{
+		if (cursor.isClosed())
+		{
+			// ignore cursors that are already closed
+			return;
+		}
 		// update adapter
 		mAdapter.swapCursor(cursor);
 
@@ -287,7 +306,6 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	{
 		// set the page title and clear the subtitle if any
 		Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-
 		toolbar.setTitle(mTitle);
 		toolbar.setSubtitle(null);
 
@@ -329,8 +347,10 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	{
 		if (isAdded())
 		{
-			// the shared preferences have been changed, restart the loader to
-			getLoaderManager().restartLoader(ID_URL_LOADER, null, this);
+			// the shared preferences have been changed, restart the loaders
+			LoaderManager loaderManager = getLoaderManager();
+			loaderManager.restartLoader(ID_SECTION_LOADER, null, this);
+			loaderManager.restartLoader(ID_PAGE_LOADER, null, this);
 		}
 	}
 

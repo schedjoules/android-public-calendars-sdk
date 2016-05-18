@@ -1,3 +1,2 @@
-include ':UI', ':colorpicker'
+include ':UI'
 include ':Demo'
-project(':colorpicker').projectDir = new File('color-picker/colorpicker')

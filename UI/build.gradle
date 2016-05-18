@@ -1,12 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '21.1.2'
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 22
+        resValue "string", "org_dmfs_android_calendarcontent_account_type", "com.example.schedjoules.ACCOUNT"
     }
 
     buildTypes {
@@ -15,13 +17,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:21.0.+'
-    compile 'com.google.android.gms:play-services:7.0.0'
-    compile files('libs/android-retention-magic-1.2.2.jar')
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.google.android.gms:play-services:8.4.0'
     compile files('libs/async-tools-1.1.jar')
     compile files('libs/schedjoules-sdk.jar')
-    compile project(':colorpicker')
+    compile 'com.github.dmfs:color-picker:c3b3b52033dc0b33bd831e731ec6f74fb1e8a69a'
+    compile('org.dmfs:android-xml-magic:0.1.1')
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
     <!-- Strings for the Navigation Drawer Sidebar -->
@@ -12,7 +12,7 @@
     <string name="calendar_item_add_to_calendar">이 캘린더 동기화하기</string>
 
     <!-- Title for description section of calendar once it is available. -->
-    <string name="calendar_item_description_title">추가정보</string>
+    <string name="calendar_item_description_title">설명</string>
 
     <!-- Fallback title for Events Preview Activity -->
     <string name="activity_title_events_preview">이벤트 미리보기</string>
@@ -51,22 +51,28 @@
     <string name="error_my_calendars_empty">현재 동기화 중인 캘린더가 없습니다. 캘린더를 동기화 하기 위해 \”모든 캘린더\”를 펼칩니다.</string>
 
     <!-- Message in "Favorites" if there are no starred calendars yet -->
-    <string name="error_favorite_calendars_empty">아직 즐겨찾기에 추가한 캘린더가 없습니다.</string>
+    <string name="error_favorite_calendars_empty">아직 즐겨찾기에 추가한 캘린더가 없습니다. 캘린더 별표를 누르면 즐겨찾기에 추가됩니다.</string>
 
     <!-- Purchase statuses -->
     <string name="status_synced">동기화 됨</string>
     <string name="status_free">무료</string>
     <string name="status_unlocked">잠금해제 됨</string>
-    <string name="status_free_trial">트라이얼</string>
+    <string name="status_free_trial">시험판</string>
 
     <!-- Purchase header -->
-
-    <string name="purchase_header_unlock">%s에 앱 구매하기</string>
+    <string name="purchase_header_enable_sync">동기화 활성화</string>
+    <string name="purchase_header_unlock">%s p/y에 동기화 활성화</string>
+    <string name="purchase_header_benefits">혜택</string>
     <string name="purchase_dialog_take_the_free_trial">무료 트라이얼 사용하기</string>
     <string name="purchase_header_buy_now">구매</string>
     <string name="purchase_dialog_cancel">나중에</string>
-    <string name="purchase_dialog_teaser_text_free_trial">&lt;b&gt;%3$s&lt;/b&gt;을 지불하면 &lt;b&gt;%2$s&lt;/b&gt;에 있는%1$s 캘린더가 동기화됩니다. 또는 &lt;b&gt;1시간 무료 트라이얼&lt;/b&gt;을 사용할 수 있습니다.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">&lt;b&gt;%3$s&lt;/b&gt;을 지불하면 &lt;b&gt;%2$s&lt;/b&gt;에 있는%1$s 캘린더를 동기화할 수 있습니다.</string>
+    <string name="purchase_dialog_teaser_text_free_trial">단지 &lt;b&gt;%3$s&lt;/b&gt;만 지불하면 &lt;b&gt;%2$s&lt;/b&gt;에 있는 모든 캘린더가 동기화 됩니다. 또는 &lt;b&gt;1시간 무료 트라이얼&lt;/b&gt;을 사용할 수 있습니다.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">단지 &lt;b&gt;%3$s&lt;/b&gt;만 지불하면 &lt;b&gt;%2$s&lt;/b&gt;에 있는 모든 캘린더를 동기화할 수 있습니다.</string>
+    <string name="purchase_dialog_benefits1">수천 개의 흥미로운 캘린더에 접근할 수 있습니다</string>
+    <string name="purchase_dialog_benefits2">자동으로 업데이트 되는 캘린더를 통해</string>
+    <string name="purchase_dialog_benefits3">(실시간으로) 스포츠 경기 결과를 확인할 수 있습니다</string>
+    <string name="purchase_dialog_benefits4">다양한 부가 정보를 제공합니다</string>
+    <string name="purchase_dialog_benefits5">모든 캘린더 응용 프로그램과 연동됩니다</string>
 
     <plurals name="purchase_header_free_trial_minutes">
         <item quantity="one">무료 트라이얼 기간이 %s분 후 만료됩니다</item>
@@ -101,11 +107,23 @@
         <item>1주일</item>
     </string-array>
 
+    <!-- String used in Preferences -->
+
+
+    <!-- Title for the preferences activity -->
     <string name="title_activity_preferences">환경설정</string>
+
     <!-- Locale preference title -->
     <string name="preferences_locale_title">국가</string>
+
     <!-- Locale preference summary -->
     <string name="preferences_locale_summary" />
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">익명으로 사용 통계 전송하기</string>
+
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">앱을 개선하기 위해 익명 사용 통계를 보내주십시오.</string>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">기본</string>
