@@ -17,14 +17,6 @@
 
 package org.dmfs.webcal.fragments;
 
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
-import org.dmfs.android.retentionmagic.SupportFragment;
-import org.dmfs.android.retentionmagic.annotations.Parameter;
-import org.dmfs.android.retentionmagic.annotations.Retain;
-import org.dmfs.webcal.R;
-import org.dmfs.webcal.adapters.MixedNavigationAdapter;
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
@@ -42,6 +34,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.schedjoules.analytics.Analytics;
+
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
+import org.dmfs.android.retentionmagic.SupportFragment;
+import org.dmfs.android.retentionmagic.annotations.Parameter;
+import org.dmfs.android.retentionmagic.annotations.Retain;
+import org.dmfs.webcal.R;
+import org.dmfs.webcal.adapters.MixedNavigationAdapter;
 
 
 /**
@@ -151,6 +151,10 @@ public class CategoriesListFragment extends SupportFragment implements OnItemCli
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
 	{
+		if (cursor.isClosed())
+		{
+			return;
+		}
 		mAdapter.swapCursor(cursor);
 	}
 
