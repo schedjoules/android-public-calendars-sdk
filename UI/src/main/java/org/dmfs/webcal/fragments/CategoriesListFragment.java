@@ -151,10 +151,6 @@ public class CategoriesListFragment extends SupportFragment implements OnItemCli
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
 	{
-		if (cursor.isClosed())
-		{
-			return;
-		}
 		mAdapter.swapCursor(cursor);
 	}
 

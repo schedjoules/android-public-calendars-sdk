@@ -660,7 +660,6 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
 	{
-		Log.v("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "load finished");
 		if (cursor != null && cursor.moveToFirst())
 		{
 			String subscriptionId = cursor.getString(1);

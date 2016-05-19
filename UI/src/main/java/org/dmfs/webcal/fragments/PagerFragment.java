@@ -208,9 +208,6 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		// start loading the pages
 		LoaderManager loaderManager = getLoaderManager();
 		loaderManager.initLoader(ID_SECTION_LOADER, null, this);
-		loaderManager.initLoader(ID_PAGE_LOADER, null, this);
-
-		// updateTitleAndIcon();
 
 		return returnView;
 	}
@@ -223,9 +220,6 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		{
 			case ID_SECTION_LOADER:
 				return new CursorLoader(getActivity().getApplicationContext(), mUri, SectionsPagerAdapter.PROJECTION, null, null, null);
-
-			case ID_PAGE_LOADER:
-				return new CursorLoader(getActivity().getApplicationContext(), ContentItem.getItemContentUri(getActivity(), mId), null, null, null, null);
 		}
 		return null;
 	}
@@ -234,11 +228,6 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	@Override
 	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
 	{
-		if (cursor.isClosed())
-		{
-			// ignore cursors that are already closed
-			return;
-		}
 		// update adapter
 		mAdapter.swapCursor(cursor);
 

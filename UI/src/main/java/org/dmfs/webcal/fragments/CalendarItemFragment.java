@@ -352,8 +352,8 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 				Time start = new Time(TimeZone.getDefault().getID());
 				start.set(index & 0x00ff, (index >> 8) & 0x00ff, (index >> 16) & 0x0ffff);
 
-				return DateUtils.formatDateTime(getActivity(), start.toMillis(true), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
-					| DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY);
+				return DateUtils.formatDateTime(getActivity(), start.toMillis(true),
+					DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY);
 			}
 
 
@@ -459,16 +459,17 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 				return new CursorLoader(activity, mContentUri, PROJECTION, null, null, null);
 
 			case LOADER_SUBSCRIBED_CALENDAR:
-				return new CursorLoader(activity, SubscribedCalendars.getContentUri(activity), null, SubscribedCalendars.ITEM_ID + "="
-					+ ContentUris.parseId(mContentUri), null, null);
+				return new CursorLoader(activity, SubscribedCalendars.getContentUri(activity), null,
+					SubscribedCalendars.ITEM_ID + "=" + ContentUris.parseId(mContentUri), null, null);
 
 			case LOADER_PREVIEW:
 				// show the loader indicator delayed
 				mHandler.postDelayed(mProgressIndicator, PROGRESS_INDICATOR_DELAY);
 				if (mCalendarUrl != null)
 				{
-					return new CursorLoader(getActivity(), WebCalReaderContract.Events.getEventsUri(getActivity(), mCalendarUrl, 60 * 1000, new BasicHeader(
-						"X-Context", "preview")), null, null, null, null);
+					return new CursorLoader(getActivity(),
+						WebCalReaderContract.Events.getEventsUri(getActivity(), mCalendarUrl, 60 * 1000, new BasicHeader("X-Context", "preview")), null, null,
+						null, null);
 				}
 				else
 				{
@@ -534,11 +535,6 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 				if (oldCursor == null || oldCursor.getCount() == 0)
 				{
 					goToToday();
-				}
-
-				if (oldCursor != null)
-				{
-					oldCursor.close();
 				}
 				break;
 
@@ -689,8 +685,9 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 		end.set(cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTEND)));
 		end.allDay = start.allDay;
 
-		Event event = new Event(start, end, cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TITLE)), cursor.getString(cursor
-			.getColumnIndex(WebCalReaderContract.Events.DESCRIPTION)), cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.LOCATION)));
+		Event event = new Event(start, end, cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TITLE)),
+			cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.DESCRIPTION)),
+			cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.LOCATION)));
 
 		Context context = getActivity();
 		EventsPreviewActivity.show(context, event, mCalendarName, mIcon, mTitle, mContentUri);

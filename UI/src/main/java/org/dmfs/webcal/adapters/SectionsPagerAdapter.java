@@ -115,10 +115,6 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter
 	 */
 	public void swapCursor(Cursor cursor)
 	{
-		if (mSectionsCursor != null && !mSectionsCursor.equals(cursor))
-		{
-			mSectionsCursor.close();
-		}
 		mSectionsCursor = cursor;
 
 		if (cursor != null)
