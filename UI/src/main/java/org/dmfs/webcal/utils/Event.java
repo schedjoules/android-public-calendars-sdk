@@ -20,7 +20,10 @@ package org.dmfs.webcal.utils;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.format.Time;
+
+import org.dmfs.rfc5545.DateTime;
+
+import java.util.TimeZone;
 
 
 /**
@@ -33,11 +36,11 @@ public final class Event implements Comparable<Event>, Parcelable
 	/**
 	 * The start time of the event. This is already switched to the default time zone.
 	 */
-	public final Time start;
+	public final DateTime start;
 	/**
 	 * The end time of the event. This is already switched to the default time zone.
 	 */
-	public final Time end;
+	public final DateTime end;
 
 	/**
 	 * The title of the event.
@@ -60,14 +63,14 @@ public final class Event implements Comparable<Event>, Parcelable
 	public final String location;
 
 
-	public Event(Time start, Time end, String title, String description, String location)
+	public Event(DateTime start, DateTime end, String title, String description, String location)
 	{
 		this.start = start;
 		this.end = end;
 		this.title = title;
 		this.description = description;
 		this.location = location;
-		this.timezone = start.timezone;
+		this.timezone = start.getTimeZone().getID();
 	}
 
 
@@ -88,13 +91,13 @@ public final class Event implements Comparable<Event>, Parcelable
 	@Override
 	public void writeToParcel(Parcel parcel, int flags)
 	{
-		parcel.writeString(start.timezone);
-		parcel.writeLong(start.toMillis(false));
-		parcel.writeInt(start.allDay ? 1 : 0);
+		parcel.writeString(start.getTimeZone().getID());
+		parcel.writeLong(start.getTimestamp());
+		parcel.writeInt(start.isAllDay() ? 1 : 0);
 
-		parcel.writeString(end.timezone);
-		parcel.writeLong(end.toMillis(false));
-		parcel.writeInt(end.allDay ? 1 : 0);
+		parcel.writeString(end.getTimeZone().getID());
+		parcel.writeLong(end.getTimestamp());
+		parcel.writeInt(end.isAllDay() ? 1 : 0);
 
 		parcel.writeString(title);
 		parcel.writeString(description);
@@ -114,15 +117,17 @@ public final class Event implements Comparable<Event>, Parcelable
 		@Override
 		public Event createFromParcel(Parcel source)
 		{
-			Time startTime = new Time(source.readString());
-			startTime.set(source.readLong());
-			startTime.allDay = source.readInt() == 1;
-			startTime.normalize(true);
+			DateTime startTime = new DateTime(TimeZone.getTimeZone(source.readString()), source.readLong());
+			if (source.readInt() == 1)
+			{
+				startTime = startTime.toAllDay();
+			}
 
-			Time endTime = new Time(source.readString());
-			endTime.set(source.readLong());
-			endTime.allDay = source.readInt() == 1;
-			endTime.normalize(true);
+			DateTime endTime = new DateTime(TimeZone.getTimeZone(source.readString()), source.readLong());
+			if (source.readInt() == 1)
+			{
+				endTime = endTime.toAllDay();
+			}
 
 			String title = source.readString();
 			String description = source.readString();

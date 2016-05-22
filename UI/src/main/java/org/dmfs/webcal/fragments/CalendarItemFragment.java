@@ -34,7 +34,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.format.DateUtils;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,6 +59,7 @@ import org.dmfs.android.webcalreader.provider.WebCalReaderContract;
 import org.dmfs.asynctools.PetriNet;
 import org.dmfs.asynctools.PetriNet.Place;
 import org.dmfs.asynctools.PetriNet.Transition;
+import org.dmfs.rfc5545.DateTime;
 import org.dmfs.webcal.EventsPreviewActivity;
 import org.dmfs.webcal.R;
 import org.dmfs.webcal.adapters.EventListAdapter;
@@ -249,7 +249,6 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 				if (mActionBar != null)
 				{
 					mActionBar.setTitle(mCalendarName);
-					mActionBar.setSubtitle(mTitle);
 				}
 
 				// update the adapter if necessary
@@ -349,10 +348,9 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 			@Override
 			public String getSectionTitle(int index)
 			{
-				Time start = new Time(TimeZone.getDefault().getID());
-				start.set(index & 0x00ff, (index >> 8) & 0x00ff, (index >> 16) & 0x0ffff);
+				DateTime start = new DateTime(TimeZone.getDefault(), (index >> 16) & 0x0ffff, (index >> 8) & 0x00ff, index & 0x00ff, 0, 0, 0);
 
-				return DateUtils.formatDateTime(getActivity(), start.toMillis(true),
+				return DateUtils.formatDateTime(getActivity(), start.getTimestamp(),
 					DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY);
 			}
 
@@ -362,13 +360,10 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 			{
 				Cursor cursor = (Cursor) object;
 
-				Time start = new Time(cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TIMZONE)));
-				start.set(cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTSTART)));
-				boolean allday = cursor.getInt(cursor.getColumnIndex(WebCalReaderContract.Events.IS_ALLDAY)) == 1;
-				start.allDay = allday;
-
+				DateTime start = new DateTime(TimeZone.getTimeZone(cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TIMZONE))),
+					cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTSTART)));
 				// we return an encoded date as index
-				return (start.year << 16) + (start.month << 8) + start.monthDay;
+				return (start.getYear() << 16) + (start.getMonth() << 8) + start.getDayOfMonth();
 
 			}
 		}, R.layout.events_preview_list_section_header));
@@ -418,7 +413,6 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 		// setup action bar, we do that here to be sure that it already has been created
 		mActionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
 		mActionBar.setTitle(mCalendarName);
-		mActionBar.setSubtitle(mTitle);
 	}
 
 
@@ -555,9 +549,8 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 
 	private void goToToday()
 	{
-		Time now = new Time(TimeZone.getDefault().getID());
-		now.setToNow();
-		int nowIdx = (now.year << 16) + (now.month << 8) + now.monthDay;
+		DateTime now = DateTime.nowAndHere();
+		int nowIdx = (now.getYear() << 16) + (now.getMonth() << 8) + now.getDayOfMonth();
 
 		if (mSectionAdapter != null)
 		{
@@ -677,13 +670,17 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 	{
 		Cursor cursor = (Cursor) listView.getAdapter().getItem(position);
 
-		Time start = new Time(cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TIMZONE)));
-		start.set(cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTSTART)));
-		start.allDay = cursor.getInt(cursor.getColumnIndex(WebCalReaderContract.Events.IS_ALLDAY)) != 0;
+		DateTime start = new DateTime(TimeZone.getTimeZone(cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TIMZONE))),
+			cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTSTART)));
 
-		Time end = new Time(cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TIMZONE)));
-		end.set(cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTEND)));
-		end.allDay = start.allDay;
+		DateTime end = new DateTime(TimeZone.getTimeZone(cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TIMZONE))),
+			cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTEND)));
+
+		if (cursor.getInt(cursor.getColumnIndex(WebCalReaderContract.Events.IS_ALLDAY)) != 0)
+		{
+			start = start.toAllDay();
+			end = end.toAllDay();
+		}
 
 		Event event = new Event(start, end, cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TITLE)),
 			cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.DESCRIPTION)),

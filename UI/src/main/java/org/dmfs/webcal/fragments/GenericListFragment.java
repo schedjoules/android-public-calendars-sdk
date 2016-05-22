@@ -17,15 +17,6 @@
 
 package org.dmfs.webcal.fragments;
 
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract.SubscribedCalendars;
-import org.dmfs.android.retentionmagic.annotations.Parameter;
-import org.dmfs.webcal.ActionBarActivity;
-import org.dmfs.webcal.R;
-import org.dmfs.webcal.adapters.MixedNavigationAdapter;
-import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
@@ -44,6 +35,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract.SubscribedCalendars;
+import org.dmfs.android.retentionmagic.annotations.Parameter;
+import org.dmfs.webcal.ActionBarActivity;
+import org.dmfs.webcal.R;
+import org.dmfs.webcal.adapters.MixedNavigationAdapter;
+import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
+
 
 /**
  * A fragment that shows pages and items for the given URI. At present this is used for "All calendars" and "My calendars".
@@ -60,9 +60,9 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
 	public static final String ARG_EMPTY_MESSAGE = "empty_message";
 	public static final String ARG_PROJECTION = "projection";
 	public static final String ARG_SHOW_STARS = "show_stars";
-	public final static String[] PROJECTION = new String[] { CalendarContentContract.ContentItem._ID,
-		CalendarContentContract.SubscribedCalendars.CALENDAR_NAME, CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID,
-		ContentItem.SEASON, ContentItem.STARRED, CalendarContentContract.SubscribedCalendars.ITEM_ID };
+	public final static String[] PROJECTION = new String[] { CalendarContentContract.ContentItem._ID, CalendarContentContract.SubscribedCalendars.CALENDAR_NAME,
+		CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID, ContentItem.SEASON, ContentItem.STARRED,
+		CalendarContentContract.SubscribedCalendars.ITEM_ID };
 	public final static String[] PROJECTION2 = new String[] { CalendarContentContract.ContentItem._ID, CalendarContentContract.ContentItem.TITLE,
 		CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID, ContentItem.SEASON, ContentItem.STARRED };
 	private static final String TAG = "GenericListFragment";

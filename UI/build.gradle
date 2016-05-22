@@ -9,6 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         resValue "string", "org_dmfs_android_calendarcontent_account_type", "com.example.schedjoules.ACCOUNT"
+        buildConfigField "int", "INTRO_VERSION", "1"
     }
 
     buildTypes {
@@ -26,9 +27,15 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile files('libs/async-tools-1.1.jar')
     compile files('libs/schedjoules-sdk.jar')
     compile 'com.github.dmfs:color-picker:c3b3b52033dc0b33bd831e731ec6f74fb1e8a69a'
     compile('org.dmfs:android-xml-magic:0.1.1')
+    compile 'org.dmfs:rfc5545-datetime:0.2.4'
+    compile 'net.opacapp:multiline-collapsingtoolbar:1.0.1'
+    compile 'org.dmfs:xtivity:0.1-SNAPSHOT@aar'
+    compile 'com.android.support:cardview-v7:23.0.1'
+    compile 'me.relex:circleindicator:1.2.1@aar'
 }

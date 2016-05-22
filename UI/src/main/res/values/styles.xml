@@ -123,4 +123,11 @@
 
     </style>
 
+
+    <style name="TextAppearance.ExpandedTitle"
+           parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">26sp</item>
+    </style>
+
+
 </resources>

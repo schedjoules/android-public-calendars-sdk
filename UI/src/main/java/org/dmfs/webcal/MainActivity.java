@@ -29,6 +29,7 @@ import org.dmfs.android.calendarcontent.provider.CalendarContentContract.Subscri
 import org.dmfs.android.calendarcontent.secrets.ISecretProvider;
 import org.dmfs.android.calendarcontent.secrets.SecretProvider;
 import org.dmfs.android.retentionmagic.annotations.Retain;
+import org.dmfs.android.xtivity.Xtivity;
 import org.dmfs.webcal.fragments.CalendarItemFragment;
 import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
 import org.dmfs.webcal.fragments.GenericListFragment;
@@ -41,6 +42,7 @@ import org.dmfs.webcal.utils.billing.IabResult;
 import org.dmfs.webcal.utils.billing.Inventory;
 import org.dmfs.webcal.utils.billing.Purchase;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -64,18 +66,21 @@ import android.util.Log;
 
 import com.schedjoules.analytics.Analytics;
 import com.schedjoules.analytics.PurchaseState;
-import com.schedjoules.android.sdk.utils.PushHelper;
 
 
 /**
  * The Home Activity is used to display the main page along with the subsections.
  */
-public class MainActivity extends NavbarActivity implements CategoryNavigator, IBillingActivity, OnIabSetupFinishedListener, QueryInventoryFinishedListener,
-	LoaderCallbacks<Cursor>
+public class MainActivity extends NavbarActivity
+	implements CategoryNavigator, IBillingActivity, OnIabSetupFinishedListener, QueryInventoryFinishedListener, LoaderCallbacks<Cursor>
 {
+	private final static String PREFS_INTRO = "intro";
+	private final static String PREF_INTRO_VERSION = "intro_version";
 	public static final String SUBCATEGORY_EXTRA = "org.dmfs.webcal.SUBCATEGORY_EXTRA";
 	private final static int REQUEST_CODE_LAUNCH_PURCHASE_FLOW = 10003;
 	private final static int REQUEST_CODE_LAUNCH_SUBSCRIPTION_FLOW = 10004;
+	private final static int REQUEST_CODE_INTRO = 10005;
+
 	/**
 	 * The interval in milliseconds to retry to load the inventory in case of an error.
 	 **/
@@ -151,7 +156,7 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 			Analytics.disable();
 		}
 
-//		PushHelper.registerPush(this);
+		// PushHelper.registerPush(this);
 
 		LoaderManager lm = getSupportLoaderManager();
 		lm.initLoader(-2, null, this);
@@ -161,6 +166,12 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 		if (savedInstanceState == null)
 		{
 			handleIntent(getIntent());
+
+			if (getSharedPreferences(PREFS_INTRO, 0).getInt(PREF_INTRO_VERSION, 0) < BuildConfig.INTRO_VERSION)
+			{
+				Intent introIntent = new Intent(this, Xtivity.class);
+				startActivityForResult(introIntent, REQUEST_CODE_INTRO);
+			}
 		}
 	}
 
@@ -243,9 +254,20 @@ public class MainActivity extends NavbarActivity implements CategoryNavigator, I
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
-		if (mIabHelper != null)
+		if (mIabHelper == null || !mIabHelper.handleActivityResult(requestCode, resultCode, data))
 		{
-			mIabHelper.handleActivityResult(requestCode, resultCode, data);
+			if (requestCode == REQUEST_CODE_INTRO)
+			{
+				if (resultCode == Activity.RESULT_OK)
+				{
+					SharedPreferences prefs = getSharedPreferences(PREFS_INTRO, 0);
+					prefs.edit().putInt(PREF_INTRO_VERSION, BuildConfig.INTRO_VERSION).apply();
+				}
+				else
+				{
+					finish();
+				}
+			}
 		}
 	}
 

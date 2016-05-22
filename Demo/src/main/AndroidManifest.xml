@@ -10,10 +10,10 @@
         android:targetSdkVersion="21"/>
 
     <permission
-        android:name="org.dmfs.webcal.permission.C2D_MESSAGE"
+        android:name="com.schedjoules.demo.permission.C2D_MESSAGE"
         android:protectionLevel="signature"/>
 
-    <uses-permission android:name="org.dmfs.webcal.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.schedjoules.demo.permission.C2D_MESSAGE"/>
 
     <application
         android:allowBackup="true"

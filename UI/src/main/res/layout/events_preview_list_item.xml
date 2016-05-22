@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/card_bg" >
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,14 +10,14 @@
         android:baselineAligned="false"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
-        android:padding="4dp" >
+        android:padding="4dp">
 
         <LinearLayout
             android:layout_width="64sp"
             android:layout_height="fill_parent"
             android:layout_margin="4dp"
             android:gravity="center_vertical"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@android:id/text1"
@@ -26,7 +25,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/ellipsis"
@@ -37,7 +36,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="︙"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/endtime"
@@ -45,7 +44,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -54,11 +53,11 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0dp" >
+                android:layout_height="0dp">
 
                 <!-- This view seems to be necessary to force the LinearLayout to use all remaining space of the parent element -->
             </View>
@@ -70,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@android:id/text2"
@@ -78,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="1" />
+                android:maxLines="1"/>
 
             <TextView
                 android:id="@+id/description"
@@ -87,8 +86,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"/>
         </LinearLayout>
     </LinearLayout>
 
-</FrameLayout>
+</android.support.v7.widget.CardView>

@@ -24,7 +24,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,7 +49,6 @@ import org.dmfs.webcal.ActionBarActivity;
 import org.dmfs.webcal.R;
 import org.dmfs.webcal.adapters.SectionsPagerAdapter;
 import org.dmfs.webcal.utils.BitmapUtils;
-import org.dmfs.webcal.utils.ImageProxy;
 import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
 import org.dmfs.webcal.views.TabBarLayout;
 
@@ -297,29 +295,6 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 		toolbar.setTitle(mTitle);
 		toolbar.setSubtitle(null);
-
-		// we are disabling the icon for now, as this better matches the material design
-		// displayToolbarIcon(toolbar);
-
-	}
-
-
-	private void displayToolbarIcon(Toolbar toolbar)
-	{
-		// load the icon and set it if we get any, otherwise insert a
-		// placeholder and set it later
-		Drawable icon = ImageProxy.getInstance(this.getActivity()).getImage(mIcon, this);
-		if (icon != null)
-		{
-			// we need to pre-scale the icon, apparently Android doesn't do that
-			// for us
-			toolbar.setLogo(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) icon, 36, 36));
-		}
-		else
-		{
-			toolbar.setLogo(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
-		}
-
 	}
 
 

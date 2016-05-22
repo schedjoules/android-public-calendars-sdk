@@ -21,12 +21,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
+
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.webcal.IBillingActivity.OnInventoryListener;
@@ -121,22 +123,14 @@ public class EventsPreviewActivity extends ActionBarActivity
 			transaction.commit();
 		}
 
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ActionBar actionBar = getSupportActionBar();
 
-		if (TextUtils.equals(mTitle, mCalendarName))
-		{
-			actionBar.setTitle(mCalendarName);
-			actionBar.setSubtitle(null);
-		}
-		else
-		{
-			actionBar.setTitle(mCalendarName);
-			actionBar.setSubtitle(mTitle);
-		}
+		final AppBarLayout appBar = (AppBarLayout) findViewById(R.id.appbar);
 
-		// Show the Up button in the action bar.
+		CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+		collapsingToolbarLayout.setTitle(mEvent.title);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
@@ -153,4 +147,5 @@ public class EventsPreviewActivity extends ActionBarActivity
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 }
