@@ -109,14 +109,14 @@
 
         <provider
             android:name="org.dmfs.android.calendarcontent.provider.CalendarContentProvider"
-            android:authorities="com.schedjoules.demo.calendarcontentprovider"
+            android:authorities="${applicationId}.calendarcontentprovider"
             android:enabled="true"
             android:exported="false"
             android:multiprocess="false"
             android:process=":provider"/>
         <provider
             android:name="org.dmfs.android.webcalreader.provider.WebCalReaderProvider"
-            android:authorities="com.schedjoules.demo.webcalreaderprovider"
+            android:authorities="${applicationId}.webcalreaderprovider"
             android:enabled="true"
             android:exported="false"
             android:multiprocess="false"
