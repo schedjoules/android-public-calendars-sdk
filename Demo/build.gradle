@@ -16,6 +16,10 @@ android {
             minifyEnabled true
             proguardFiles 'proguard.cfg'
         }
+        debug {
+            minifyEnabled true
+            proguardFiles 'proguard.cfg'
+        }
     }
 
     packagingOptions {

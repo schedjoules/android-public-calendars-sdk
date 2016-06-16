@@ -42,6 +42,9 @@ import org.dmfs.webcal.utils.billing.IabResult;
 import org.dmfs.webcal.utils.billing.Inventory;
 import org.dmfs.webcal.utils.billing.Purchase;
 
+import com.schedjoules.analytics.Analytics;
+import com.schedjoules.analytics.PurchaseState;
+
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
@@ -63,9 +66,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-
-import com.schedjoules.analytics.Analytics;
-import com.schedjoules.analytics.PurchaseState;
 
 
 /**

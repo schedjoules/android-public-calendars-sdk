@@ -69,7 +69,6 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	private static final String ARG_PAGE_ICON = "icon";
 
 	private final static int ID_SECTION_LOADER = 0;
-	private final static int ID_PAGE_LOADER = 1;
 
 	private ViewPager mViewPager;
 	private SectionsPagerAdapter mAdapter;
@@ -95,6 +94,8 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	private ProgressBar mProgressBar;
 
 	private TabBarLayout mTabLayout;
+
+	private SharedPreferences mPrefs;
 
 
 	/**
@@ -153,7 +154,8 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 	public void onAttach(Activity activity)
 	{
 		super.onAttach(activity);
-		activity.getSharedPreferences(activity.getPackageName() + "_preferences", 0).registerOnSharedPreferenceChangeListener(this);
+		mPrefs = activity.getSharedPreferences(activity.getPackageName() + "_preferences", 0);
+		mPrefs.registerOnSharedPreferenceChangeListener(this);
 	}
 
 
@@ -163,7 +165,7 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		// avoid to get notifications for changes in the shared preferences that
 		// we caused ourselves (because the active section has been stored)
 		Activity activity = getActivity();
-		activity.getSharedPreferences(activity.getPackageName() + "_preferences", 0).unregisterOnSharedPreferenceChangeListener(this);
+		mPrefs.unregisterOnSharedPreferenceChangeListener(this);
 		super.onDetach();
 	}
 
@@ -217,7 +219,11 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 		switch (id)
 		{
 			case ID_SECTION_LOADER:
-				return new CursorLoader(getActivity().getApplicationContext(), mUri, SectionsPagerAdapter.PROJECTION, null, null, null);
+				return new CursorLoader(getActivity().getApplicationContext(),
+					mUri.buildUpon()
+						.appendQueryParameter(ContentItem.QUERY_PARAM_LOCATION, mPrefs.getString("content_location", getString(R.string.default_location)))
+						.build(),
+					SectionsPagerAdapter.PROJECTION, null, null, null);
 		}
 		return null;
 	}
@@ -314,7 +320,6 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
 			// the shared preferences have been changed, restart the loaders
 			LoaderManager loaderManager = getLoaderManager();
 			loaderManager.restartLoader(ID_SECTION_LOADER, null, this);
-			loaderManager.restartLoader(ID_PAGE_LOADER, null, this);
 		}
 	}
 
