@@ -17,18 +17,23 @@
 
 package org.dmfs.webcal.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
@@ -617,6 +622,15 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 
 	private void setCalendarSynced(final boolean status)
 	{
+		if (status && (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED)
+			|| ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED
+			|| ContextCompat.checkSelfPermission(getContext(), Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED)
+		{
+			ActivityCompat.requestPermissions(getActivity(),
+				new String[] { Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR, Manifest.permission.GET_ACCOUNTS }, 1);
+			return;
+		}
+
 		final Activity activity = getActivity();
 		if (mSynced != status)
 		{
@@ -662,6 +676,17 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 			}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		}
 
+	}
+
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (requestCode == 1 && resultCode == Activity.RESULT_OK)
+		{
+			setCalendarSynced(true);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 

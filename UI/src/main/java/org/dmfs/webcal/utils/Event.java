@@ -70,7 +70,7 @@ public final class Event implements Comparable<Event>, Parcelable
 		this.title = title;
 		this.description = description;
 		this.location = location;
-		this.timezone = start.getTimeZone().getID();
+		this.timezone = start.isFloating() ? null : start.getTimeZone().getID();
 	}
 
 
@@ -91,11 +91,11 @@ public final class Event implements Comparable<Event>, Parcelable
 	@Override
 	public void writeToParcel(Parcel parcel, int flags)
 	{
-		parcel.writeString(start.getTimeZone().getID());
+		parcel.writeString(timezone);
 		parcel.writeLong(start.getTimestamp());
 		parcel.writeInt(start.isAllDay() ? 1 : 0);
 
-		parcel.writeString(end.getTimeZone().getID());
+		parcel.writeString(timezone);
 		parcel.writeLong(end.getTimestamp());
 		parcel.writeInt(end.isAllDay() ? 1 : 0);
 
@@ -117,13 +117,15 @@ public final class Event implements Comparable<Event>, Parcelable
 		@Override
 		public Event createFromParcel(Parcel source)
 		{
-			DateTime startTime = new DateTime(TimeZone.getTimeZone(source.readString()), source.readLong());
+			String startTz = source.readString();
+			DateTime startTime = new DateTime(startTz == null ? null : TimeZone.getTimeZone(startTz), source.readLong());
 			if (source.readInt() == 1)
 			{
 				startTime = startTime.toAllDay();
 			}
 
-			DateTime endTime = new DateTime(TimeZone.getTimeZone(source.readString()), source.readLong());
+			String endTz = source.readString();
+			DateTime endTime = new DateTime(endTz == null ? null : TimeZone.getTimeZone(endTz), source.readLong());
 			if (source.readInt() == 1)
 			{
 				endTime = endTime.toAllDay();

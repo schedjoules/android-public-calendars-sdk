@@ -7,17 +7,16 @@
     <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light"></style>
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme"> <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-        <item name="colorPrimary">#333</item>
-        <item name="colorPrimaryDark">#222</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Application theme. -->
     <style name="AppThemeToolBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#558b2f</item>
-        <item name="colorPrimaryDark">#477d28</item>
-        <item name="colorAccent">#823E7C</item>
-        <item name="colorControlHighlight">#558b2f</item>
-        <item name="colorControlActivated">#558b2f</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/background_material_light</item>
         <item name="windowActionModeOverlay">true</item>
     </style>

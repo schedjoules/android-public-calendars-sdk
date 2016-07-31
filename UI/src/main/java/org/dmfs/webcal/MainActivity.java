@@ -167,7 +167,7 @@ public class MainActivity extends NavbarActivity
 		{
 			handleIntent(getIntent());
 
-			if (getSharedPreferences(PREFS_INTRO, 0).getInt(PREF_INTRO_VERSION, 0) < BuildConfig.INTRO_VERSION)
+			if (getSharedPreferences(PREFS_INTRO, 0).getInt(PREF_INTRO_VERSION, 0) < getResources().getInteger(R.integer.com_schedjoules_intro_version))
 			{
 				Intent introIntent = new Intent(this, Xtivity.class);
 				startActivityForResult(introIntent, REQUEST_CODE_INTRO);
@@ -261,7 +261,7 @@ public class MainActivity extends NavbarActivity
 				if (resultCode == Activity.RESULT_OK)
 				{
 					SharedPreferences prefs = getSharedPreferences(PREFS_INTRO, 0);
-					prefs.edit().putInt(PREF_INTRO_VERSION, BuildConfig.INTRO_VERSION).apply();
+					prefs.edit().putInt(PREF_INTRO_VERSION, getResources().getInteger(R.integer.com_schedjoules_intro_version)).apply();
 				}
 				else
 				{
@@ -269,6 +269,7 @@ public class MainActivity extends NavbarActivity
 				}
 			}
 		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 

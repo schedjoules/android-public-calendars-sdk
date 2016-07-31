@@ -7,9 +7,8 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 23
         resValue "string", "org_dmfs_android_calendarcontent_account_type", "com.example.schedjoules.ACCOUNT"
-        buildConfigField "int", "INTRO_VERSION", "1"
     }
 
     buildTypes {
@@ -32,7 +31,8 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
-    compile 'com.google.android.gms:play-services:8.4.0'
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'com.google.android.gms:play-services-location:8.4.0'
     compile files('libs/async-tools-1.1.jar')
     compile files('libs/schedjoules-sdk.jar')
     compile 'com.github.dmfs:color-picker:c3b3b52033dc0b33bd831e731ec6f74fb1e8a69a'
