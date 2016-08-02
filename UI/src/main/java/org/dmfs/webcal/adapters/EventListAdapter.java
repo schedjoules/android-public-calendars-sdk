@@ -17,11 +17,6 @@
 
 package org.dmfs.webcal.adapters;
 
-import java.util.TimeZone;
-
-import org.dmfs.android.webcalreader.provider.WebCalReaderContract;
-import org.dmfs.webcal.R;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
@@ -32,6 +27,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+
+import org.dmfs.android.webcalreader.provider.WebCalReaderContract;
+import org.dmfs.rfc5545.DateTime;
+import org.dmfs.rfc5545.Duration;
+import org.dmfs.webcal.R;
+
+import java.util.TimeZone;
 
 
 /**
@@ -65,19 +67,30 @@ public class EventListAdapter extends CursorAdapter
 
 		boolean allday = cursor.getInt(cursor.getColumnIndex(WebCalReaderContract.Events.IS_ALLDAY)) == 1;
 
-		Time start = new Time(cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TIMZONE)));
-		start.set(cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTSTART)));
-		start.allDay = allday;
-		start.normalize(false);
+		DateTime start = new DateTime(cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTSTART)));
+		String tz = cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TIMZONE));
+		if (tz != null)
+		{
+			start = start.shiftTimeZone(TimeZone.getTimeZone(tz));
+		}
+		else if (allday)
+		{
+			start = start.toAllDay();
+		}
 
-		Time end = new Time(cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TIMZONE)));
-		end.set(cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTEND)));
-		end.allDay = allday;
-		end.normalize(false);
+		DateTime end = new DateTime(cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTEND)));
+		if (tz != null)
+		{
+			end = end.shiftTimeZone(TimeZone.getTimeZone(tz));
+		}
+		else if (allday)
+		{
+			end = end.toAllDay();
+		}
 
 		if (!allday)
 		{
-			tag.text1.setText(DateUtils.formatDateTime(context, start.toMillis(false), DateUtils.FORMAT_SHOW_TIME));
+			tag.text1.setText(DateUtils.formatDateTime(context, start.getTimestamp(), DateUtils.FORMAT_SHOW_TIME));
 		}
 		else
 		{
@@ -86,24 +99,24 @@ public class EventListAdapter extends CursorAdapter
 
 		if (!allday)
 		{
-			if (end.toMillis(false) > start.toMillis(false) + 12 * 3600 * 1000)
+			if (end.after(start.addDuration(new Duration(1, 0, 12 * 3600))))
 			{
-				tag.endTime.setText(DateUtils.formatDateTime(context, end.toMillis(false), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR
-					| DateUtils.FORMAT_ABBREV_MONTH)
-					+ "\n" + DateUtils.formatDateTime(context, end.toMillis(false), DateUtils.FORMAT_SHOW_TIME));
+				tag.endTime.setText(
+					DateUtils.formatDateTime(context, end.getTimestamp(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_MONTH)
+						+ "\n" + DateUtils.formatDateTime(context, end.getTimestamp(), DateUtils.FORMAT_SHOW_TIME));
 				tag.ellipsis.setVisibility(View.VISIBLE);
 				tag.endTime.setVisibility(View.VISIBLE);
 			}
 			else
 			{
-				if (end.toMillis(false) == start.toMillis(false))
+				if (end.equals(start))
 				{
 					tag.ellipsis.setVisibility(View.GONE);
 					tag.endTime.setVisibility(View.GONE);
 				}
 				else
 				{
-					tag.endTime.setText(DateUtils.formatDateTime(context, end.toMillis(false), DateUtils.FORMAT_SHOW_TIME));
+					tag.endTime.setText(DateUtils.formatDateTime(context, end.getTimestamp(), DateUtils.FORMAT_SHOW_TIME));
 					tag.ellipsis.setVisibility(View.VISIBLE);
 					tag.endTime.setVisibility(View.VISIBLE);
 				}
@@ -111,16 +124,14 @@ public class EventListAdapter extends CursorAdapter
 		}
 		else
 		{
-			if (start.toMillis(false) + 24 * 3600 * 1000 < end.toMillis(false))
+			if (end.after(start.addDuration(new Duration(1, 1, 0))))
 			{
 				tag.ellipsis.setVisibility(View.VISIBLE);
 				tag.endTime.setVisibility(View.VISIBLE);
 
-				Time time = new Time(TimeZone.getDefault().getID());
-				time.set(end.monthDay - 1, end.month, end.year);
-
-				tag.endTime.setText(DateUtils.formatDateTime(context, time.toMillis(true), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR
-					| DateUtils.FORMAT_ABBREV_MONTH));
+				tag.endTime
+					.setText(DateUtils.formatDateTime(context, end.swapTimeZone(TimeZone.getDefault()).addDuration(new Duration(-1, 1, 0)).getTimestamp(),
+						DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_MONTH));
 			}
 			else
 			{
