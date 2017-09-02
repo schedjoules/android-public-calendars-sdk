@@ -17,10 +17,6 @@
 
 package org.dmfs.webcal.fragments;
 
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
-import org.dmfs.webcal.R;
-import org.dmfs.webcal.views.RemoteImageView;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,186 +36,191 @@ import android.widget.TextView;
 
 import com.schedjoules.analytics.Analytics;
 
+import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
+import org.dmfs.webcal.R;
+import org.dmfs.webcal.views.RemoteImageView;
+
 
 /**
  * A fragment that shows the title and icon of a calendar. It also has a switch to enable or disable synchronization for that calendar.
- * 
+ *
  * @author Marten Gajda <marten@dmfs.org>
  */
 public class CalendarTitleFragment extends Fragment implements OnClickListener, OnCheckedChangeListener
 {
 
-	public interface SwitchStatusListener
-	{
-		boolean onSyncSwitchToggle(boolean status);
-	}
-
-	private static final String TAG = "CalendarItemFragment";
-
-	private TextView mTitleView;
-
-	private RemoteImageView mRemoteIcon;
-
-	private Switch mSyncSwitch;
-	private LinearLayout mSyncButton;
-
-	private String mCalendarTitle;
-
-	private long mCalendarIconId;
-
-	private long mId;
-
-	private boolean mStarred;
-
-	private boolean mStarVisible = false;
+    public interface SwitchStatusListener
+    {
+        boolean onSyncSwitchToggle(boolean status);
+    }
 
 
-	public static CalendarTitleFragment newInstance()
-	{
-		CalendarTitleFragment result = new CalendarTitleFragment();
-		return result;
-	}
+    private static final String TAG = "CalendarItemFragment";
+
+    private TextView mTitleView;
+
+    private RemoteImageView mRemoteIcon;
+
+    private Switch mSyncSwitch;
+    private LinearLayout mSyncButton;
+
+    private String mCalendarTitle;
+
+    private long mCalendarIconId;
+
+    private long mId;
+
+    private boolean mStarred;
+
+    private boolean mStarVisible = false;
 
 
-	public CalendarTitleFragment()
-	{
-		// Obligatory unparameterized constructor
-	}
+    public static CalendarTitleFragment newInstance()
+    {
+        CalendarTitleFragment result = new CalendarTitleFragment();
+        return result;
+    }
 
 
-	public void setTitle(String title)
-	{
-		mCalendarTitle = title;
-		if (mTitleView != null)
-		{
-			mTitleView.setText(mCalendarTitle);
-		}
-	}
+    public CalendarTitleFragment()
+    {
+        // Obligatory unparameterized constructor
+    }
 
 
-	public void setIcon(long iconId)
-	{
-		mCalendarIconId = iconId;
-		if (mRemoteIcon != null)
-		{
-			mRemoteIcon.setRemoteSource(mCalendarIconId);
-		}
-	}
+    public void setTitle(String title)
+    {
+        mCalendarTitle = title;
+        if (mTitleView != null)
+        {
+            mTitleView.setText(mCalendarTitle);
+        }
+    }
 
 
-	public void enableSwitch(boolean enable)
-	{
-		mSyncButton.setVisibility(enable ? View.VISIBLE : View.GONE);
-		mSyncButton.setEnabled(enable);
-		mSyncSwitch.setEnabled(enable);
-	}
+    public void setIcon(long iconId)
+    {
+        mCalendarIconId = iconId;
+        if (mRemoteIcon != null)
+        {
+            mRemoteIcon.setRemoteSource(mCalendarIconId);
+        }
+    }
 
 
-	public void setSwitchChecked(boolean checked)
-	{
-		mSyncSwitch.setChecked(checked);
-	}
+    public void enableSwitch(boolean enable)
+    {
+        mSyncButton.setVisibility(enable ? View.VISIBLE : View.GONE);
+        mSyncButton.setEnabled(enable);
+        mSyncSwitch.setEnabled(enable);
+    }
 
 
-	public void setId(long id)
-	{
-		mId = id;
-	}
+    public void setSwitchChecked(boolean checked)
+    {
+        mSyncSwitch.setChecked(checked);
+    }
 
 
-	public void setStarred(boolean starred)
-	{
-		mStarred = starred;
-		mStarVisible = true;
-		getActivity().invalidateOptionsMenu();
-	}
+    public void setId(long id)
+    {
+        mId = id;
+    }
 
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		View returnView = inflater.inflate(R.layout.fragment_calendar_sync_button, null);
-
-		mSyncButton = (LinearLayout) returnView.findViewById(R.id.sync_button);
-		mSyncButton.setOnClickListener(this);
-		if (savedInstanceState == null)
-		{
-			mSyncButton.setEnabled(false);
-		}
-
-		mSyncSwitch = (Switch) returnView.findViewById(R.id.calendar_item_sync_switch);
-		mSyncSwitch.setOnCheckedChangeListener(this);
-
-		setHasOptionsMenu(true);
-
-		return returnView;
-	}
+    public void setStarred(boolean starred)
+    {
+        mStarred = starred;
+        mStarVisible = true;
+        getActivity().invalidateOptionsMenu();
+    }
 
 
-	@Override
-	public void onClick(View view)
-	{
-		if (view.getId() == R.id.sync_button && mSyncSwitch.isEnabled())
-		{
-			mSyncSwitch.toggle();
-		}
-		else
-		{
-			Log.e(TAG, "Unknown type of click event passed to Handler");
-		}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View returnView = inflater.inflate(R.layout.fragment_calendar_sync_button, null);
 
-	}
+        mSyncButton = (LinearLayout) returnView.findViewById(R.id.sync_button);
+        mSyncButton.setOnClickListener(this);
+        if (savedInstanceState == null)
+        {
+            mSyncButton.setEnabled(false);
+        }
 
+        mSyncSwitch = (Switch) returnView.findViewById(R.id.calendar_item_sync_switch);
+        mSyncSwitch.setOnCheckedChangeListener(this);
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-	{
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.main, menu);
-		menu.findItem(R.id.menu_starred).setChecked(mStarred).setIcon(mStarred ? R.drawable.ic_fa_star : R.drawable.ic_fa_star_o).setVisible(mStarVisible);
-	}
+        setHasOptionsMenu(true);
+
+        return returnView;
+    }
 
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		int id = item.getItemId();
-		if (id == R.id.menu_starred)
-		{
-			boolean checked = !item.isChecked();
-			item.setChecked(checked);
-			// Selectors don't seem to work with menu options, so we have to hard code the icons.
-			item.setIcon(checked ? R.drawable.ic_fa_star : R.drawable.ic_fa_star_o);
-			ContentItem.setStarred(getActivity(), mId, checked);
-			Analytics.event("starred", "calendar-action", checked ? "starred" : "un-starred", null, String.valueOf(mId), null);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+    @Override
+    public void onClick(View view)
+    {
+        if (view.getId() == R.id.sync_button && mSyncSwitch.isEnabled())
+        {
+            mSyncSwitch.toggle();
+        }
+        else
+        {
+            Log.e(TAG, "Unknown type of click event passed to Handler");
+        }
+
+    }
 
 
-	@Override
-	public void onCheckedChanged(CompoundButton view, boolean checked)
-	{
-		if (view.getId() == R.id.calendar_item_sync_switch)
-		{
-			Fragment parentFragment = getParentFragment();
-			Activity parentActivity = getActivity();
-			SwitchStatusListener listener = null;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main, menu);
+        menu.findItem(R.id.menu_starred).setChecked(mStarred).setIcon(mStarred ? R.drawable.ic_fa_star : R.drawable.ic_fa_star_o).setVisible(mStarVisible);
+    }
 
-			if (parentFragment instanceof SwitchStatusListener)
-			{
-				listener = (SwitchStatusListener) parentFragment;
-			}
-			else if (parentActivity instanceof SwitchStatusListener)
-			{
-				listener = (SwitchStatusListener) parentActivity;
-			}
 
-			if (listener != null)
-			{
-				listener.onSyncSwitchToggle(checked);
-			}
-		}
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+        if (id == R.id.menu_starred)
+        {
+            boolean checked = !item.isChecked();
+            item.setChecked(checked);
+            // Selectors don't seem to work with menu options, so we have to hard code the icons.
+            item.setIcon(checked ? R.drawable.ic_fa_star : R.drawable.ic_fa_star_o);
+            ContentItem.setStarred(getActivity(), mId, checked);
+            Analytics.event("starred", "calendar-action", checked ? "starred" : "un-starred", null, String.valueOf(mId), null);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onCheckedChanged(CompoundButton view, boolean checked)
+    {
+        if (view.getId() == R.id.calendar_item_sync_switch)
+        {
+            Fragment parentFragment = getParentFragment();
+            Activity parentActivity = getActivity();
+            SwitchStatusListener listener = null;
+
+            if (parentFragment instanceof SwitchStatusListener)
+            {
+                listener = (SwitchStatusListener) parentFragment;
+            }
+            else if (parentActivity instanceof SwitchStatusListener)
+            {
+                listener = (SwitchStatusListener) parentActivity;
+            }
+
+            if (listener != null)
+            {
+                listener.onSyncSwitchToggle(checked);
+            }
+        }
+    }
 }

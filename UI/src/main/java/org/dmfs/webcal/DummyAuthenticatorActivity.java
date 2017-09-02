@@ -25,20 +25,20 @@ import android.os.Bundle;
 /**
  * An activity that serves as AuthenticatorActivity. It just launches {@link MainActivity} and finishes. We need it to satisfy Android when the users attempts
  * to create a new account from the device settings.
- * 
+ *
  * @author Marten Gajda <marten@dmfs.org>
  */
 public class DummyAuthenticatorActivity extends AccountAuthenticatorActivity
 {
-	@Override
-	protected void onCreate(Bundle icicle)
-	{
-		super.onCreate(icicle);
+    @Override
+    protected void onCreate(Bundle icicle)
+    {
+        super.onCreate(icicle);
 
-		Intent intent = new Intent(this, MainActivity.class);
-		startActivity(intent);
-		setResult(RESULT_OK);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        setResult(RESULT_OK);
 
-		finish();
-	}
+        finish();
+    }
 }

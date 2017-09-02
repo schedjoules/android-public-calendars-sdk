@@ -37,134 +37,136 @@ import java.io.IOException;
 
 /**
  * Handles any incoming push messages.
- * 
+ *
  * @author Marten Gajda <marten@dmfs.org>
  */
 public class PushHelperService extends IntentService
 {
-	private final static String EXTRA_COMMAND = "org.dmfs.webcal.push.COMMAND";
-	private final static String EXTRA_PUSH_MESSAGE = "org.dmfs.webcal.push.PUSH_MESSAGE";
+    private final static String EXTRA_COMMAND = "org.dmfs.webcal.push.COMMAND";
+    private final static String EXTRA_PUSH_MESSAGE = "org.dmfs.webcal.push.PUSH_MESSAGE";
 
-	private final static String COMMAND_HANDLE_PUSH = "HANDLE_PUSH";
-
-
-	/**
-	 * Static helper method to handle a push message. It launches the {@link PushHelperService} with the right parameters.
-	 * 
-	 * @param context
-	 *            A {@link Context}.
-	 * @param message
-	 *            The push message data.
-	 */
-	public static void handlePushMessage(Context context, Bundle message)
-	{
-		Intent addIntent = new Intent(context, PushHelperService.class);
-		addIntent.putExtra(EXTRA_COMMAND, COMMAND_HANDLE_PUSH);
-		addIntent.putExtra(EXTRA_PUSH_MESSAGE, message);
-		context.startService(addIntent);
-	}
+    private final static String COMMAND_HANDLE_PUSH = "HANDLE_PUSH";
 
 
-	public PushHelperService()
-	{
-		super("PushHelperService");
-	}
+    /**
+     * Static helper method to handle a push message. It launches the {@link PushHelperService} with the right parameters.
+     *
+     * @param context
+     *         A {@link Context}.
+     * @param message
+     *         The push message data.
+     */
+    public static void handlePushMessage(Context context, Bundle message)
+    {
+        Intent addIntent = new Intent(context, PushHelperService.class);
+        addIntent.putExtra(EXTRA_COMMAND, COMMAND_HANDLE_PUSH);
+        addIntent.putExtra(EXTRA_PUSH_MESSAGE, message);
+        context.startService(addIntent);
+    }
 
 
-	@Override
-	protected void onHandleIntent(Intent intent)
-	{
-		String command = intent.getStringExtra(EXTRA_COMMAND);
-
-		if (COMMAND_HANDLE_PUSH.equals(command))
-		{
-			Bundle message = intent.getParcelableExtra(EXTRA_PUSH_MESSAGE);
-
-			if (message == null || discardMessage(message))
-			{
-				return;
-			}
-
-			try
-			{
-				NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-				Notification notification = XmlLoader.loadNotification(this, R.xml.schedjoules_notification, new BundleTokenResolver(message));
-				notificationManager.notify(1, notification);
-			}
-			catch (IOException | XmlPullParserException | XmlObjectPullParserException e)
-			{
-				// ignore
-			}
-		}
-	}
+    public PushHelperService()
+    {
+        super("PushHelperService");
+    }
 
 
-	/**
-	 * Checks whether the message should be discarded or shown.
-	 * 
-	 * @param message
-	 *            The message
-	 * @return <code>true</code> if the message should be discarded, <code>false</code> if it should be presented to the user.
-	 */
-	private boolean discardMessage(Bundle message)
-	{
-		try
-		{
-			int versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+    @Override
+    protected void onHandleIntent(Intent intent)
+    {
+        String command = intent.getStringExtra(EXTRA_COMMAND);
 
-			if (message.containsKey("target-version") && versionCode != toInt(message.getString("target-version"), 0))
-			{
-				// this is directed to a different app version
-				return true;
-			}
+        if (COMMAND_HANDLE_PUSH.equals(command))
+        {
+            Bundle message = intent.getParcelableExtra(EXTRA_PUSH_MESSAGE);
 
-			if (message.containsKey("max-target-version") && versionCode > toInt(message.getString("max-target-version"), Integer.MAX_VALUE))
-			{
-				// this is directed to a different app version
-				return true;
-			}
+            if (message == null || discardMessage(message))
+            {
+                return;
+            }
 
-			if (message.containsKey("min-target-version") && versionCode < toInt(message.getString("min-target-version"), 0))
-			{
-				// this is directed to a different app version
-				return true;
-			}
-
-			if (message.containsKey("show") && !Boolean.parseBoolean(message.getString("show")))
-			{
-				return true;
-			}
-
-			return TextUtils.isEmpty(message.getString("title")) || TextUtils.isEmpty(message.getString("message"));
-		}
-		catch (NameNotFoundException e)
-		{
-			// this should be impossible
-		}
-
-		return false;
-	}
+            try
+            {
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                Notification notification = XmlLoader.loadNotification(this, R.xml.schedjoules_notification, new BundleTokenResolver(message));
+                notificationManager.notify(1, notification);
+            }
+            catch (IOException | XmlPullParserException | XmlObjectPullParserException e)
+            {
+                // ignore
+            }
+        }
+    }
 
 
-	/**
-	 * Convert the given {@link String} to an int with a fallback value if the conversion fails.
-	 * 
-	 * @param string
-	 *            The String to convert.
-	 * @param defaultValue
-	 *            The value to return if the string didn't contain an int.
-	 * @return Either the converted value or the default value.
-	 */
-	private int toInt(String string, int defaultValue)
-	{
-		try
-		{
-			return Integer.parseInt(string);
-		}
-		catch (NumberFormatException e)
-		{
-			return defaultValue;
-		}
-	}
+    /**
+     * Checks whether the message should be discarded or shown.
+     *
+     * @param message
+     *         The message
+     *
+     * @return <code>true</code> if the message should be discarded, <code>false</code> if it should be presented to the user.
+     */
+    private boolean discardMessage(Bundle message)
+    {
+        try
+        {
+            int versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+
+            if (message.containsKey("target-version") && versionCode != toInt(message.getString("target-version"), 0))
+            {
+                // this is directed to a different app version
+                return true;
+            }
+
+            if (message.containsKey("max-target-version") && versionCode > toInt(message.getString("max-target-version"), Integer.MAX_VALUE))
+            {
+                // this is directed to a different app version
+                return true;
+            }
+
+            if (message.containsKey("min-target-version") && versionCode < toInt(message.getString("min-target-version"), 0))
+            {
+                // this is directed to a different app version
+                return true;
+            }
+
+            if (message.containsKey("show") && !Boolean.parseBoolean(message.getString("show")))
+            {
+                return true;
+            }
+
+            return TextUtils.isEmpty(message.getString("title")) || TextUtils.isEmpty(message.getString("message"));
+        }
+        catch (NameNotFoundException e)
+        {
+            // this should be impossible
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Convert the given {@link String} to an int with a fallback value if the conversion fails.
+     *
+     * @param string
+     *         The String to convert.
+     * @param defaultValue
+     *         The value to return if the string didn't contain an int.
+     *
+     * @return Either the converted value or the default value.
+     */
+    private int toInt(String string, int defaultValue)
+    {
+        try
+        {
+            return Integer.parseInt(string);
+        }
+        catch (NumberFormatException e)
+        {
+            return defaultValue;
+        }
+    }
 
 }

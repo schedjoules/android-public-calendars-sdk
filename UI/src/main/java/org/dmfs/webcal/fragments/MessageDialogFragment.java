@@ -17,10 +17,6 @@
 
 package org.dmfs.webcal.fragments;
 
-import org.dmfs.android.retentionmagic.SupportDialogFragment;
-import org.dmfs.android.retentionmagic.annotations.Parameter;
-import org.dmfs.webcal.R;
-
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -32,6 +28,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
+import org.dmfs.android.retentionmagic.SupportDialogFragment;
+import org.dmfs.android.retentionmagic.annotations.Parameter;
+import org.dmfs.webcal.R;
+
 
 /**
  * A simple message dialog.
@@ -41,74 +41,75 @@ import android.widget.TextView;
 public class MessageDialogFragment extends SupportDialogFragment
 {
 
-	private final static String ARG_TITLE_ID = "title_id";
-	private final static String ARG_MESSAGE_TEXT = "message_text";
+    private final static String ARG_TITLE_ID = "title_id";
+    private final static String ARG_MESSAGE_TEXT = "message_text";
 
-	@Parameter(key = ARG_TITLE_ID)
-	private int mTitleId;
+    @Parameter(key = ARG_TITLE_ID)
+    private int mTitleId;
 
-	@Parameter(key = ARG_MESSAGE_TEXT)
-	private String mMessageText;
-
-
-	public MessageDialogFragment()
-	{
-	}
+    @Parameter(key = ARG_MESSAGE_TEXT)
+    private String mMessageText;
 
 
-	/**
-	 * Create a {@link MessageDialogFragment} with the given title and message text value and show it.
-	 *
-	 * @param manager
-	 *            A {@link FragmentManager}.
-	 * @param titleId
-	 *            The resource id of the title.
-	 * @param messageText
-	 *            The text to show, may contain html.
-	 * @return A new {@link MessageDialogFragment}.
-	 */
-	public static void show(FragmentManager manager, int titleId, String messageText)
-	{
-		MessageDialogFragment fragment = new MessageDialogFragment();
-		Bundle args = new Bundle();
-		args.putInt(ARG_TITLE_ID, titleId);
-		args.putString(ARG_MESSAGE_TEXT, messageText);
-		fragment.setArguments(args);
-		fragment.show(manager, null);
-	}
+    public MessageDialogFragment()
+    {
+    }
 
 
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState)
-	{
-		Dialog dialog = super.onCreateDialog(savedInstanceState);
+    /**
+     * Create a {@link MessageDialogFragment} with the given title and message text value and show it.
+     *
+     * @param manager
+     *         A {@link FragmentManager}.
+     * @param titleId
+     *         The resource id of the title.
+     * @param messageText
+     *         The text to show, may contain html.
+     *
+     * @return A new {@link MessageDialogFragment}.
+     */
+    public static void show(FragmentManager manager, int titleId, String messageText)
+    {
+        MessageDialogFragment fragment = new MessageDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_TITLE_ID, titleId);
+        args.putString(ARG_MESSAGE_TEXT, messageText);
+        fragment.setArguments(args);
+        fragment.show(manager, null);
+    }
 
-		// hide the actual dialog title, we have our own...
-		dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-		return dialog;
-	}
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+    {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+        // hide the actual dialog title, we have our own...
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+    }
 
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		View view = inflater.inflate(R.layout.fragment_message_dialog, container);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View view = inflater.inflate(R.layout.fragment_message_dialog, container);
 
-		TextView messageView = (TextView) view.findViewById(android.R.id.text1);
-		messageView.setText(mMessageText != null && mMessageText.contains("</") ? Html.fromHtml(mMessageText) : mMessageText);
+        TextView messageView = (TextView) view.findViewById(android.R.id.text1);
+        messageView.setText(mMessageText != null && mMessageText.contains("</") ? Html.fromHtml(mMessageText) : mMessageText);
 
-		((TextView) view.findViewById(android.R.id.title)).setText(mTitleId);
+        ((TextView) view.findViewById(android.R.id.title)).setText(mTitleId);
 
-		view.findViewById(android.R.id.button1).setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				MessageDialogFragment.this.dismiss();
-			}
-		});
+        view.findViewById(android.R.id.button1).setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                MessageDialogFragment.this.dismiss();
+            }
+        });
 
-		return view;
-	}
+        return view;
+    }
 
 }

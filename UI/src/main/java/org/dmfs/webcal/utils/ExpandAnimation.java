@@ -25,66 +25,66 @@ import android.view.animation.Transformation;
 
 /**
  * An {@link Animation} that expands or collapses a view vertically.
- * 
+ *
  * @author Marten Gajda <marten@dmfs.org>
  */
 public class ExpandAnimation extends Animation
 {
-	private final View mView;
-	private final boolean mExpand;
-	private final int mInitialHeight;
+    private final View mView;
+    private final boolean mExpand;
+    private final int mInitialHeight;
 
 
-	public ExpandAnimation(View view, boolean expand, long durationMillis)
-	{
-		view.measure(MeasureSpec.makeMeasureSpec(((View) view.getParent()).getMeasuredWidth(), MeasureSpec.AT_MOST),
-			MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+    public ExpandAnimation(View view, boolean expand, long durationMillis)
+    {
+        view.measure(MeasureSpec.makeMeasureSpec(((View) view.getParent()).getMeasuredWidth(), MeasureSpec.AT_MOST),
+                MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 
-		mInitialHeight = view.getMeasuredHeight();
+        mInitialHeight = view.getMeasuredHeight();
 
-		if (expand)
-		{
-			view.getLayoutParams().height = 0;
-		}
-		else
-		{
-			view.getLayoutParams().height = mInitialHeight;
-		}
+        if (expand)
+        {
+            view.getLayoutParams().height = 0;
+        }
+        else
+        {
+            view.getLayoutParams().height = mInitialHeight;
+        }
 
-		view.setVisibility(View.VISIBLE);
+        view.setVisibility(View.VISIBLE);
 
-		mView = view;
-		mExpand = expand;
-		setDuration(durationMillis);
-	}
-
-
-	@Override
-	protected void applyTransformation(float interpolatedTime, Transformation t)
-	{
-		int newHeight = 0;
-		if (mExpand)
-		{
-			newHeight = (int) (mInitialHeight * interpolatedTime);
-		}
-		else
-		{
-			newHeight = (int) (mInitialHeight * (1 - interpolatedTime));
-		}
-		mView.getLayoutParams().height = newHeight;
-		// v.setAlpha(expand ? interpolatedTime : 1 - interpolatedTime);
-		mView.requestLayout();
-
-		if (interpolatedTime == 1 && !mExpand)
-		{
-			mView.setVisibility(View.GONE);
-		}
-	}
+        mView = view;
+        mExpand = expand;
+        setDuration(durationMillis);
+    }
 
 
-	@Override
-	public boolean willChangeBounds()
-	{
-		return true;
-	}
+    @Override
+    protected void applyTransformation(float interpolatedTime, Transformation t)
+    {
+        int newHeight = 0;
+        if (mExpand)
+        {
+            newHeight = (int) (mInitialHeight * interpolatedTime);
+        }
+        else
+        {
+            newHeight = (int) (mInitialHeight * (1 - interpolatedTime));
+        }
+        mView.getLayoutParams().height = newHeight;
+        // v.setAlpha(expand ? interpolatedTime : 1 - interpolatedTime);
+        mView.requestLayout();
+
+        if (interpolatedTime == 1 && !mExpand)
+        {
+            mView.setVisibility(View.GONE);
+        }
+    }
+
+
+    @Override
+    public boolean willChangeBounds()
+    {
+        return true;
+    }
 }

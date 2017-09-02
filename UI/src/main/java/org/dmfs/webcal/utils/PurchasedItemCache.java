@@ -23,43 +23,43 @@ import java.util.Set;
 
 public enum PurchasedItemCache
 {
-	INSTANCE;
+    INSTANCE;
 
-	private Set<String> mPurchasedItems;
-
-
-	public void addItem(String item)
-	{
-		synchronized (this)
-		{
-			Set<String> items = mPurchasedItems;
-			if (items == null)
-			{
-				items = new HashSet<String>(16);
-				mPurchasedItems = items;
-			}
-			mPurchasedItems.add(item);
-		}
-	}
+    private Set<String> mPurchasedItems;
 
 
-	public boolean hasItem(String item)
-	{
-		synchronized (this)
-		{
-			return mPurchasedItems != null && mPurchasedItems.contains(item);
-		}
-	}
+    public void addItem(String item)
+    {
+        synchronized (this)
+        {
+            Set<String> items = mPurchasedItems;
+            if (items == null)
+            {
+                items = new HashSet<String>(16);
+                mPurchasedItems = items;
+            }
+            mPurchasedItems.add(item);
+        }
+    }
 
 
-	public void removeItem(String item)
-	{
-		synchronized (this)
-		{
-			if (mPurchasedItems != null)
-			{
-				mPurchasedItems.remove(item);
-			}
-		}
-	}
+    public boolean hasItem(String item)
+    {
+        synchronized (this)
+        {
+            return mPurchasedItems != null && mPurchasedItems.contains(item);
+        }
+    }
+
+
+    public void removeItem(String item)
+    {
+        synchronized (this)
+        {
+            if (mPurchasedItems != null)
+            {
+                mPurchasedItems.remove(item);
+            }
+        }
+    }
 }

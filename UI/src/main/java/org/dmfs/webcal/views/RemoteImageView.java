@@ -17,120 +17,120 @@
 
 package org.dmfs.webcal.views;
 
-import org.dmfs.webcal.utils.ImageProxy;
-import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import org.dmfs.webcal.utils.ImageProxy;
+import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
+
 
 /**
  * An {@link ImageView} that can load its content asynchronously.
- * 
+ *
  * @author Arjun Naik
  * @author Marten Gajda <marten@dmfs.org>
  */
 public class RemoteImageView extends ImageView implements ImageAvailableListener
 {
-	/**
-	 * The duration of the fade-in animation when the image pops up the first time.
-	 */
-	private final static int ANIMATION_DURATION = 250; // ms
+    /**
+     * The duration of the fade-in animation when the image pops up the first time.
+     */
+    private final static int ANIMATION_DURATION = 250; // ms
 
-	private ImageProxy mImageProxy;
-	private long mSource;
-
-
-	public RemoteImageView(Context context)
-	{
-		super(context);
-		mImageProxy = ImageProxy.getInstance(context);
-	}
+    private ImageProxy mImageProxy;
+    private long mSource;
 
 
-	public RemoteImageView(Context context, AttributeSet attrs)
-	{
-		super(context, attrs);
-		mImageProxy = ImageProxy.getInstance(context);
-	}
+    public RemoteImageView(Context context)
+    {
+        super(context);
+        mImageProxy = ImageProxy.getInstance(context);
+    }
 
 
-	public RemoteImageView(Context context, AttributeSet attrs, int defStyle)
-	{
-		super(context, attrs, defStyle);
-		mImageProxy = ImageProxy.getInstance(context);
-	}
+    public RemoteImageView(Context context, AttributeSet attrs)
+    {
+        super(context, attrs);
+        mImageProxy = ImageProxy.getInstance(context);
+    }
 
 
-	/**
-	 * Set the id of the image.
-	 * 
-	 * @param iconId
-	 *            The image id.
-	 */
-	public void setRemoteSource(long iconId)
-	{
-		setRemoteSource(iconId, false);
-	}
+    public RemoteImageView(Context context, AttributeSet attrs, int defStyle)
+    {
+        super(context, attrs, defStyle);
+        mImageProxy = ImageProxy.getInstance(context);
+    }
 
 
-	/**
-	 * Set the id of the image.
-	 * 
-	 * @param iconId
-	 *            The image id.
-	 * @param useSpaceIfNoImage
-	 *            Whether the view should be <code>GONE</code> if <code>iconId</code> is <code>-1</code>.
-	 */
-	public void setRemoteSource(long iconId, boolean useSpaceIfNoImage)
-	{
-		if (iconId == -1 && !useSpaceIfNoImage)
-		{
-			// no icon
-			setVisibility(GONE);
-			return;
-		}
-		setVisibility(VISIBLE);
-
-		Drawable image = mImageProxy.getImage(iconId, this);
-
-		if (image != null)
-		{
-			setImageDrawable(image);
-		}
-		else
-		{
-			setImageDrawable(null);
-		}
-
-		requestLayout();
-		mSource = iconId;
-	}
+    /**
+     * Set the id of the image.
+     *
+     * @param iconId
+     *         The image id.
+     */
+    public void setRemoteSource(long iconId)
+    {
+        setRemoteSource(iconId, false);
+    }
 
 
-	@Override
-	public void imageAvailable(long iconId, Drawable drawable)
-	{
-		if (iconId == mSource)
-		{
-			// ensure we fade in the icon softly if there was no icon before
+    /**
+     * Set the id of the image.
+     *
+     * @param iconId
+     *         The image id.
+     * @param useSpaceIfNoImage
+     *         Whether the view should be <code>GONE</code> if <code>iconId</code> is <code>-1</code>.
+     */
+    public void setRemoteSource(long iconId, boolean useSpaceIfNoImage)
+    {
+        if (iconId == -1 && !useSpaceIfNoImage)
+        {
+            // no icon
+            setVisibility(GONE);
+            return;
+        }
+        setVisibility(VISIBLE);
 
-			boolean animate = getDrawable() == null;
+        Drawable image = mImageProxy.getImage(iconId, this);
 
-			if (animate)
-			{
-				setAlpha(0f);
-			}
+        if (image != null)
+        {
+            setImageDrawable(image);
+        }
+        else
+        {
+            setImageDrawable(null);
+        }
 
-			setImageDrawable(drawable);
-			setVisibility(VISIBLE);
+        requestLayout();
+        mSource = iconId;
+    }
 
-			if (animate)
-			{
-				animate().alpha(1).setDuration(ANIMATION_DURATION).start();
-			}
-		}
-	}
+
+    @Override
+    public void imageAvailable(long iconId, Drawable drawable)
+    {
+        if (iconId == mSource)
+        {
+            // ensure we fade in the icon softly if there was no icon before
+
+            boolean animate = getDrawable() == null;
+
+            if (animate)
+            {
+                setAlpha(0f);
+            }
+
+            setImageDrawable(drawable);
+            setVisibility(VISIBLE);
+
+            if (animate)
+            {
+                animate().alpha(1).setDuration(ANIMATION_DURATION).start();
+            }
+        }
+    }
 }

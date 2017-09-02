@@ -24,16 +24,16 @@ import android.os.IBinder;
 
 /**
  * A service that doesn't do anything.
- * 
+ *
  * @author Marten Gajda <marten@dmfs.org>
  */
 public class EmptyService extends Service
 {
 
-	@Override
-	public IBinder onBind(Intent intent)
-	{
-		return null;
-	}
+    @Override
+    public IBinder onBind(Intent intent)
+    {
+        return null;
+    }
 
 }

@@ -28,99 +28,100 @@ import org.dmfs.webcal.fragments.CategoriesListFragment;
 
 /**
  * A pager adapter for the sections of a specific page.
- * 
+ *
  * @author Arjun Naik <arjun@arjunnaik.in>
  * @author Marten Gajda <marten@dmfs.org>
  */
 public class SectionsPagerAdapter extends FragmentStatePagerAdapter
 {
-	/**
-	 * The projection this class expects when it loads the values from the cursor.
-	 */
-	public final static String[] PROJECTION = new String[] { CalendarContentContract.Section._ID, CalendarContentContract.Section.TITLE,
-		CalendarContentContract.Section.PARENT_ITEM };
+    /**
+     * The projection this class expects when it loads the values from the cursor.
+     */
+    public final static String[] PROJECTION = new String[] {
+            CalendarContentContract.Section._ID, CalendarContentContract.Section.TITLE,
+            CalendarContentContract.Section.PARENT_ITEM };
 
-	private Cursor mSectionsCursor;
-	private long mPageIcon;
-
-
-	public SectionsPagerAdapter(FragmentManager fm, long pageIcon)
-	{
-		super(fm);
-		mPageIcon = pageIcon;
-	}
+    private Cursor mSectionsCursor;
+    private long mPageIcon;
 
 
-	@Override
-	public int getItemPosition(Object object)
-	{
-		// check if the fragment is still in the right position
-		if (object instanceof CategoriesListFragment)
-		{
-			CategoriesListFragment fragment = (CategoriesListFragment) object;
-			if (mSectionsCursor != null && mSectionsCursor.moveToPosition(fragment.getSectionPos()))
-			{
-				// check if the ids are still the same
-				return fragment.getSectionId() == mSectionsCursor.getLong(0) ? POSITION_UNCHANGED : POSITION_NONE;
-			}
-		}
-		return POSITION_NONE;
-	}
+    public SectionsPagerAdapter(FragmentManager fm, long pageIcon)
+    {
+        super(fm);
+        mPageIcon = pageIcon;
+    }
 
 
-	@Override
-	public Fragment getItem(int position)
-	{
-		if (mSectionsCursor != null && mSectionsCursor.moveToPosition(position))
-		{
-			// return a new CategoriesListFragment for this section
-			long sectionId = mSectionsCursor.getLong(0);
-			long parentItemId = mSectionsCursor.getLong(2);
-			return CategoriesListFragment.newInstance(sectionId, parentItemId, position, mPageIcon);
-		}
-		return null;
-	}
+    @Override
+    public int getItemPosition(Object object)
+    {
+        // check if the fragment is still in the right position
+        if (object instanceof CategoriesListFragment)
+        {
+            CategoriesListFragment fragment = (CategoriesListFragment) object;
+            if (mSectionsCursor != null && mSectionsCursor.moveToPosition(fragment.getSectionPos()))
+            {
+                // check if the ids are still the same
+                return fragment.getSectionId() == mSectionsCursor.getLong(0) ? POSITION_UNCHANGED : POSITION_NONE;
+            }
+        }
+        return POSITION_NONE;
+    }
 
 
-	@Override
-	public CharSequence getPageTitle(int position)
-	{
-		if (mSectionsCursor != null && mSectionsCursor.moveToPosition(position))
-		{
-			return mSectionsCursor.getString(1);
-		}
-		else
-		{
-			return null;
-		}
-	}
+    @Override
+    public Fragment getItem(int position)
+    {
+        if (mSectionsCursor != null && mSectionsCursor.moveToPosition(position))
+        {
+            // return a new CategoriesListFragment for this section
+            long sectionId = mSectionsCursor.getLong(0);
+            long parentItemId = mSectionsCursor.getLong(2);
+            return CategoriesListFragment.newInstance(sectionId, parentItemId, position, mPageIcon);
+        }
+        return null;
+    }
 
 
-	@Override
-	public int getCount()
-	{
-		if (mSectionsCursor != null)
-		{
-			return mSectionsCursor.getCount();
-		}
-		return 0;
-	}
+    @Override
+    public CharSequence getPageTitle(int position)
+    {
+        if (mSectionsCursor != null && mSectionsCursor.moveToPosition(position))
+        {
+            return mSectionsCursor.getString(1);
+        }
+        else
+        {
+            return null;
+        }
+    }
 
 
-	/**
-	 * Replace the current cursor with a new one and update the pages.
-	 * 
-	 * @param cursor
-	 *            The new Cursor or <code>null</code>.
-	 */
-	public void swapCursor(Cursor cursor)
-	{
-		mSectionsCursor = cursor;
+    @Override
+    public int getCount()
+    {
+        if (mSectionsCursor != null)
+        {
+            return mSectionsCursor.getCount();
+        }
+        return 0;
+    }
 
-		if (cursor != null)
-		{
-			notifyDataSetChanged();
-		}
-	}
+
+    /**
+     * Replace the current cursor with a new one and update the pages.
+     *
+     * @param cursor
+     *         The new Cursor or <code>null</code>.
+     */
+    public void swapCursor(Cursor cursor)
+    {
+        mSectionsCursor = cursor;
+
+        if (cursor != null)
+        {
+            notifyDataSetChanged();
+        }
+    }
 
 }

@@ -26,31 +26,32 @@ import android.util.DisplayMetrics;
 
 /**
  * Helper to perform certain operations on images.
- * 
+ *
  * @author Marten Gajda <marten@dmfs.org>
  */
 public class BitmapUtils
 {
 
-	/**
-	 * Scale the given {@link BitmapDrawable} to the given size.
-	 * 
-	 * @param resources
-	 *            A {@link Resources} instance.
-	 * @param drawable
-	 *            The {@link BitmapDrawable} to scale.
-	 * @param dpWidth
-	 *            The new height.
-	 * @param dpHeight
-	 *            The new Width.
-	 * @return The scaled {@link Drawable}.
-	 */
-	public final static Drawable scaleDrawable(Resources resources, BitmapDrawable drawable, float dpWidth, float dpHeight)
-	{
-		DisplayMetrics metrics = resources.getDisplayMetrics();
+    /**
+     * Scale the given {@link BitmapDrawable} to the given size.
+     *
+     * @param resources
+     *         A {@link Resources} instance.
+     * @param drawable
+     *         The {@link BitmapDrawable} to scale.
+     * @param dpWidth
+     *         The new height.
+     * @param dpHeight
+     *         The new Width.
+     *
+     * @return The scaled {@link Drawable}.
+     */
+    public final static Drawable scaleDrawable(Resources resources, BitmapDrawable drawable, float dpWidth, float dpHeight)
+    {
+        DisplayMetrics metrics = resources.getDisplayMetrics();
 
-		Bitmap original = drawable.getBitmap();
-		Bitmap b = Bitmap.createScaledBitmap(original, (int) (dpWidth * metrics.density), (int) (dpHeight * metrics.density), true);
-		return new BitmapDrawable(resources, b);
-	}
+        Bitmap original = drawable.getBitmap();
+        Bitmap b = Bitmap.createScaledBitmap(original, (int) (dpWidth * metrics.density), (int) (dpHeight * metrics.density), true);
+        return new BitmapDrawable(resources, b);
+    }
 }

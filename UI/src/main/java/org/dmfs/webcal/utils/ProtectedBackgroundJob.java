@@ -24,37 +24,37 @@ import android.os.AsyncTask;
 
 /**
  * An {@link AsyncTask} that starts an empty service during it's runtime to ensure it's not killed during it's operation.
- * 
- * @author Marten Gajda <marten@dmfs.org>
- * 
+ *
  * @param <T>
  * @param <R>
+ *
+ * @author Marten Gajda <marten@dmfs.org>
  */
 public abstract class ProtectedBackgroundJob<T, R> extends AsyncTask<T, Void, R>
 {
-	private final Context mApplicationContext;
+    private final Context mApplicationContext;
 
 
-	public ProtectedBackgroundJob(Context context)
-	{
-		mApplicationContext = context.getApplicationContext();
-	}
+    public ProtectedBackgroundJob(Context context)
+    {
+        mApplicationContext = context.getApplicationContext();
+    }
 
 
-	@Override
-	protected final void onPreExecute()
-	{
-		mApplicationContext.startService(new Intent(mApplicationContext, EmptyService.class));
-	}
+    @Override
+    protected final void onPreExecute()
+    {
+        mApplicationContext.startService(new Intent(mApplicationContext, EmptyService.class));
+    }
 
 
-	protected abstract void doPostExecute(R result);
+    protected abstract void doPostExecute(R result);
 
 
-	@Override
-	protected final void onPostExecute(R result)
-	{
-		doPostExecute(result);
-		mApplicationContext.stopService(new Intent(mApplicationContext, EmptyService.class));
-	}
+    @Override
+    protected final void onPostExecute(R result)
+    {
+        doPostExecute(result);
+        mApplicationContext.stopService(new Intent(mApplicationContext, EmptyService.class));
+    }
 }

@@ -25,6 +25,6 @@ import org.dmfs.android.retentionmagic.SupportFragment;
 public abstract class ActionBarFragment extends SupportFragment
 {
 
-	public abstract void setupActionBar(View view);
+    public abstract void setupActionBar(View view);
 
 }

@@ -45,132 +45,133 @@ import java.util.Locale;
  */
 public class EventsPreviewDetailFragment extends SupportFragment
 {
-	private static final String ARG_PREVIEW_EVENT = "PREVIEW_EVENT";
-	private static final String ARG_CALENDAR_NAME = "CALENDAR_NAME";
-	private static final String ARG_CALENDAR_IMAGE = "CALENDAR_IMAGE";
-	private static final String ARG_PAGE_TITLE = "PAGE_TITLE";
+    private static final String ARG_PREVIEW_EVENT = "PREVIEW_EVENT";
+    private static final String ARG_CALENDAR_NAME = "CALENDAR_NAME";
+    private static final String ARG_CALENDAR_IMAGE = "CALENDAR_IMAGE";
+    private static final String ARG_PAGE_TITLE = "PAGE_TITLE";
 
-	private final static int DEFAULT_DATEUTILS_FLAGS = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY;
-	private final static Duration ONEDAY = new Duration(1, 1, 0);
+    private final static int DEFAULT_DATEUTILS_FLAGS = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY;
+    private final static Duration ONEDAY = new Duration(1, 1, 0);
 
-	@Parameter(key = ARG_PREVIEW_EVENT)
-	private Event mPreviewEvent;
+    @Parameter(key = ARG_PREVIEW_EVENT)
+    private Event mPreviewEvent;
 
-	@Parameter(key = ARG_CALENDAR_IMAGE)
-	private long mCalendarIconId;
+    @Parameter(key = ARG_CALENDAR_IMAGE)
+    private long mCalendarIconId;
 
-	@Parameter(key = ARG_CALENDAR_NAME)
-	private String mCalendarName;
+    @Parameter(key = ARG_CALENDAR_NAME)
+    private String mCalendarName;
 
-	@Parameter(key = ARG_PAGE_TITLE)
-	private String mTitle;
-
-
-	public EventsPreviewDetailFragment()
-	{
-		// Required empty public constructor
-	}
+    @Parameter(key = ARG_PAGE_TITLE)
+    private String mTitle;
 
 
-	/**
-	 * Create a new {@link EventsPreviewDetailFragment} for the given {@link Event}, calendar name, icon and page title.
-	 *
-	 * @param event
-	 *            The {@link Event}.
-	 * @param calendarName
-	 *            The name of the calendar.
-	 * @param mCalendarIconId
-	 *            The icon of the calendar. May be -1 if there is no icon.
-	 * @param pageTitle
-	 *            The title of the page this calendar belongs to.
-	 * @return A new {@link EventsPreviewDetailFragment}.
-	 */
-	public static EventsPreviewDetailFragment newInstance(Event event, String calendarName, long mCalendarIconId, String pageTitle)
-	{
-		EventsPreviewDetailFragment fragment = new EventsPreviewDetailFragment();
-		Bundle args = new Bundle();
-		args.putParcelable(ARG_PREVIEW_EVENT, event);
-		args.putString(ARG_CALENDAR_NAME, calendarName);
-		args.putLong(ARG_CALENDAR_IMAGE, mCalendarIconId);
-		args.putString(ARG_PAGE_TITLE, pageTitle);
-		fragment.setArguments(args);
-		return fragment;
-	}
+    public EventsPreviewDetailFragment()
+    {
+        // Required empty public constructor
+    }
 
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		View view = inflater.inflate(R.layout.fragment_events_preview_detail, container, false);
+    /**
+     * Create a new {@link EventsPreviewDetailFragment} for the given {@link Event}, calendar name, icon and page title.
+     *
+     * @param event
+     *         The {@link Event}.
+     * @param calendarName
+     *         The name of the calendar.
+     * @param mCalendarIconId
+     *         The icon of the calendar. May be -1 if there is no icon.
+     * @param pageTitle
+     *         The title of the page this calendar belongs to.
+     *
+     * @return A new {@link EventsPreviewDetailFragment}.
+     */
+    public static EventsPreviewDetailFragment newInstance(Event event, String calendarName, long mCalendarIconId, String pageTitle)
+    {
+        EventsPreviewDetailFragment fragment = new EventsPreviewDetailFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_PREVIEW_EVENT, event);
+        args.putString(ARG_CALENDAR_NAME, calendarName);
+        args.putLong(ARG_CALENDAR_IMAGE, mCalendarIconId);
+        args.putString(ARG_PAGE_TITLE, pageTitle);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
-		TextView titleView = (TextView) view.findViewById(R.id.calendar);
-		titleView.setText(mCalendarName.equals(mTitle) ? mCalendarName : String.format(Locale.getDefault(), "%s (%s)", mCalendarName, mTitle));
 
-		TextView descriptionView = (TextView) view.findViewById(R.id.description);
-		descriptionView.setText(mPreviewEvent.description == null ? mPreviewEvent.description.trim() : "");
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View view = inflater.inflate(R.layout.fragment_events_preview_detail, container, false);
 
-		TextView locationView = (TextView) view.findViewById(R.id.location);
-		if (locationView != null)
-		{
-			if (TextUtils.isEmpty(mPreviewEvent.location))
-			{
-				locationView.setVisibility(View.GONE);
-			}
-			else
-			{
-				locationView.setText(mPreviewEvent.location.trim());
-			}
-		}
-		TextView dateView = (TextView) view.findViewById(android.R.id.text1);
-		TextView timeView = (TextView) view.findViewById(android.R.id.text2);
+        TextView titleView = (TextView) view.findViewById(R.id.calendar);
+        titleView.setText(mCalendarName.equals(mTitle) ? mCalendarName : String.format(Locale.getDefault(), "%s (%s)", mCalendarName, mTitle));
 
-		int flags = DEFAULT_DATEUTILS_FLAGS;
+        TextView descriptionView = (TextView) view.findViewById(R.id.description);
+        descriptionView.setText(mPreviewEvent.description == null ? mPreviewEvent.description.trim() : "");
 
-		int currentYear = DateTime.nowAndHere().getYear();
-		if (mPreviewEvent.start.getYear() != currentYear || mPreviewEvent.end.getYear() != currentYear)
-		{
-			flags |= DateUtils.FORMAT_SHOW_YEAR;
-		}
+        TextView locationView = (TextView) view.findViewById(R.id.location);
+        if (locationView != null)
+        {
+            if (TextUtils.isEmpty(mPreviewEvent.location))
+            {
+                locationView.setVisibility(View.GONE);
+            }
+            else
+            {
+                locationView.setText(mPreviewEvent.location.trim());
+            }
+        }
+        TextView dateView = (TextView) view.findViewById(android.R.id.text1);
+        TextView timeView = (TextView) view.findViewById(android.R.id.text2);
 
-		if (mPreviewEvent.start.isAllDay())
-		{
-			if (mPreviewEvent.start.addDuration(ONEDAY).before(mPreviewEvent.end))
-			{
-				dateView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.start.getTimestamp(),
-					mPreviewEvent.end.getTimestamp(), flags, "UTC").toString());
-			}
-			else
-			{
-				// one day event, just pass start as end
-				dateView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.start.getTimestamp(),
-					mPreviewEvent.start.getTimestamp(), flags, "UTC").toString());
-			}
-			timeView.setVisibility(View.GONE);
-		}
-		else
-		{
-			if (mPreviewEvent.start.toAllDay().equals(mPreviewEvent.end.toAllDay()))
-			{
-				// starts and ends on the same day
-				dateView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.start.getTimestamp(),
-					mPreviewEvent.start.getTimestamp(), flags, mPreviewEvent.start.getTimeZone().getID()).toString());
-				// starts and ends on the same day
-				timeView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.start.getTimestamp(),
-					mPreviewEvent.end.getTimestamp(), (flags & ~(DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY)) | DateUtils.FORMAT_SHOW_TIME,
-					mPreviewEvent.start.getTimeZone().getID()).toString());
-			}
-			else
-			{
-				// more than one day in between
-				flags |= DateUtils.FORMAT_SHOW_TIME;
-				dateView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.start.getTimestamp(),
-					mPreviewEvent.start.getTimestamp(), flags, mPreviewEvent.start.getTimeZone().getID()).toString() + " -");
-				timeView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.end.getTimestamp(),
-					mPreviewEvent.end.getTimestamp(), flags, mPreviewEvent.start.getTimeZone().getID()).toString());
-			}
-		}
+        int flags = DEFAULT_DATEUTILS_FLAGS;
 
-		Analytics.screen("eventpreview", null, null);
-		return view;
-	}
+        int currentYear = DateTime.nowAndHere().getYear();
+        if (mPreviewEvent.start.getYear() != currentYear || mPreviewEvent.end.getYear() != currentYear)
+        {
+            flags |= DateUtils.FORMAT_SHOW_YEAR;
+        }
+
+        if (mPreviewEvent.start.isAllDay())
+        {
+            if (mPreviewEvent.start.addDuration(ONEDAY).before(mPreviewEvent.end))
+            {
+                dateView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.start.getTimestamp(),
+                        mPreviewEvent.end.getTimestamp(), flags, "UTC").toString());
+            }
+            else
+            {
+                // one day event, just pass start as end
+                dateView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.start.getTimestamp(),
+                        mPreviewEvent.start.getTimestamp(), flags, "UTC").toString());
+            }
+            timeView.setVisibility(View.GONE);
+        }
+        else
+        {
+            if (mPreviewEvent.start.toAllDay().equals(mPreviewEvent.end.toAllDay()))
+            {
+                // starts and ends on the same day
+                dateView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.start.getTimestamp(),
+                        mPreviewEvent.start.getTimestamp(), flags, mPreviewEvent.start.getTimeZone().getID()).toString());
+                // starts and ends on the same day
+                timeView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.start.getTimestamp(),
+                        mPreviewEvent.end.getTimestamp(), (flags & ~(DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY)) | DateUtils.FORMAT_SHOW_TIME,
+                        mPreviewEvent.start.getTimeZone().getID()).toString());
+            }
+            else
+            {
+                // more than one day in between
+                flags |= DateUtils.FORMAT_SHOW_TIME;
+                dateView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.start.getTimestamp(),
+                        mPreviewEvent.start.getTimestamp(), flags, mPreviewEvent.start.getTimeZone().getID()).toString() + " -");
+                timeView.setText(DateUtils.formatDateRange(getActivity(), new Formatter(Locale.getDefault()), mPreviewEvent.end.getTimestamp(),
+                        mPreviewEvent.end.getTimestamp(), flags, mPreviewEvent.start.getTimeZone().getID()).toString());
+            }
+        }
+
+        Analytics.screen("eventpreview", null, null);
+        return view;
+    }
 }

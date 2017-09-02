@@ -22,50 +22,50 @@ package org.dmfs.webcal.utils.billing;
  */
 public class IabResult
 {
-	int mResponse;
-	String mMessage;
+    int mResponse;
+    String mMessage;
 
 
-	public IabResult(int response, String message)
-	{
-		mResponse = response;
-		if (message == null || message.trim().length() == 0)
-		{
-			mMessage = IabHelper.getResponseDesc(response);
-		}
-		else
-		{
-			mMessage = message + " (response: " + IabHelper.getResponseDesc(response) + ")";
-		}
-	}
+    public IabResult(int response, String message)
+    {
+        mResponse = response;
+        if (message == null || message.trim().length() == 0)
+        {
+            mMessage = IabHelper.getResponseDesc(response);
+        }
+        else
+        {
+            mMessage = message + " (response: " + IabHelper.getResponseDesc(response) + ")";
+        }
+    }
 
 
-	public int getResponse()
-	{
-		return mResponse;
-	}
+    public int getResponse()
+    {
+        return mResponse;
+    }
 
 
-	public String getMessage()
-	{
-		return mMessage;
-	}
+    public String getMessage()
+    {
+        return mMessage;
+    }
 
 
-	public boolean isSuccess()
-	{
-		return mResponse == IabHelper.BILLING_RESPONSE_RESULT_OK;
-	}
+    public boolean isSuccess()
+    {
+        return mResponse == IabHelper.BILLING_RESPONSE_RESULT_OK;
+    }
 
 
-	public boolean isFailure()
-	{
-		return !isSuccess();
-	}
+    public boolean isFailure()
+    {
+        return !isSuccess();
+    }
 
 
-	public String toString()
-	{
-		return "IabResult: " + getMessage();
-	}
+    public String toString()
+    {
+        return "IabResult: " + getMessage();
+    }
 }

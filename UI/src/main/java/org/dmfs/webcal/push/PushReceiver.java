@@ -28,22 +28,22 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 /**
  * This broadcast receiver receives the push notification broadcast. If a push message has been received it calls
  * {@link PushHelperService#handlePushMessage(Context, android.os.Bundle)} to handle the message asynchronously.
- * 
+ *
  * @author Marten Gajda <marten@dmfs.org>
  */
 public class PushReceiver extends BroadcastReceiver
 {
 
-	@Override
-	public void onReceive(Context context, Intent intent)
-	{
-		GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
-		String messageType = gcm.getMessageType(intent);
-		if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType))
-		{
-			PushHelperService.handlePushMessage(context, intent.getExtras());
-		}
-		setResultCode(Activity.RESULT_OK);
-	}
+    @Override
+    public void onReceive(Context context, Intent intent)
+    {
+        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
+        String messageType = gcm.getMessageType(intent);
+        if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType))
+        {
+            PushHelperService.handlePushMessage(context, intent.getExtras());
+        }
+        setResultCode(Activity.RESULT_OK);
+    }
 
 }

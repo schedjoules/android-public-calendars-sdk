@@ -55,196 +55,198 @@ import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
  */
 public class GenericListFragment extends ActionBarFragment implements OnItemClickListener, LoaderCallbacks<Cursor>
 {
-	public static final String ARG_URI = "uri";
-	public static final String ARG_TITLE = "title";
-	public static final String ARG_EMPTY_MESSAGE = "empty_message";
-	public static final String ARG_PROJECTION = "projection";
-	public static final String ARG_SHOW_STARS = "show_stars";
-	public final static String[] PROJECTION = new String[] { CalendarContentContract.ContentItem._ID, CalendarContentContract.SubscribedCalendars.CALENDAR_NAME,
-		CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID, ContentItem.SEASON, ContentItem.STARRED,
-		CalendarContentContract.SubscribedCalendars.ITEM_ID };
-	public final static String[] PROJECTION2 = new String[] { CalendarContentContract.ContentItem._ID, CalendarContentContract.ContentItem.TITLE,
-		CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID, ContentItem.SEASON, ContentItem.STARRED };
-	private static final String TAG = "GenericListFragment";
-	@Parameter(key = ARG_URI)
-	private Uri mUri;
+    public static final String ARG_URI = "uri";
+    public static final String ARG_TITLE = "title";
+    public static final String ARG_EMPTY_MESSAGE = "empty_message";
+    public static final String ARG_PROJECTION = "projection";
+    public static final String ARG_SHOW_STARS = "show_stars";
+    public final static String[] PROJECTION = new String[] {
+            CalendarContentContract.ContentItem._ID, CalendarContentContract.SubscribedCalendars.CALENDAR_NAME,
+            CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID, ContentItem.SEASON, ContentItem.STARRED,
+            CalendarContentContract.SubscribedCalendars.ITEM_ID };
+    public final static String[] PROJECTION2 = new String[] {
+            CalendarContentContract.ContentItem._ID, CalendarContentContract.ContentItem.TITLE,
+            CalendarContentContract.ContentItem.TYPE, CalendarContentContract.ContentItem.ICON_ID, ContentItem.SEASON, ContentItem.STARRED };
+    private static final String TAG = "GenericListFragment";
+    @Parameter(key = ARG_URI)
+    private Uri mUri;
 
-	@Parameter(key = ARG_TITLE)
-	private String mTitle;
+    @Parameter(key = ARG_TITLE)
+    private String mTitle;
 
-	@Parameter(key = ARG_EMPTY_MESSAGE)
-	private int mMessage;
+    @Parameter(key = ARG_EMPTY_MESSAGE)
+    private int mMessage;
 
-	@Parameter(key = ARG_PROJECTION)
-	private String[] mProjection;
+    @Parameter(key = ARG_PROJECTION)
+    private String[] mProjection;
 
-	@Parameter(key = ARG_SHOW_STARS)
-	private boolean mShowStars;
+    @Parameter(key = ARG_SHOW_STARS)
+    private boolean mShowStars;
 
-	private MixedNavigationAdapter mAdapter;
-	private int mFirstItem;
-	private int mPosFromTop;
-	private ListView mListView;
-	private TextView mMessageView;
-
-
-	public static GenericListFragment newInstance(Uri uri, String title, int emptyMessage, String[] projection, boolean showStars)
-	{
-		GenericListFragment result = new GenericListFragment();
-		Bundle args = new Bundle();
-		args.putParcelable(ARG_URI, uri);
-		args.putString(ARG_TITLE, title);
-		args.putInt(ARG_EMPTY_MESSAGE, emptyMessage);
-		args.putStringArray(ARG_PROJECTION, projection);
-		args.putBoolean(ARG_SHOW_STARS, showStars);
-		result.setArguments(args);
-		return result;
-	}
+    private MixedNavigationAdapter mAdapter;
+    private int mFirstItem;
+    private int mPosFromTop;
+    private ListView mListView;
+    private TextView mMessageView;
 
 
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-	}
+    public static GenericListFragment newInstance(Uri uri, String title, int emptyMessage, String[] projection, boolean showStars)
+    {
+        GenericListFragment result = new GenericListFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_URI, uri);
+        args.putString(ARG_TITLE, title);
+        args.putInt(ARG_EMPTY_MESSAGE, emptyMessage);
+        args.putStringArray(ARG_PROJECTION, projection);
+        args.putBoolean(ARG_SHOW_STARS, showStars);
+        result.setArguments(args);
+        return result;
+    }
 
 
-	@Override
-	public void onPause()
-	{
-		super.onPause();
-		mFirstItem = mListView.getFirstVisiblePosition();
-		if (mFirstItem >= 0)
-		{
-			View firstChild = mListView.getChildAt(0);
-			mPosFromTop = firstChild == null ? 0 : firstChild.getTop();
-		}
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+    }
 
 
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-		if (mFirstItem >= 0)
-		{
-			mListView.setSelectionFromTop(mFirstItem, mPosFromTop);
-		}
-	}
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        mFirstItem = mListView.getFirstVisiblePosition();
+        if (mFirstItem >= 0)
+        {
+            View firstChild = mListView.getChildAt(0);
+            mPosFromTop = firstChild == null ? 0 : firstChild.getTop();
+        }
+    }
 
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (mFirstItem >= 0)
+        {
+            mListView.setSelectionFromTop(mFirstItem, mPosFromTop);
+        }
+    }
 
-		View result = inflater.inflate(R.layout.generic_list, container, false);
-		mListView = (ListView) result.findViewById(android.R.id.list);
-		mMessageView = (TextView) result.findViewById(android.R.id.message);
-		mAdapter = new MixedNavigationAdapter(getActivity(), null, 0, mShowStars);
-		mAdapter.setShowMissingIcons(true);
-		mListView.setAdapter(mAdapter);
-		mListView.setOnItemClickListener(this);
 
-		setupActionBar(result);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
 
-		FragmentActivity activity = getActivity();
+        View result = inflater.inflate(R.layout.generic_list, container, false);
+        mListView = (ListView) result.findViewById(android.R.id.list);
+        mMessageView = (TextView) result.findViewById(android.R.id.message);
+        mAdapter = new MixedNavigationAdapter(getActivity(), null, 0, mShowStars);
+        mAdapter.setShowMissingIcons(true);
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(this);
+
+        setupActionBar(result);
+
+        FragmentActivity activity = getActivity();
 
 		/*
-		 * FIXME: Using a random loader id is a hack. We just need to ensure that the loader id doesn't collide with another load id that might be visible.
+         * FIXME: Using a random loader id is a hack. We just need to ensure that the loader id doesn't collide with another load id that might be visible.
 		 */
-		if (getParentFragment() != null)
-		{
-			getParentFragment().getLoaderManager().initLoader((int) (Math.random() * Integer.MAX_VALUE), null, this);
-		}
-		else
-		{
-			activity.getSupportLoaderManager().initLoader((int) (Math.random() * Integer.MAX_VALUE), null, this);
-		}
+        if (getParentFragment() != null)
+        {
+            getParentFragment().getLoaderManager().initLoader((int) (Math.random() * Integer.MAX_VALUE), null, this);
+        }
+        else
+        {
+            activity.getSupportLoaderManager().initLoader((int) (Math.random() * Integer.MAX_VALUE), null, this);
+        }
 
-		return result;
-	}
-
-
-	@Override
-	public Loader<Cursor> onCreateLoader(int id, Bundle args)
-	{
-		CursorLoader loader = new CursorLoader(getActivity(), mUri, mProjection, null, null, ContentItem.TITLE);
-		return loader;
-	}
+        return result;
+    }
 
 
-	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
-	{
-		if (cursor.getCount() == 0)
-		{
-			mMessageView.setVisibility(View.VISIBLE);
-			mListView.setVisibility(View.GONE);
-			mMessageView.setText(mMessage);
-		}
-		else
-		{
-			mMessageView.setVisibility(View.GONE);
-			mListView.setVisibility(View.VISIBLE);
-			mAdapter.swapCursor(cursor);
-		}
-	}
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args)
+    {
+        CursorLoader loader = new CursorLoader(getActivity(), mUri, mProjection, null, null, ContentItem.TITLE);
+        return loader;
+    }
 
 
-	@Override
-	public void onLoaderReset(Loader<Cursor> cursor)
-	{
-		mAdapter.swapCursor(null);
-	}
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
+    {
+        if (cursor.getCount() == 0)
+        {
+            mMessageView.setVisibility(View.VISIBLE);
+            mListView.setVisibility(View.GONE);
+            mMessageView.setText(mMessage);
+        }
+        else
+        {
+            mMessageView.setVisibility(View.GONE);
+            mListView.setVisibility(View.VISIBLE);
+            mAdapter.swapCursor(cursor);
+        }
+    }
 
 
-	@Override
-	public void onItemClick(AdapterView<?> adpView, View view, int position, long id)
-	{
-		Cursor cursor = (Cursor) adpView.getAdapter().getItem(position);
-		String itemType = cursor.getString(2);
-		String itemTitle = cursor.getString(1);
-		long itemIcon = cursor.getLong(cursor.getColumnIndex(ContentItem.ICON_ID));
-		if (CalendarContentContract.ContentItem.TYPE_PAGE.equals(itemType))
-		{
-			long selectedId = cursor.getLong(0);
-			Activity activity = getActivity();
-			if (activity instanceof CategoryNavigator)
-			{
-				((CategoryNavigator) activity).openCategory(selectedId, itemTitle, itemIcon);
-			}
-
-		}
-		else if (CalendarContentContract.ContentItem.TYPE_CALENDAR.equals(itemType))
-		{
-			long selectedId = cursor.getLong(0);
-			if (cursor.getColumnIndex(CalendarContentContract.SubscribedCalendars.ITEM_ID) >= 0)
-			{
-				selectedId = cursor.getLong(cursor.getColumnIndex(SubscribedCalendars.ITEM_ID));
-			}
-			Activity activity = getActivity();
-			if (activity instanceof CategoryNavigator)
-			{
-				((CategoryNavigator) activity).openCalendar(selectedId, -1);
-			}
-		}
-		else
-		{
-			Log.e(TAG, "Unknown type of entry");
-		}
-	}
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursor)
+    {
+        mAdapter.swapCursor(null);
+    }
 
 
-	@Override
-	public void setupActionBar(View view)
-	{
-		if (getParentFragment() == null) // the topmost fragment owns the action bar
-		{
-			ActionBar ab = ((ActionBarActivity) getActivity()).getSupportActionBar();
-			ActionBarActivity activity = (ActionBarActivity) getActivity();
-			activity.setTitle(mTitle);
-			ab.setTitle(mTitle);
-		}
-	}
+    @Override
+    public void onItemClick(AdapterView<?> adpView, View view, int position, long id)
+    {
+        Cursor cursor = (Cursor) adpView.getAdapter().getItem(position);
+        String itemType = cursor.getString(2);
+        String itemTitle = cursor.getString(1);
+        long itemIcon = cursor.getLong(cursor.getColumnIndex(ContentItem.ICON_ID));
+        if (CalendarContentContract.ContentItem.TYPE_PAGE.equals(itemType))
+        {
+            long selectedId = cursor.getLong(0);
+            Activity activity = getActivity();
+            if (activity instanceof CategoryNavigator)
+            {
+                ((CategoryNavigator) activity).openCategory(selectedId, itemTitle, itemIcon);
+            }
+
+        }
+        else if (CalendarContentContract.ContentItem.TYPE_CALENDAR.equals(itemType))
+        {
+            long selectedId = cursor.getLong(0);
+            if (cursor.getColumnIndex(CalendarContentContract.SubscribedCalendars.ITEM_ID) >= 0)
+            {
+                selectedId = cursor.getLong(cursor.getColumnIndex(SubscribedCalendars.ITEM_ID));
+            }
+            Activity activity = getActivity();
+            if (activity instanceof CategoryNavigator)
+            {
+                ((CategoryNavigator) activity).openCalendar(selectedId, -1);
+            }
+        }
+        else
+        {
+            Log.e(TAG, "Unknown type of entry");
+        }
+    }
+
+
+    @Override
+    public void setupActionBar(View view)
+    {
+        if (getParentFragment() == null) // the topmost fragment owns the action bar
+        {
+            ActionBar ab = ((ActionBarActivity) getActivity()).getSupportActionBar();
+            ActionBarActivity activity = (ActionBarActivity) getActivity();
+            activity.setTitle(mTitle);
+            ab.setTitle(mTitle);
+        }
+    }
 
 }
