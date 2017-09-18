@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <!-- Strings for the Navigation Drawer Sidebar -->
+    <string name="drawer_open">Öppna sidonavigation</string>
+    <string name="drawer_close">Öppna sidonavigation</string>
+
+    <!-- Button for new calendar subscription -->
+    <string name="calendar_item_subscribe_button">Prenumerera</string>
+
+    <!-- Switch to sync calendar if already purchased. -->
+    <string name="calendar_item_add_to_calendar">Synka denna kalender</string>
+
+    <!-- Title for description section of calendar once it is available. -->
+    <string name="calendar_item_description_title">Beskrivning</string>
+
+    <!-- Fallback title for Events Preview Activity -->
+    <string name="activity_title_events_preview">Förhandsvisa aktivitet</string>
+
+    <!-- Setting for a synced calendar -->
+    <string name="calendar_item_events_settings_title">Inställningar</string>
+
+    <!-- Color for a synced calendar -->
+    <string name="calendar_settings_color">Kalenderfärg</string>
+
+    <!-- Name for a synced calendar -->
+    <string name="calendar_settings_name">Kalendernamn</string>
+
+    <!-- Title for calendar setting "reminder" -->
+    <string name="calendar_settings_reminder">Påminnelse</string>
+
+    <!-- Text for dialog which prompts to pick a color for the calendar. -->
+    <string name="dialog_title_pick_a_color">Välj en färg</string>
+
+    <!-- Text for dialog which prompts to pick a name for the calendar. -->
+    <string name="dialog_title_enter_calendar_name">Ange kalenderns namn</string>
+
+    <!-- Title of the Contact fragment -->
+    <string name="contact_us">Kontakta oss</string>
+
+    <!-- Message to customers -->
+    <string name="contact_text">Kontakta oss gärna om du har några frågor</string>
+
+    <!-- Button to send email -->
+    <string name="send_email">Skicka e-brev</string>
+
+    <!-- Message which is displayed when the data cannot be retrived from the server. -->
+    <string name="loading_failed">Kunde inte hämta data. Försök igen senare eller kontrollera internetanslutningen.</string>
+
+    <!-- Message in "My Calendars" if there are no synced calendars yet -->
+    <string name="error_my_calendars_empty">Synkroniserar inga kalendrar just nu. Synkronisera kalendrar genom att öppna \"Alla kalendrar\"</string>
+
+    <!-- Message in "Favorites" if there are no starred calendars yet -->
+    <string name="error_favorite_calendars_empty">Du har inga favoritkalendrar än. Lägg till en kalendersida till favoriter genom att trycka på stjärnan.</string>
+
+    <!-- Purchase statuses -->
+    <string name="status_synced">synkroniserad</string>
+    <string name="status_free">kostnadsfri</string>
+    <string name="status_unlocked">upplåst</string>
+    <string name="status_free_trial">kostnadsfritt test</string>
+
+    <!-- Purchase header -->
+    <string name="purchase_header_enable_sync">Aktivera synk</string>
+    <string name="purchase_header_unlock">Aktivera nu för %s per år</string>
+    <string name="purchase_header_benefits">Fördelar</string>
+    <string name="purchase_dialog_take_the_free_trial">Använd kostnadsfritt test</string>
+    <string name="purchase_header_buy_now">Köp</string>
+    <string name="purchase_dialog_cancel">Kanske senare</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Lås upp synkronisering för alla kalandrar i &lt;b&gt;%2$s&lt;/b&gt; för endast &lt;b&gt;%3$s&lt;/b&gt;, eller prova &lt;b&gt;kostnadsfritt i en timme&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Lås upp synkronisering alla kalendrar i &lt;b&gt;%2$s&lt;/b&gt; för endast &lt;b&gt;%3$s&lt;/b&gt; per år.</string>
+    <string name="purchase_dialog_benefits1">kom åt tusentals intressanta kalendrar</string>
+    <string name="purchase_dialog_benefits2">få automatisk uppdateringar av dina kalendrar</string>
+    <string name="purchase_dialog_benefits3">med sportresultat direkt i dina händelser, när de händer</string>
+    <string name="purchase_dialog_benefits4">massor av annan extrainformation</string>
+    <string name="purchase_dialog_benefits5">fungerar med alla kalenderprogram</string>
+
+    <plurals name="purchase_header_free_trial_minutes">
+        <item quantity="one">Ditt kostnadsfria test slutar om %s minut</item>
+        <item quantity="two">Ditt kostnadsfria test slutar om %s minuter</item>
+        <item quantity="other">Ditt kostnadsfria test slutar om %s minuter</item>
+    </plurals>
+    <plurals name="purchase_header_free_trial_seconds">
+        <item quantity="one">Ditt kostnadsfria test slutar om %s sekund</item>
+        <item quantity="two">Ditt kostnadsfria test slutar om %s sekunder</item>
+        <item quantity="other">Ditt kostnadsfria test slutar om %s sekunder</item>
+    </plurals>
+
+    <string name="purchase_connection_error_title">Fel</string>
+    <string name="purchase_connection_error_message">Kunde inte ansluta till Google Plays tjänster.\nKontrollera internetanslutningen eller försök senare.</string>
+
+    <string-array name="alarm_names">
+        <item>Serverförval</item>
+        <item>Ingen påminnelse</item>
+        <item>0 minuter</item>
+        <item>1 minut</item>
+        <item>2 minuter</item>
+        <item>5 minuter</item>
+        <item>10 minuter</item>
+        <item>15 minuter</item>
+        <item>30 minuter</item>
+        <item>1 timme</item>
+        <item>2 timmar</item>
+        <item>8 timmar</item>
+        <item>12 timmar</item>
+        <item>1 dag</item>
+        <item>2 dagar</item>
+        <item>1 vecka</item>
+    </string-array>
+
+    <!-- String used in Preferences -->
+
+
+    <!-- Title for the preferences activity -->
+    <string name="title_activity_preferences">Inställningar</string>
+
+    <!-- Locale preference title -->
+    <string name="preferences_locale_title">Land</string>
+
+    <!-- Locale preference summary -->
+    <string name="preferences_locale_summary" />
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">Skicka anonym användningsstatistik</string>
+
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">Hjälp oss att förbättra appen genom att skicka anonym statistik.</string>
+
+    <!-- Title of the entry for the default content location in the settings -->
+    <string name="default_location">Förval</string>
+
+    <!-- Season # -->
+    <string name="season">Årstid %s</string>
+
+    <!-- Title of favourite calendars section -->
+    <string name="side_nav_favorite_calendars">Favoriter</string>
+
+    <!-- Title of my calendars section -->
+    <string name="side_nav_my_calendars">Mina kalendrar</string>
+
+    <!-- Title of all calendars section -->
+    <string name="side_nav_all_calendars">Alla kalendrar</string>
+
+    <!-- Title of faq section -->
+    <string name="side_nav_faq">FAQ</string>
+
+    <!-- Title of feedback section -->
+    <string name="side_nav_feedback">Synpunkter</string>
+
+    <!-- Title of settings section -->
+    <string name="side_nav_settings">Inställningar</string>
+
+    <!-- Date & time strings -->
+    <string name="all_day">heldag</string>
+    <string name="today">Idag</string>
+    <string name="yesterday">Igår</string>
+    <string name="tomorrow">Imorgon</string>
+
+    <!-- Main menu options -->
+    <string name="menu_favorite_short">Favorit</string>
+    <string name="menu_favorite">Märk som favorit</string>
+    <string name="menu_settings_short">Inställningar</string>
+    <string name="menu_settings">Öppna kalenderinställningar</string>
+
+</resources>

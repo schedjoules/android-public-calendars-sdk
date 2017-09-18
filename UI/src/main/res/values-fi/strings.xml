@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <!-- Strings for the Navigation Drawer Sidebar -->
+    <string name="drawer_open">Avaa sivunavigointi</string>
+    <string name="drawer_close">Sulje sivunavigointi</string>
+
+    <!-- Button for new calendar subscription -->
+    <string name="calendar_item_subscribe_button">Tilaa</string>
+
+    <!-- Switch to sync calendar if already purchased. -->
+    <string name="calendar_item_add_to_calendar">Synkronoi tämä kalenteri</string>
+
+    <!-- Title for description section of calendar once it is available. -->
+    <string name="calendar_item_description_title">Kuvaus</string>
+
+    <!-- Fallback title for Events Preview Activity -->
+    <string name="activity_title_events_preview">Tapahtumien esikatselu</string>
+
+    <!-- Setting for a synced calendar -->
+    <string name="calendar_item_events_settings_title">Asetukset</string>
+
+    <!-- Color for a synced calendar -->
+    <string name="calendar_settings_color">Kalenterin väri</string>
+
+    <!-- Name for a synced calendar -->
+    <string name="calendar_settings_name">Kalenterin nimi</string>
+
+    <!-- Title for calendar setting "reminder" -->
+    <string name="calendar_settings_reminder">Muistutus</string>
+
+    <!-- Text for dialog which prompts to pick a color for the calendar. -->
+    <string name="dialog_title_pick_a_color">Valitse väri</string>
+
+    <!-- Text for dialog which prompts to pick a name for the calendar. -->
+    <string name="dialog_title_enter_calendar_name">Anna kalenterin nimi</string>
+
+    <!-- Title of the Contact fragment -->
+    <string name="contact_us">Ota yhteyttä</string>
+
+    <!-- Message to customers -->
+    <string name="contact_text">Jos sinulla on kysyttävää, älä epäröi lähettää meille sähköpostia.</string>
+
+    <!-- Button to send email -->
+    <string name="send_email">Lähetä sähköpostia</string>
+
+    <!-- Message which is displayed when the data cannot be retrived from the server. -->
+    <string name="loading_failed">Tietojen lataaminen ei onnistu. Yritä uudelleen myöhemmin tai tarkista internetyhteytesi.</string>
+
+    <!-- Message in "My Calendars" if there are no synced calendars yet -->
+    <string name="error_my_calendars_empty">Tällä hetkellä et synkronoi yhtään kalenteria. Avaa \"Kaikki kalenterit\" synkronoidaksesi kalentereita.</string>
+
+    <!-- Message in "Favorites" if there are no starred calendars yet -->
+    <string name="error_favorite_calendars_empty">Sinulla ei ole vielä suosikkikalentereja. Lisäät kalenterin suosikkeihisi napauttamalla tähteä sen sivulla.</string>
+
+    <!-- Purchase statuses -->
+    <string name="status_synced">synkronoitu</string>
+    <string name="status_free">ilmainen</string>
+    <string name="status_unlocked">otettu käyttöön</string>
+    <string name="status_free_trial">ilmainen kokeilu</string>
+
+    <!-- Purchase header -->
+    <string name="purchase_header_enable_sync">Aktivoi synkronointi</string>
+    <string name="purchase_header_unlock">Aktivoi nyt hintaan %s per vuosi</string>
+    <string name="purchase_header_benefits">Hyödyt</string>
+    <string name="purchase_dialog_take_the_free_trial">Aloita ilmainen kokeilu</string>
+    <string name="purchase_header_buy_now">Osta</string>
+    <string name="purchase_dialog_cancel">Ehkä myöhemmin</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Aktivoi kaikkien &lt;b&gt;%2$s&lt;/b&gt; -kalenterien synkronointi vain hintaan &lt;b&gt;%3$s&lt;/b&gt; vuodessa tai aloita &lt;b&gt;1 tunnin ilmainen kokeilu&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Aktivoi kaikkien &lt;b&gt;%2$s&lt;/b&gt; -kalenterien synkronointi vain hintaan &lt;b&gt;%3$s&lt;/b&gt; vuodessa.</string>
+    <string name="purchase_dialog_benefits1">tuhansia kiinnostavia kalentereja käyttöösi</string>
+    <string name="purchase_dialog_benefits2">saat kalenteriisi automaattiset päivitykset</string>
+    <string name="purchase_dialog_benefits3">urheilun live-tulokset tapahtumisssasi</string>
+    <string name="purchase_dialog_benefits4">paljon muuta lisätietoa</string>
+    <string name="purchase_dialog_benefits5">toimii kaikkien kalenteriohjelmien kanssa</string>
+
+    <plurals name="purchase_header_free_trial_minutes">
+        <item quantity="one">Ilmainen kokeilusi päättyy %s minuutin kuluttua</item>
+        <item quantity="two">Ilmainen kokeilusi päättyy %s minuutin kuluttua</item>
+        <item quantity="other">Ilmainen kokeilusi päättyy %s minuutin kuluttua</item>
+    </plurals>
+    <plurals name="purchase_header_free_trial_seconds">
+        <item quantity="one">Ilmainen kokeilusi päättyy %s sekunnin kuluttua</item>
+        <item quantity="two">Ilmainen kokeilusi päättyy %s sekunnin kuluttua</item>
+        <item quantity="other">Ilmainen kokeilusi päättyy %s sekunnin kuluttua</item>
+    </plurals>
+
+    <string name="purchase_connection_error_title">Virhe</string>
+    <string name="purchase_connection_error_message">Google Play -palveluihin yhdistäminen ei onnistu.\nTarkista internetyhteytesi tai yritä myöhemmin uudestaan.</string>
+
+    <string-array name="alarm_names">
+        <item>Palvelimen perusasetus</item>
+        <item>Ei muistutusta</item>
+        <item>0 minuuttia</item>
+        <item>1 minuutti</item>
+        <item>2 minuuttia</item>
+        <item>5 minuuttia</item>
+        <item>10 minuuttia</item>
+        <item>15 minuuttia</item>
+        <item>30 minuuttia</item>
+        <item>1 tunti</item>
+        <item>2 tuntia</item>
+        <item>8 tuntia</item>
+        <item>12 tuntia</item>
+        <item>1 päivä</item>
+        <item>2 päivää</item>
+        <item>1 viikko</item>
+    </string-array>
+
+    <!-- String used in Preferences -->
+
+
+    <!-- Title for the preferences activity -->
+    <string name="title_activity_preferences">Valinnat</string>
+
+    <!-- Locale preference title -->
+    <string name="preferences_locale_title">Maa</string>
+
+    <!-- Locale preference summary -->
+    <string name="preferences_locale_summary" />
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">Lähetä yksilöimättömiä käyttötietoja</string>
+
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">Auta meitä kehittämään ohjelmaa lähettämällä yksilöimättömiä käyttötietoja.</string>
+
+    <!-- Title of the entry for the default content location in the settings -->
+    <string name="default_location">Perusasetus</string>
+
+    <!-- Season # -->
+    <string name="season">Kausi %s</string>
+
+    <!-- Title of favourite calendars section -->
+    <string name="side_nav_favorite_calendars">Suosikit</string>
+
+    <!-- Title of my calendars section -->
+    <string name="side_nav_my_calendars">Omat kalenterini</string>
+
+    <!-- Title of all calendars section -->
+    <string name="side_nav_all_calendars">Kaikki kalenterit</string>
+
+    <!-- Title of faq section -->
+    <string name="side_nav_faq">UKK</string>
+
+    <!-- Title of feedback section -->
+    <string name="side_nav_feedback">Palaute</string>
+
+    <!-- Title of settings section -->
+    <string name="side_nav_settings">Asetukset</string>
+
+    <!-- Date & time strings -->
+    <string name="all_day">Koko päivä</string>
+    <string name="today">Tänään</string>
+    <string name="yesterday">Eilen</string>
+    <string name="tomorrow">Huomenna</string>
+
+    <!-- Main menu options -->
+    <string name="menu_favorite_short">Suosikki</string>
+    <string name="menu_favorite">Merkitse suosikiksi</string>
+    <string name="menu_settings_short">Asetukset</string>
+    <string name="menu_settings">Avaa kalenterin asetukset</string>
+
+</resources>

@@ -1,0 +1,33 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
+
+    defaultConfig {
+        applicationId "com.schedjoules.demo"
+        minSdkVersion 14
+        targetSdkVersion 22
+        resValue "string", "org_dmfs_android_calendarcontent_account_type", "com.schedjoules.demo.ACCOUNT"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles 'proguard.cfg'
+        }
+        debug {
+            minifyEnabled true
+            proguardFiles 'proguard.cfg'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+}
+
+dependencies {
+    compile project(':UI')
+}

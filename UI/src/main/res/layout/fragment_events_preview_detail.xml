@@ -1,0 +1,73 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".EventsPreviewDetailFragment">
+
+    <LinearLayout
+        android:id="@android:id/custom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@android:id/text1"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_24_time_black50"
+            android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_24_time_black50"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:textSize="16sp"/>
+
+
+        <TextView
+            android:id="@android:id/text2"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="48dp"
+            android:paddingStart="48dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/location"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_24_location_black50"
+            android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_24_location_black50"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/calendar"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_24_today_black50"
+            android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_24_today_black50"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/description"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web|email|map"
+            android:linksClickable="true"
+            android:padding="8dp"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+</RelativeLayout>

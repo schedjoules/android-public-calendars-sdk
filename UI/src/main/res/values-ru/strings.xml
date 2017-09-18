@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Strings for the Navigation Drawer Sidebar -->
+    <string name="drawer_open">Открыть навигацию</string>
+    <string name="drawer_close">Закрыть навигацию</string>
+
+    <!-- Button for new calendar subscription -->
+    <string name="calendar_item_subscribe_button">Подписаться</string>
+
+    <!-- Switch to sync calendar if already purchased. -->
+    <string name="calendar_item_add_to_calendar">Синхронизировать календарь</string>
+
+    <!-- Title for description section of calendar once it is available. -->
+    <string name="calendar_item_description_title">Описание</string>
+
+    <!-- Fallback title for Events Preview Activity -->
+    <string name="activity_title_events_preview">Предпросмотр событий</string>
+
+    <!-- Setting for a synced calendar -->
+    <string name="calendar_item_events_settings_title">Настройки</string>
+
+    <!-- Color for a synced calendar -->
+    <string name="calendar_settings_color">Цвет календаря</string>
+
+    <!-- Name for a synced calendar -->
+    <string name="calendar_settings_name">Название календаря</string>
+
+    <!-- Title for calendar setting "reminder" -->
+    <string name="calendar_settings_reminder">Напоминание</string>
+
+    <!-- Text for dialog which prompts to pick a color for the calendar. -->
+    <string name="dialog_title_pick_a_color">Выбрать цвет</string>
+
+    <!-- Text for dialog which prompts to pick a name for the calendar. -->
+    <string name="dialog_title_enter_calendar_name">Ввести название календаря</string>
+
+    <!-- Title of the Contact fragment -->
+    <string name="contact_us">Свяжитесь с нами</string>
+
+    <!-- Message to customers -->
+    <string name="contact_text">Если у Вас есть вопросы, пошлите нам email.</string>
+
+    <!-- Button to send email -->
+    <string name="send_email">Отправить email</string>
+
+    <!-- Message which is displayed when the data cannot be retrived from the server. -->
+    <string name="loading_failed">Не удается загрузить данные. Попытайтесь позже или проверьте интернет-соединение.</string>
+
+    <!-- Message in "My Calendars" if there are no synced calendars yet -->
+    <string name="error_my_calendars_empty">Сейчас вы не синхронизируете календари. Открыть \"Все календари\" для синхронизации.</string>
+
+    <!-- Message in "Favorites" if there are no starred calendars yet -->
+    <string name="error_favorite_calendars_empty">У вас нет избранных календарей. Чтобы внести календарь в избранные, нажмите на звездочку на странице календаря.</string>
+
+    <!-- Purchase statuses -->
+    <string name="status_synced">синхронизировано</string>
+    <string name="status_free">свободно</string>
+    <string name="status_unlocked">разблокировано</string>
+    <string name="status_free_trial">пробная версия</string>
+
+    <!-- Purchase header -->
+
+    <string name="purchase_header_enable_sync">Включить синхронизацию</string>
+    <string name="purchase_header_unlock">Купить сейчас за %s</string>
+    <string name="purchase_header_benefits">Достоинства</string>
+    <string name="purchase_dialog_take_the_free_trial">Получить бесплатную пробную версию</string>
+    <string name="purchase_header_buy_now">Купить</string>
+    <string name="purchase_dialog_cancel">Возможно, позже</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Разблокировать синхронизацию для всех календарей в &lt;b&gt;%2$s&lt;/b&gt; только за &lt;b&gt;%3$s&lt;/b&gt; в год или взять &lt;b&gt; на 1 час пробную версию&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Разблокировать синхронизацию для всех календарей в &lt;b&gt;%2$s&lt;/b&gt; только за &lt;b&gt;%3$s&lt;/b&gt; в год.</string>
+    <string name="purchase_dialog_benefits1">Доступ к тысячам интересным календарям</string>
+    <string name="purchase_dialog_benefits2">Автоматическое обновление событий в календаре</string>
+    <string name="purchase_dialog_benefits3">Актуальные спортивные результаты прямо в календаре</string>
+    <string name="purchase_dialog_benefits4">Много другой дополнительной информации</string>
+    <string name="purchase_dialog_benefits5">Работает со всеми календарными приложениями</string>
+
+    <plurals name="purchase_header_free_trial_minutes">
+        <item quantity="one">Бесплатная пробная версия истекает через %s мин</item>
+        <item quantity="many">Бесплатная пробная версия истекает через %s мин</item>
+        <item quantity="other">Бесплатная пробная версия истекает через %s мин</item>
+    </plurals>
+    <plurals name="purchase_header_free_trial_seconds">
+        <item quantity="one">Бесплатная пробная версия истекает через %s с</item>
+        <item quantity="many">Бесплатная пробная версия истекает через %s с</item>
+        <item quantity="other">Бесплатная пробная версия истекает через %s с</item>
+    </plurals>
+
+    <string name="purchase_connection_error_title">Ошибка</string>
+    <string name="purchase_connection_error_message">Не удается соединиться с сервисом Google Play.\nПроверьте интернет-подключение или попробуйте еще раз позднее.</string>
+
+    <string-array name="alarm_names">
+        <item>Настройки по умолчанию сервера</item>
+        <item>Нет напоминаний</item>
+        <item>0 мин</item>
+        <item>1 мин</item>
+        <item>2 мин</item>
+        <item>5 мин</item>
+        <item>10 мин</item>
+        <item>15 мин</item>
+        <item>30 мин</item>
+        <item>1 ч</item>
+        <item>2 ч</item>
+        <item>8 ч</item>
+        <item>12 ч</item>
+        <item>1 д.</item>
+        <item>2 д.</item>
+        <item>1 нед.</item>
+    </string-array>
+
+    <!-- String used in Preferences -->
+
+
+    <!-- Title for the preferences activity -->
+    <string name="title_activity_preferences">Настройки</string>
+    <!-- Locale preference title -->
+    <string name="preferences_locale_title">Страна</string>
+    <!-- Locale preference summary -->
+    <string name="preferences_locale_summary" />
+
+    <!-- Title of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_title">Отправить статистические данные анонимно</string>
+    <!-- Summary of the preference to enable analytics -->
+    <string name="preferences_enable_analytics_summary">Помогите нам улучшить приложение, анонимно отправив статистические данные.</string>
+
+    <!-- Title of the entry for the default content location in the settings -->
+    <string name="default_location">По умолчанию</string>
+
+    <!-- Season # -->
+    <string name="season">Сезон %s</string>
+
+    <!-- Title of favourite calendars section -->
+    <string name="side_nav_favorite_calendars">Избранное</string>
+
+    <!-- Title of my calendars section -->
+    <string name="side_nav_my_calendars">Мои календари</string>
+
+    <!-- Title of all calendars section -->
+    <string name="side_nav_all_calendars">Все календари</string>
+
+    <!-- Title of faq section -->
+    <string name="side_nav_faq">Часто задаваемые вопросы</string>
+
+    <!-- Title of feedback section -->
+    <string name="side_nav_feedback">Отклики</string>
+
+    <!-- Title of settings section -->
+    <string name="side_nav_settings">Настройки</string>
+
+    <!-- Date & time strings -->
+    <string name="all_day">Весь день</string>
+    <string name="today">Сегодня</string>
+    <string name="yesterday">Вчера</string>
+    <string name="tomorrow">Завтра</string>
+
+    <!-- Main menu options -->
+    <string name="menu_favorite_short">Избранное</string>
+    <string name="menu_favorite">Пометить избранное</string>
+    <string name="menu_settings_short">Настройки</string>
+    <string name="menu_settings">Открыть настройки календаря</string>
+
+</resources>

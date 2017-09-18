@@ -1,10 +1,42 @@
-bin/*
-UI/bin/*
-UI/Demo/bin/*
-UI/Demo/gen/*
-gen/*
-.settings/*
-*.class
+.DS_Store
+
+# built application files
 *.apk
 *.ap_
-libs/*
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+apk/
+
+# imported libraries
+libs/
+
+# Local configuration file (sdk path, etc)
+local.properties
+.settings
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+.idea/
+.gradle
+gradle
+/*/local.properties
+/*/out
+/*/*/build
+build
+/*/*/production
+*.iml
+*.iws
+*.ipr
+*~
+*.swp

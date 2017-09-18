@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- The name of the app. -->
+    <string name="app_name">SDK</string>
+
+    <!-- The name of the app launcher. -->
+    <string name="title_activity_home">SDK</string>
+    <string name="faq_url">override me</string>
+    <string name="contact_address">override me</string>
+
+    <bool name="org_dmfs_android_show_calendar_details">true</bool>
+    <integer name="com_schedjoules_intro_version">1</integer>
+
+</resources>
