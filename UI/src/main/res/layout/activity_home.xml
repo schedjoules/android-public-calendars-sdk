@@ -17,7 +17,7 @@
 
         <ListView
             android:id="@+id/left_drawer"
-            style="@style/navigation_drawer_styles"
+            style="@style/SchedJoules_NavDrawer_List"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"

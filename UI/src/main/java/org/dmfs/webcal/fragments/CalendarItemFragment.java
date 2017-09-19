@@ -37,7 +37,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,6 +73,8 @@ import org.dmfs.webcal.adapters.SectionTitlesAdapter.SectionIndexer;
 import org.dmfs.webcal.fragments.CalendarTitleFragment.SwitchStatusListener;
 import org.dmfs.webcal.utils.Event;
 import org.dmfs.webcal.utils.ProtectedBackgroundJob;
+import org.dmfs.webcal.utils.TintedDrawable;
+import org.dmfs.webcal.utils.color.ResourceColor;
 
 import java.net.URI;
 import java.util.TimeZone;
@@ -419,7 +421,7 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
         super.onResume();
 
         // setup action bar, we do that here to be sure that it already has been created
-        mActionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+        mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         mActionBar.setTitle(mCalendarName);
     }
 
@@ -430,8 +432,10 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.calendar_item, menu);
 
+        MenuItem settingsItem = menu.findItem(R.id.menu_settings);
+        settingsItem.setIcon(new TintedDrawable(settingsItem.getIcon(), new ResourceColor(getContext(), R.color.schedjoules_text_secondary)).value());
         // only show options if the calendar is synced
-        menu.findItem(R.id.menu_settings).setVisible(mSynced);
+        settingsItem.setVisible(mSynced);
     }
 
 

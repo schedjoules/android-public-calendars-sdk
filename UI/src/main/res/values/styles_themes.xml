@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SchedJoules_Theme.Default"
+            parent="SchedJoules_Theme.Light"/>
+
+    <style name="SchedJoules_Theme.Light"
+            parent="SchedJoules_BaseTheme.Light.NoActionBar"/>
+
+    <style name="SchedJoules_BaseTheme.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="SchedJoules_BaseTheme.Light"
+            parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/schedjoules_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/schedjoules_colorPrimaryDark</item>
+        <item name="colorAccent">@color/schedjoules_colorAccent</item>
+        <item name="android:textColorPrimary">@color/schedjoules_text_primary</item>
+        <item name="android:textColorSecondary">@color/schedjoules_text_secondary</item>
+        <item name="android:textColorTertiary">@color/schedjoules_text_tertiary</item>
+        <item name="android:divider">@color/schedjoules_divider</item>
+        <item name="android:windowBackground">?attr/colorPrimary</item>
+        <item name="schedjoules_appBarIconColor">@color/schedjoules_text_secondary</item>
+    </style>
+
+    <style name="SchedJoules_Theme_Wizard"
+            parent="SchedJoules_Theme.Light">
+        <item name="colorPrimary">#cecece</item>
+        <item name="colorPrimaryDark">#9b9b9b</item>
+        <item name="colorAccent">@color/schedjoules_colorAccent</item>
+    </style>
+
+</resources>

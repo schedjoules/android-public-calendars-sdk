@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
 
+    <color name="schedjoules_green_haze">#0CAF60</color>
+    <color name="schedjoules_light_grey">#EEE</color>
 
-    <color name="light_grey">#EEE</color>
-    <color name="button_dark_grey">#EE222222</color>
-    <color name="holo_blue_dark">#ff0099cc</color>
-    <color name="holo_blue_light">#ff33b5e5</color>
-    <color name="dark_blue">#5DC7D5</color>
-    <color name="dark_blue2">#69C9CA</color>
+    <color name="schedjoules_colorPrimary">@android:color/white</color>
+    <color name="schedjoules_colorPrimaryDark">#c0c0c0</color>
+    <color name="schedjoules_colorAccent">@color/schedjoules_green_haze</color>
+
+    <color name="schedjoules_text_primary">#dd000000</color>
+    <color name="schedjoules_text_secondary">#88000000</color>
+    <color name="schedjoules_text_tertiary">#60000000</color>
+
+    <color name="schedjoules_divider">#20000000</color>
 
 </resources>

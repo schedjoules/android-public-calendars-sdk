@@ -21,14 +21,14 @@
             android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/light_grey"
+            android:background="@color/schedjoules_light_grey"
             android:divider="@android:color/transparent"
             android:dividerHeight="8sp"
             android:paddingLeft="8sp"
             android:paddingRight="8sp"></ListView>
 
         <View
-            style="@style/ToolbarShadow"
+            style="@style/SchedJoules_ToolbarShadow"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_shadow_height" />
     </FrameLayout>

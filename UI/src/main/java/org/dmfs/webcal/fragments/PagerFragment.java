@@ -45,7 +45,7 @@ import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.android.retentionmagic.annotations.Retain;
-import org.dmfs.webcal.ActionBarActivity;
+import org.dmfs.webcal.BaseActivity;
 import org.dmfs.webcal.R;
 import org.dmfs.webcal.adapters.SectionsPagerAdapter;
 import org.dmfs.webcal.utils.BitmapUtils;
@@ -292,7 +292,7 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
         if (isAdded())
         {
             // the image has been loaded, scale it and update the ActionBar
-            ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) drawable, 36, 36));
+            ((BaseActivity) getActivity()).getSupportActionBar().setIcon(BitmapUtils.scaleDrawable(getResources(), (BitmapDrawable) drawable, 36, 36));
         }
     }
 

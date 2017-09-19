@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:padding="16dp"
-            android:textAppearance="@style/navigation_text_normal" >
+            android:textAppearance="@style/SchedJoules_Text_Navigation" >
         </TextView>
     </LinearLayout>
 

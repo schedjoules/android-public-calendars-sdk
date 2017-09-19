@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@android:id/title"
-        style="@style/medium_text"
+        style="@style/SchedJoules_Text_Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"

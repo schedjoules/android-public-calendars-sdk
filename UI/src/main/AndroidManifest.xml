@@ -36,13 +36,13 @@
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/SchedJoules_Theme.Default">
 
         <activity
             android:name="org.dmfs.android.xtivity.Xtivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/AppThemeToolBar">
+            android:theme="@style/SchedJoules_Theme_Wizard">
             <meta-data
                 android:name="org.dmfs.ACTIVITY_PARAMETERS"
                 android:resource="@xml/sj_magic_intro"/>
@@ -50,7 +50,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppThemeToolBar">
+            android:theme="@style/SchedJoules_Theme.Default">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -61,7 +61,7 @@
             android:name=".EventsPreviewActivity"
             android:label="@string/activity_title_events_preview"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppThemeToolBar">
+            android:theme="@style/SchedJoules_Theme.Default">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -71,7 +71,7 @@
         <activity
             android:name=".DummyAuthenticatorActivity"
             android:label="@string/activity_title_events_preview"
-            android:theme="@style/AppThemeToolBar">
+            android:theme="@style/SchedJoules_Theme.Default">
             <intent-filter>
                 <action android:name="org.dmfs.android.authenticator.action.ADD_ACCOUNT"/>
 
@@ -125,7 +125,7 @@
         <activity
             android:name=".PreferencesActivity"
             android:label="@string/title_activity_preferences"
-            android:theme="@style/AppThemeToolBar"/>
+            android:theme="@style/SchedJoules_Theme.Default"/>
 
         <receiver android:name="org.dmfs.android.calendarcontent.provider.OnBootReceiver">
             <intent-filter>

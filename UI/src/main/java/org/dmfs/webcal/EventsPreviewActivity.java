@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -34,8 +33,10 @@ import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.webcal.IBillingActivity.OnInventoryListener;
 import org.dmfs.webcal.fragments.EventsPreviewDetailFragment;
 import org.dmfs.webcal.utils.Event;
+import org.dmfs.webcal.utils.UpButtonDrawable;
 import org.dmfs.webcal.utils.billing.IabHelper;
 import org.dmfs.webcal.utils.billing.Inventory;
+import org.dmfs.webcal.utils.color.ResourceColor;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ import java.util.List;
  *
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class EventsPreviewActivity extends ActionBarActivity
+public class EventsPreviewActivity extends BaseActivity
 {
     private final static int REQUEST_CODE_LAUNCH_PURCHASE_FLOW = 10004;
     private final static long MAX_INVENTORY_AGE = 90L * 60L * 1000L; // 90 minutes
@@ -123,15 +124,17 @@ public class EventsPreviewActivity extends ActionBarActivity
             transaction.commit();
         }
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ActionBar actionBar = getSupportActionBar();
-
-        final AppBarLayout appBar = (AppBarLayout) findViewById(R.id.appbar);
 
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle(mEvent.title);
+        int titleColor = new ResourceColor(this, R.color.schedjoules_text_secondary).argb();
+        collapsingToolbarLayout.setExpandedTitleColor(titleColor);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(titleColor);
+
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(new UpButtonDrawable(this).value());
     }
 
 

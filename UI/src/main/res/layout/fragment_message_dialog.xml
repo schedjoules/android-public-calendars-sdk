@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@android:id/title"
-        style="@style/dialog_text_title"
+        style="@style/SchedJoules_Text_Dialog_Title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@android:id/button1"
-            style="@style/dialog_button_primary"
+            style="@style/SchedJoules_Text_Dialog_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@android:string/ok" />
