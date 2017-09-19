@@ -32,7 +32,7 @@ import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
  * @author Arjun Naik
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class RemoteImageView extends ImageView implements ImageAvailableListener
+public class RemoteImageView extends android.support.v7.widget.AppCompatImageView implements ImageAvailableListener
 {
     /**
      * The duration of the fade-in animation when the image pops up the first time.

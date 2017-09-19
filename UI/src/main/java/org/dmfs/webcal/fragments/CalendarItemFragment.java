@@ -52,7 +52,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.schedjoules.analytics.Analytics;
-import com.schedjoules.eventdiscovery.eventdetails.BasicEventDetails;
 
 import org.apache.http.message.BasicHeader;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
