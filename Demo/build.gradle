@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.schedjoules.demo"
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 23
         resValue "string", "org_dmfs_android_calendarcontent_account_type", "com.schedjoules.demo.ACCOUNT"
     }
 
