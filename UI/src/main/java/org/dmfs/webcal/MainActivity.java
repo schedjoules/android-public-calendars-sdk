@@ -187,12 +187,10 @@ public class MainActivity extends NavbarActivity
     {
         if (intent.getData() != null)
         {
-            Bundle extras = intent.getExtras();
-            extras.isEmpty();
-            String parent = intent.getCharSequenceExtra("parent").toString();
-            if (parent != null && TextUtils.isDigitsOnly(parent))
+            CharSequence parent = intent.getCharSequenceExtra("parent");
+            if (parent != null && TextUtils.isDigitsOnly(parent.toString()))
             {
-                openCategory(Integer.parseInt(parent), "", -1);
+                openCategory(Integer.parseInt(parent.toString()), "", -1);
             }
 
             long page_id = ContentUris.parseId(intent.getData());
@@ -376,7 +374,11 @@ public class MainActivity extends NavbarActivity
             emailContent.append("timezone: ").append(TimeZone.getDefault().getID()).append("\r\n");
             emailContent.append("device: ").append(android.os.Build.DEVICE).append("\r\n");
             emailContent.append("model: ").append(android.os.Build.MODEL).append("\r\n");
-            emailContent.append("os version: ").append(android.os.Build.VERSION.RELEASE).append(" / ").append(android.os.Build.VERSION.SDK_INT).append("\r\n");
+            emailContent.append("os version: ")
+                    .append(android.os.Build.VERSION.RELEASE)
+                    .append(" / ")
+                    .append(android.os.Build.VERSION.SDK_INT)
+                    .append("\r\n");
             emailContent.append("firmware: ").append(android.os.Build.ID).append("\r\n");
 
             Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", getString(R.string.contact_address), null));

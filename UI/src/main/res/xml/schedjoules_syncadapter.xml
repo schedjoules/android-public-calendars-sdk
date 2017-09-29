@@ -1,4 +1,5 @@
-<sync-adapter/>
-
-        <!-- for now this is just an empty placeholder that needs to be overridden in the main project -->
-
+<sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
+        android:accountType="@string/org_dmfs_android_calendarcontent_account_type"
+        android:contentAuthority="com.android.calendar"
+        android:supportsUploading="false"
+        android:userVisible="false"/>

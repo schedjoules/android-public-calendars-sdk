@@ -1,29 +1,38 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/drawer_layout"
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar"/>
-
-    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/drawer_layout"
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:elevation="0dp">
+
+            <include layout="@layout/toolbar"/>
+        </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
                 android:id="@+id/content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></FrameLayout>
-
-        <ListView
-                android:id="@+id/left_drawer"
-                style="@style/SchedJoules_NavDrawer_List"
-                android:layout_width="@dimen/navigation_drawer_width"
                 android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:background="#e8e8e8"
-                android:divider="@null"
-                android:dividerHeight="0dp"/>
-    </android.support.v4.widget.DrawerLayout>
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </android.support.design.widget.CoordinatorLayout>
 
-</LinearLayout>
+    <ListView
+            android:id="@+id/left_drawer"
+            style="@style/SchedJoules_NavDrawer_List"
+            android:layout_width="@dimen/navigation_drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="#e8e8e8"
+            android:divider="@null"
+            android:dividerHeight="0dp"/>
+</android.support.v4.widget.DrawerLayout>
+

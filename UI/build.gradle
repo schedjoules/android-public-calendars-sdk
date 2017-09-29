@@ -30,6 +30,7 @@ android {
     lintOptions {
         disable 'MissingTranslation' // TODO
         disable 'MissingQuantity' // TODO
+        abortOnError false
     }
 }
 
@@ -39,7 +40,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:11.0.4'
     compile 'com.google.android.gms:play-services-location:11.0.4'
     compile files('libs/async-tools-1.1.jar')
-    compile files('libs/schedjoules-sdk.jar')
     compile 'com.github.dmfs:color-picker:1.0'
     compile('org.dmfs:android-xml-magic:0.1.1') {
         exclude group: 'xmlpull'
@@ -51,4 +51,7 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.1@aar'
     compile 'com.github.dmfs:multiline-collapsingtoolbar:79a3e45'
     compile 'org.dmfs:essentials:1.10'
+    compile project(':webcalsdk')
+    compile project(':calendarcontent')
+    compile "com.google.android.gms:play-services-gcm:11.0.4"
 }

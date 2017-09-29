@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/Demo/Demo.iml" filepath="$PROJECT_DIR$/Demo/Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/UI/UI.iml" filepath="$PROJECT_DIR$/UI/UI.iml" />
       <module fileurl="file://$PROJECT_DIR$/android-public-calendars-sdk.iml" filepath="$PROJECT_DIR$/android-public-calendars-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../CalendarContentProvider/calendarcontent/calendarcontent.iml" filepath="$PROJECT_DIR$/../CalendarContentProvider/calendarcontent/calendarcontent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WebCal-SDK/webcalsdk/webcalsdk.iml" filepath="$PROJECT_DIR$/../WebCal-SDK/webcalsdk/webcalsdk.iml" />
     </modules>
   </component>
 </project>
