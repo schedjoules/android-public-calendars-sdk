@@ -34,8 +34,7 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="SchedJoules_Text_Navigation.Selected"
-            parent="TextAppearance.AppCompat.Large">
+    <style name="SchedJoules_Text_Navigation.Selected">
         <item name="android:textStyle">bold</item>
     </style>
 
