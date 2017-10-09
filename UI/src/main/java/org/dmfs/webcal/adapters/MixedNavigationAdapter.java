@@ -33,6 +33,8 @@ import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.SubscribedCalendars;
 import org.dmfs.webcal.R;
+import org.dmfs.webcal.utils.TintedDrawable;
+import org.dmfs.webcal.utils.color.AccentColor;
 import org.dmfs.webcal.views.RemoteImageView;
 
 
@@ -164,6 +166,7 @@ public class MixedNavigationAdapter extends CursorAdapter
                 starred.setVisibility(View.VISIBLE);
                 starred.setOnCheckedChangeListener(null);
                 starred.setChecked(cursor.getInt(5) > 0);
+                starred.setButtonDrawable(new TintedDrawable(context, R.drawable.star_selector, new AccentColor(context)).value());
                 starred.setOnCheckedChangeListener(new OnCheckedChangeListener()
                 {
 

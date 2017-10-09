@@ -36,7 +36,6 @@
 
         <CheckBox
             android:id="@+id/menu_starred"
-            style="?android:attr/starStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
