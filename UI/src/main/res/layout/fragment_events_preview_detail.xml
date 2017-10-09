@@ -13,20 +13,20 @@
 
 
         <TextView
-            android:id="@android:id/text1"
+            android:id="@+id/date"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_24_time_black50"
+            android:drawableLeft="@drawable/ic_access_time_black_24dp"
             android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_24_time_black50"
+            android:drawableStart="@drawable/ic_access_time_black_24dp"
             android:gravity="center_vertical"
             android:padding="8dp"
             android:textSize="16sp"/>
 
 
         <TextView
-            android:id="@android:id/text2"
+            android:id="@+id/time"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,9 +40,9 @@
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_24_location_black50"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp"
             android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_24_location_black50"
+            android:drawableStart="@drawable/ic_location_on_black_24dp"
             android:gravity="center_vertical"
             android:padding="8dp"
             android:textSize="16sp"/>
@@ -52,9 +52,9 @@
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_24_today_black50"
+            android:drawableLeft="@drawable/ic_event_black_24dp"
             android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_24_today_black50"
+            android:drawableStart="@drawable/ic_event_black_24dp"
             android:gravity="center_vertical"
             android:padding="8dp"
             android:textSize="16sp"/>
