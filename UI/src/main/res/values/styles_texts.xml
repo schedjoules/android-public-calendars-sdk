@@ -78,4 +78,13 @@
         <item name="android:textSize">26sp</item>
     </style>
 
+    <style name="SchedJoules_SectionHeader_Title"
+            parent="TextAppearance.AppCompat.Medium">
+        <item name="android:fontFamily"
+                tools:targetApi="jelly_bean">@string/schedjoules_font_medium
+        </item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorAccent</item>
+    </style>
+
 </resources>

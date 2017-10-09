@@ -2,4 +2,6 @@
 <resources>
     <string name="schedjoules_font_default"
             translatable="false">sans-serif-light</string>
+    <string name="schedjoules_font_medium"
+            translatable="false">sans-serif-medium</string>
 </resources>

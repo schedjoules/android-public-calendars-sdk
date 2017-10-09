@@ -8,11 +8,10 @@
 
     <TextView
         android:id="@android:id/title"
-        style="@style/SchedJoules_Text_Medium"
+        style="@style/SchedJoules_SectionHeader_Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="?attr/colorAccent"/>
+            android:maxLines="1"/>
 
 </LinearLayout>
