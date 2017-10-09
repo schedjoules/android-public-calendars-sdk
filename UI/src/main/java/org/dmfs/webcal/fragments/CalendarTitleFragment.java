@@ -189,6 +189,8 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
         mStarIconChecked = new TintedDrawable(ctx, R.drawable.ic_fa_star, new AccentColor(ctx)).value();
         mStarIconUnChecked = new TintedDrawable(ctx, R.drawable.ic_fa_star_o, new AccentColor(ctx)).value();
         menu.findItem(R.id.menu_starred).setChecked(mStarred).setIcon(mStarred ? mStarIconChecked : mStarIconUnChecked).setVisible(mStarVisible);
+
+        menu.findItem(R.id.menu_settings).setIcon(new TintedDrawable(getContext(), R.drawable.ic_settings_black_24dp, new AccentColor(getContext())).value());
     }
 
 
