@@ -181,30 +181,33 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:gravity="right"
+                android:paddingTop="4dp"
                 android:orientation="vertical" >
 
-                <TextView
+                <Button
                     android:id="@+id/purchase_button"
-                    style="@style/SchedJoules_Text_Dialog_Button.Stacked"
+                    style="@style/SchedJoules_Dialog_Button_Stacked"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#ff008810" />
 
-                <TextView
+                <Button
                     android:id="@+id/free_trial_button"
-                    style="@style/SchedJoules_Text_Dialog_Button.Stacked.Secondary"
+                    style="@style/SchedJoules_Dialog_Button_Stacked"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/purchase_dialog_take_the_free_trial"
                     android:textColor="#f0b014" />
 
-                <TextView
+                <Button
                     android:id="@+id/cancel_button"
-                    style="@style/SchedJoules_Text_Dialog_Button.Stacked.Secondary"
+                    style="@style/SchedJoules_Dialog_Button_Stacked"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/purchase_dialog_cancel"
+                    android:textColor="#90000000"
                     android:visibility="gone" />
+
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>
