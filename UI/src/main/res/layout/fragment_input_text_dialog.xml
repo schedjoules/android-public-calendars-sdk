@@ -1,51 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/edit_name"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical"
-    android:padding="8dp">
-
-    <TextView
-        android:id="@android:id/title"
-        style="@style/SchedJoules_Text_Dialog_Title"
-        android:layout_width="fill_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="left|center_vertical"
-        android:padding="16dp"
-        android:text="" />
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="12dp">
 
     <EditText
-        android:id="@android:id/input"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        android:minWidth="240dp" />
-
-    <LinearLayout
-        android:id="@+id/buttonArea"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@android:id/button2"
-            style="@style/SchedJoules_Text_Dialog_Button.Secondary"
-            android:layout_width="wrap_content"
+            android:id="@+id/input_dialog_edittext"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@android:string/cancel" />
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:minWidth="240dp"/>
 
-        <TextView
-            android:id="@android:id/button1"
-            style="@style/SchedJoules_Text_Dialog_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@android:string/ok" />
-    </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>
