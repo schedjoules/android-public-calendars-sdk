@@ -158,4 +158,9 @@
     <string name="menu_favorite">Mark favorite</string>
     <string name="menu_settings_short">Settings</string>
     <string name="menu_settings">Open calendar settings</string>
+
+    <!-- Message when permissions had been denied with 'not show again' but they would be needed for enabling Calendar synchronisation-->
+    <string name="calendar_sync_permission_denied_message">Calendar synchronisation requires Calendar and Contact permissions.</string>
+    <!-- The action button label for the message above, to prompt the user to open app settings in device settings to update permissions -->
+    <string name="calendar_sync_permission_denied_message_action_label">Settings</string>
 </resources>
