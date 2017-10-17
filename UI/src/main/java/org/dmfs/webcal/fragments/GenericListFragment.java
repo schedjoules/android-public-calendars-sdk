@@ -39,7 +39,7 @@ import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.SubscribedCalendars;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
-import org.dmfs.webcal.ActionBarActivity;
+import org.dmfs.webcal.BaseActivity;
 import org.dmfs.webcal.R;
 import org.dmfs.webcal.adapters.MixedNavigationAdapter;
 import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
@@ -242,8 +242,8 @@ public class GenericListFragment extends ActionBarFragment implements OnItemClic
     {
         if (getParentFragment() == null) // the topmost fragment owns the action bar
         {
-            ActionBar ab = ((ActionBarActivity) getActivity()).getSupportActionBar();
-            ActionBarActivity activity = (ActionBarActivity) getActivity();
+            ActionBar ab = ((BaseActivity) getActivity()).getSupportActionBar();
+            BaseActivity activity = (BaseActivity) getActivity();
             activity.setTitle(mTitle);
             ab.setTitle(mTitle);
         }

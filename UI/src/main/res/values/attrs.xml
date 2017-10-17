@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <declare-styleable name="AppBaseTheme">
-        <attr name="primaryColor" format="color" />
-        <attr name="primaryColorShaded" format="color" />
-    </declare-styleable>
+    <!-- The color of the icons on the appbar -->
+    <attr name="schedjoules_appBarIconColor"
+            format="reference|color"/>
 
 </resources>

@@ -8,7 +8,7 @@
     tools:context=".CalendarSettingsFragment" >
 
     <TextView
-        style="@style/dialog_text_title"
+        style="@style/SchedJoules_Text_Dialog_Title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
@@ -26,7 +26,7 @@
         android:padding="16dp" >
 
         <TextView
-            style="@style/medium_text"
+            style="@style/SchedJoules_Text_Medium"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -66,14 +66,14 @@
             android:orientation="vertical" >
 
             <TextView
-                style="@style/medium_text"
+                style="@style/SchedJoules_Text_Medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/calendar_settings_name" />
 
             <TextView
                 android:id="@+id/calendar_name"
-                style="@style/small_text"
+                style="@style/SchedJoules_Text_Small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true" />
@@ -105,7 +105,7 @@
             android:orientation="horizontal" >
 
             <TextView
-                style="@style/medium_text"
+                style="@style/SchedJoules_Text_Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

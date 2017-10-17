@@ -22,7 +22,7 @@
         android:paddingLeft="16dp"
         android:paddingTop="12dp"
         android:textAllCaps="true"
-        android:textAppearance="@style/medium_secondary_text"
+        android:textAppearance="@style/SchedJoules_Text_Medium.Secondary"
         android:textSize="14sp" >
     </TextView>
 

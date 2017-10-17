@@ -23,7 +23,7 @@
 
                 <TextView
                     android:id="@android:id/title"
-                    style="@style/dialog_text_title"
+                    style="@style/SchedJoules_Text_Dialog_Title"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -37,7 +37,7 @@
 
             <TextView
                 android:id="@android:id/text1"
-                style="@style/small_text"
+                style="@style/SchedJoules_Text_Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dialog_title"
@@ -46,7 +46,7 @@
 
             <TextView
                 android:id="@+id/title_benefits"
-                style="@style/dialog_text_title"
+                style="@style/SchedJoules_Text_Dialog_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@android:id/text1"
@@ -70,7 +70,7 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        style="@style/small_text"
+                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -78,7 +78,7 @@
                         android:drawableStart="@drawable/dot_list_item" />
 
                     <TextView
-                        style="@style/small_text"
+                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
@@ -91,7 +91,7 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        style="@style/small_text"
+                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -99,7 +99,7 @@
                         android:drawableStart="@drawable/dot_list_item" />
 
                     <TextView
-                        style="@style/small_text"
+                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
@@ -112,7 +112,7 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        style="@style/small_text"
+                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -120,7 +120,7 @@
                         android:drawableStart="@drawable/dot_list_item" />
 
                     <TextView
-                        style="@style/small_text"
+                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
@@ -133,7 +133,7 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        style="@style/small_text"
+                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -141,7 +141,7 @@
                         android:drawableStart="@drawable/dot_list_item" />
 
                     <TextView
-                        style="@style/small_text"
+                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
@@ -154,7 +154,7 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        style="@style/small_text"
+                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -162,7 +162,7 @@
                         android:drawableStart="@drawable/dot_list_item" />
 
                     <TextView
-                        style="@style/small_text"
+                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
@@ -181,30 +181,33 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:gravity="right"
+                android:paddingTop="4dp"
                 android:orientation="vertical" >
 
-                <TextView
+                <Button
                     android:id="@+id/purchase_button"
-                    style="@style/dialog_button_stacked_primary"
+                    style="@style/SchedJoules_Dialog_Button_Stacked"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#ff008810" />
 
-                <TextView
+                <Button
                     android:id="@+id/free_trial_button"
-                    style="@style/dialog_button_stacked_secondary"
+                    style="@style/SchedJoules_Dialog_Button_Stacked"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/purchase_dialog_take_the_free_trial"
                     android:textColor="#f0b014" />
 
-                <TextView
+                <Button
                     android:id="@+id/cancel_button"
-                    style="@style/dialog_button_stacked_secondary"
+                    style="@style/SchedJoules_Dialog_Button_Stacked"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/purchase_dialog_cancel"
+                    android:textColor="#90000000"
                     android:visibility="gone" />
+
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

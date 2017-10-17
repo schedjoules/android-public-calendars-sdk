@@ -19,7 +19,7 @@
 
         <TextView
             android:id="@+id/free_trial_countdown"
-            style="@style/medium_text"
+            style="@style/SchedJoules_Text_Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -38,7 +38,7 @@
             android:gravity="center_vertical|right">
 
             <TextView
-                style="@style/medium_text"
+                style="@style/SchedJoules_Text_Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
@@ -64,7 +64,7 @@
             android:visibility="gone">
 
             <TextView
-                style="@style/medium_text"
+                style="@style/SchedJoules_Text_Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"

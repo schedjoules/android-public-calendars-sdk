@@ -18,7 +18,6 @@
 package org.dmfs.webcal.views;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.view.PagerAdapter;
@@ -32,6 +31,8 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.dmfs.webcal.utils.color.AttributeColor;
 
 
 public class TabBarLayout extends HorizontalScrollView
@@ -152,7 +153,7 @@ public class TabBarLayout extends HorizontalScrollView
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, LABEL_TEXT_SIZE);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
-        textView.setTextColor(Color.WHITE);
+        textView.setTextColor(new AttributeColor(context, android.R.attr.textColorTertiary).argb());
         textView.setSingleLine();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)

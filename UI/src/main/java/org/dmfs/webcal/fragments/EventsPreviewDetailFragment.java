@@ -17,6 +17,7 @@
 
 package org.dmfs.webcal.fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -33,6 +34,9 @@ import org.dmfs.rfc5545.DateTime;
 import org.dmfs.rfc5545.Duration;
 import org.dmfs.webcal.R;
 import org.dmfs.webcal.utils.Event;
+import org.dmfs.webcal.utils.TintedDrawable;
+import org.dmfs.webcal.utils.color.AccentColor;
+import org.dmfs.webcal.utils.color.Color;
 
 import java.util.Formatter;
 import java.util.Locale;
@@ -105,12 +109,14 @@ public class EventsPreviewDetailFragment extends SupportFragment
         View view = inflater.inflate(R.layout.fragment_events_preview_detail, container, false);
 
         TextView titleView = (TextView) view.findViewById(R.id.calendar);
+        tintCompoundDrawable(titleView, new AccentColor(getContext()));
         titleView.setText(mCalendarName.equals(mTitle) ? mCalendarName : String.format(Locale.getDefault(), "%s (%s)", mCalendarName, mTitle));
 
         TextView descriptionView = (TextView) view.findViewById(R.id.description);
         descriptionView.setText(mPreviewEvent.description == null ? mPreviewEvent.description.trim() : "");
 
         TextView locationView = (TextView) view.findViewById(R.id.location);
+        tintCompoundDrawable(locationView, new AccentColor(getContext()));
         if (locationView != null)
         {
             if (TextUtils.isEmpty(mPreviewEvent.location))
@@ -122,8 +128,9 @@ public class EventsPreviewDetailFragment extends SupportFragment
                 locationView.setText(mPreviewEvent.location.trim());
             }
         }
-        TextView dateView = (TextView) view.findViewById(android.R.id.text1);
-        TextView timeView = (TextView) view.findViewById(android.R.id.text2);
+        TextView dateView = (TextView) view.findViewById(R.id.date);
+        tintCompoundDrawable(dateView, new AccentColor(getContext()));
+        TextView timeView = (TextView) view.findViewById(R.id.time);
 
         int flags = DEFAULT_DATEUTILS_FLAGS;
 
@@ -174,4 +181,18 @@ public class EventsPreviewDetailFragment extends SupportFragment
         Analytics.screen("eventpreview", null, null);
         return view;
     }
+
+
+    // TODO Find a nicer solution. "android:drawableTint" is available from api 23, not sure whether AppCompatTextView can be used somehow
+    private void tintCompoundDrawable(TextView textView, Color color)
+    {
+        Drawable[] originals = textView.getCompoundDrawables();
+        Drawable[] result = new Drawable[4];
+        for (int i = 0; i < originals.length; i++)
+        {
+            result[i] = originals[i] == null ? null : new TintedDrawable(originals[i], color).value();
+        }
+        textView.setCompoundDrawablesWithIntrinsicBounds(result[0], result[1], result[2], result[3]);
+    }
+
 }

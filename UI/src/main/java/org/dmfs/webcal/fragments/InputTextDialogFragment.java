@@ -19,14 +19,12 @@ package org.dmfs.webcal.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -43,7 +41,7 @@ import org.dmfs.webcal.R;
  *
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class InputTextDialogFragment extends SupportDialogFragment implements OnEditorActionListener
+public class InputTextDialogFragment extends SupportDialogFragment
 {
 
     private final static String ARG_TITLE_ID = "title_id";
@@ -52,12 +50,6 @@ public class InputTextDialogFragment extends SupportDialogFragment implements On
     private int mTitleId;
     @Parameter(key = ARG_INITIAL_TEXT)
     private String mInitialText;
-    private EditText mEditText;
-
-
-    public InputTextDialogFragment()
-    {
-    }
 
 
     /**
@@ -84,89 +76,67 @@ public class InputTextDialogFragment extends SupportDialogFragment implements On
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        View contentView = getActivity().getLayoutInflater().inflate(R.layout.fragment_input_text_dialog, null);
 
-        // hide the actual dialog title, we have our own...
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        return dialog;
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View view = inflater.inflate(R.layout.fragment_input_text_dialog, container);
-
-        mEditText = (EditText) view.findViewById(android.R.id.input);
+        final EditText editText = (EditText) contentView.findViewById(R.id.input_dialog_edittext);
         if (savedInstanceState == null)
         {
-            mEditText.setText(mInitialText);
+            editText.setText(mInitialText);
         }
+        editText.requestFocus();
 
-        ((TextView) view.findViewById(android.R.id.title)).setText(mTitleId);
-
-        mEditText.requestFocus();
-        getDialog().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        mEditText.setOnEditorActionListener(this);
-
-        view.findViewById(android.R.id.button1).setOnClickListener(new OnClickListener()
+        editText.setOnEditorActionListener(new OnEditorActionListener()
         {
-
             @Override
-            public void onClick(View v)
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
             {
-                Fragment parentFragment = getParentFragment();
-                Activity activity = getActivity();
-
-                if (parentFragment instanceof OnTextInputListener)
+                if (EditorInfo.IME_ACTION_DONE == actionId)
                 {
-                    ((OnTextInputListener) parentFragment).onTextInput(mEditText.getText().toString());
+                    notifyTextInputListener(editText.getText());
+                    InputTextDialogFragment.this.dismiss();
+                    return true;
                 }
-                else if (activity instanceof OnTextInputListener)
-                {
-                    ((OnTextInputListener) activity).onTextInput(mEditText.getText().toString());
-
-                }
-                InputTextDialogFragment.this.dismiss();
+                return false;
             }
         });
 
-        view.findViewById(android.R.id.button2).setOnClickListener(new OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v)
-            {
-                InputTextDialogFragment.this.dismiss();
-            }
-        });
-
-        return view;
+        return new AlertDialog.Builder(getActivity()).setView(contentView)
+                .setTitle(mTitleId)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        notifyTextInputListener(editText.getText());
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
     }
 
 
     @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+    public void onActivityCreated(Bundle savedInstanceState)
     {
-        if (EditorInfo.IME_ACTION_DONE == actionId)
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
+
+    private void notifyTextInputListener(CharSequence newTextInput)
+    {
+        Fragment parentFragment = getParentFragment();
+        Activity activity = getActivity();
+
+        if (parentFragment instanceof OnTextInputListener)
         {
-            // Return input text to activity
-            Fragment parentFragment = getParentFragment();
-            Activity activity = getActivity();
-
-            if (parentFragment instanceof OnTextInputListener)
-            {
-                ((OnTextInputListener) parentFragment).onTextInput(mEditText.getText().toString());
-            }
-            else if (activity instanceof OnTextInputListener)
-            {
-                ((OnTextInputListener) activity).onTextInput(mEditText.getText().toString());
-
-            }
-            InputTextDialogFragment.this.dismiss();
-            return true;
+            ((OnTextInputListener) parentFragment).onTextInput(newTextInput.toString());
         }
-        return false;
+        else if (activity instanceof OnTextInputListener)
+        {
+            ((OnTextInputListener) activity).onTextInput(newTextInput.toString());
+        }
     }
 
 

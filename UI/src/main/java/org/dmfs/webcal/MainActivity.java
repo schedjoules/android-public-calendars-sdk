@@ -47,7 +47,6 @@ import org.dmfs.android.calendarcontent.provider.CalendarContentContract.Subscri
 import org.dmfs.android.calendarcontent.secrets.ISecretProvider;
 import org.dmfs.android.calendarcontent.secrets.SecretProvider;
 import org.dmfs.android.retentionmagic.annotations.Retain;
-import org.dmfs.android.xtivity.Xtivity;
 import org.dmfs.webcal.fragments.CalendarItemFragment;
 import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
 import org.dmfs.webcal.fragments.GenericListFragment;
@@ -166,11 +165,12 @@ public class MainActivity extends NavbarActivity
         {
             handleIntent(getIntent());
 
-            if (getSharedPreferences(PREFS_INTRO, 0).getInt(PREF_INTRO_VERSION, 0) < getResources().getInteger(R.integer.com_schedjoules_intro_version))
-            {
-                Intent introIntent = new Intent(this, Xtivity.class);
-                startActivityForResult(introIntent, REQUEST_CODE_INTRO);
-            }
+            // TODO Intro screen is disabled now until it is finalized:
+            // if (getSharedPreferences(PREFS_INTRO, 0).getInt(PREF_INTRO_VERSION, 0) < getResources().getInteger(R.integer.com_schedjoules_intro_version))
+            // {
+            //     Intent introIntent = new Intent(this, Xtivity.class);
+            //     startActivityForResult(introIntent, REQUEST_CODE_INTRO);
+            // }
         }
     }
 

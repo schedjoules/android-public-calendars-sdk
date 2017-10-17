@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+
+    These resources below are explicitly marked as public here,
+    so they can be overridden in the client of the SDK for customization.
+    (See https://developer.android.com/studio/projects/android-library.html#PrivateResources)
+
+    The plan is to keep them stable (no name or usage change) over the releases,
+    so clients can depend on them.
+
+    All other resources could be overridden as well, but only at your own risk,
+    we can't guarantee that they are not changed later.
+    (They will also generate a Lint warning about using private resource.)
+
+    -->
+
+    <public name="SchedJoules_Theme.Light.NoActionBar"
+            type="style"/>
+    <public name="SchedJoules_Theme.Dark.NoActionBar"
+            type="style"/>
+
+</resources>

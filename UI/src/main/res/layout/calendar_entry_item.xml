@@ -25,7 +25,7 @@
 
         <TextView
             android:id="@+id/content_item_price"
-            style="@style/very_small_text"
+            style="@style/SchedJoules_Text_Very_Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -36,7 +36,6 @@
 
         <CheckBox
             android:id="@+id/menu_starred"
-            style="?android:attr/starStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -54,7 +53,7 @@
 
             <TextView
                 android:id="@android:id/title"
-                style="@style/medium_text"
+                style="@style/SchedJoules_Text_Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -64,7 +63,7 @@
 
             <TextView
                 android:id="@android:id/text1"
-                style="@style/very_small_text"
+                style="@style/SchedJoules_Text_Very_Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="4dp"
@@ -75,7 +74,7 @@
 
         <TextView
             android:id="@android:id/text2"
-            style="@style/very_small_text"
+            style="@style/SchedJoules_Text_Very_Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

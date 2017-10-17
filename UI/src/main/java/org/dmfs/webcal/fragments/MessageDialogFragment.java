@@ -19,18 +19,13 @@ package org.dmfs.webcal.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.text.Html;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.TextView;
 
 import org.dmfs.android.retentionmagic.SupportDialogFragment;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
-import org.dmfs.webcal.R;
 
 
 /**
@@ -49,11 +44,6 @@ public class MessageDialogFragment extends SupportDialogFragment
 
     @Parameter(key = ARG_MESSAGE_TEXT)
     private String mMessageText;
-
-
-    public MessageDialogFragment()
-    {
-    }
 
 
     /**
@@ -80,36 +70,14 @@ public class MessageDialogFragment extends SupportDialogFragment
 
 
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-
-        // hide the actual dialog title, we have our own...
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        return dialog;
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View view = inflater.inflate(R.layout.fragment_message_dialog, container);
-
-        TextView messageView = (TextView) view.findViewById(android.R.id.text1);
-        messageView.setText(mMessageText != null && mMessageText.contains("</") ? Html.fromHtml(mMessageText) : mMessageText);
-
-        ((TextView) view.findViewById(android.R.id.title)).setText(mTitleId);
-
-        view.findViewById(android.R.id.button1).setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                MessageDialogFragment.this.dismiss();
-            }
-        });
-
-        return view;
+        return new AlertDialog.Builder(getActivity())
+                .setTitle(mTitleId)
+                .setMessage(mMessageText != null && mMessageText.contains("</") ? Html.fromHtml(mMessageText) : mMessageText)
+                .setPositiveButton(android.R.string.ok, null)
+                .create();
     }
 
 }

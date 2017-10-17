@@ -24,7 +24,7 @@ import android.view.MenuItem;
 import org.dmfs.webcal.fragments.PreferencesFragment;
 
 
-public class PreferencesActivity extends ActionBarActivity
+public class PreferencesActivity extends BaseActivity
 {
 
     @Override

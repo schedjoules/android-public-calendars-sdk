@@ -18,8 +18,11 @@
 package org.dmfs.webcal.fragments;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,13 +34,14 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.schedjoules.analytics.Analytics;
 
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
 import org.dmfs.webcal.R;
+import org.dmfs.webcal.utils.TintedDrawable;
+import org.dmfs.webcal.utils.color.AccentColor;
 import org.dmfs.webcal.views.RemoteImageView;
 
 
@@ -61,7 +65,7 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
 
     private RemoteImageView mRemoteIcon;
 
-    private Switch mSyncSwitch;
+    private SwitchCompat mSyncSwitch;
     private LinearLayout mSyncButton;
 
     private String mCalendarTitle;
@@ -73,6 +77,9 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
     private boolean mStarred;
 
     private boolean mStarVisible = false;
+
+    private Drawable mStarIconChecked;
+    private Drawable mStarIconUnChecked;
 
 
     public static CalendarTitleFragment newInstance()
@@ -148,7 +155,7 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
             mSyncButton.setEnabled(false);
         }
 
-        mSyncSwitch = (Switch) returnView.findViewById(R.id.calendar_item_sync_switch);
+        mSyncSwitch = (SwitchCompat) returnView.findViewById(R.id.calendar_item_sync_switch);
         mSyncSwitch.setOnCheckedChangeListener(this);
 
         setHasOptionsMenu(true);
@@ -177,7 +184,13 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
     {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.main, menu);
-        menu.findItem(R.id.menu_starred).setChecked(mStarred).setIcon(mStarred ? R.drawable.ic_fa_star : R.drawable.ic_fa_star_o).setVisible(mStarVisible);
+
+        Context ctx = getContext();
+        mStarIconChecked = new TintedDrawable(ctx, R.drawable.ic_fa_star, new AccentColor(ctx)).value();
+        mStarIconUnChecked = new TintedDrawable(ctx, R.drawable.ic_fa_star_o, new AccentColor(ctx)).value();
+        menu.findItem(R.id.menu_starred).setChecked(mStarred).setIcon(mStarred ? mStarIconChecked : mStarIconUnChecked).setVisible(mStarVisible);
+
+        menu.findItem(R.id.menu_settings).setIcon(new TintedDrawable(getContext(), R.drawable.ic_settings_black_24dp, new AccentColor(getContext())).value());
     }
 
 
@@ -190,7 +203,7 @@ public class CalendarTitleFragment extends Fragment implements OnClickListener, 
             boolean checked = !item.isChecked();
             item.setChecked(checked);
             // Selectors don't seem to work with menu options, so we have to hard code the icons.
-            item.setIcon(checked ? R.drawable.ic_fa_star : R.drawable.ic_fa_star_o);
+            item.setIcon(mStarred ? mStarIconChecked : mStarIconUnChecked);
             ContentItem.setStarred(getActivity(), mId, checked);
             Analytics.event("starred", "calendar-action", checked ? "starred" : "un-starred", null, String.valueOf(mId), null);
             return true;

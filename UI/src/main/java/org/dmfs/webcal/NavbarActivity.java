@@ -39,7 +39,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 
-public abstract class NavbarActivity extends ActionBarActivity implements ListView.OnItemClickListener
+public abstract class NavbarActivity extends BaseActivity implements ListView.OnItemClickListener
 {
     protected static final String TAG = "NavbarActivity";
     protected DrawerLayout mDrawerLayout;
@@ -251,8 +251,8 @@ public abstract class NavbarActivity extends ActionBarActivity implements ListVi
                 MenuItem item = (MenuItem) getItem(position);
                 if ((category & Menu.CATEGORY_SECONDARY) == 0)
                 {
-                    titleView.setTextAppearance(mContext, mDrawerList.getCheckedItemPosition() == position ? R.style.navigation_text_selected
-                            : R.style.navigation_text_normal);
+                    titleView.setTextAppearance(mContext, mDrawerList.getCheckedItemPosition() == position ? R.style.SchedJoules_Text_Navigation_Selected
+                            : R.style.SchedJoules_Text_Navigation);
                 }
                 titleView.setText(item.getTitle());
 

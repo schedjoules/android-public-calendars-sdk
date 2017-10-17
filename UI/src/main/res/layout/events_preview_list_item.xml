@@ -21,7 +21,7 @@
 
             <TextView
                 android:id="@android:id/text1"
-                style="@style/medium_secondary_text"
+                style="@style/SchedJoules_Text_Medium.Secondary"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -29,7 +29,7 @@
 
             <TextView
                 android:id="@+id/ellipsis"
-                style="@style/medium_secondary_text"
+                style="@style/SchedJoules_Text_Medium.Secondary"
                 android:layout_width="fill_parent"
                 android:layout_height="0px"
                 android:layout_gravity="center"
@@ -40,7 +40,7 @@
 
             <TextView
                 android:id="@+id/endtime"
-                style="@style/medium_secondary_text"
+                style="@style/SchedJoules_Text_Medium.Secondary"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -64,7 +64,7 @@
 
             <TextView
                 android:id="@android:id/title"
-                style="@style/medium_text"
+                style="@style/SchedJoules_Text_Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -73,7 +73,7 @@
 
             <TextView
                 android:id="@android:id/text2"
-                style="@style/small_text"
+                style="@style/SchedJoules_Text_Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -81,7 +81,7 @@
 
             <TextView
                 android:id="@+id/description"
-                style="@style/small_text"
+                style="@style/SchedJoules_Text_Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
