@@ -22,14 +22,14 @@ import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -71,6 +71,7 @@ import org.dmfs.webcal.adapters.EventListAdapter;
 import org.dmfs.webcal.adapters.SectionTitlesAdapter;
 import org.dmfs.webcal.adapters.SectionTitlesAdapter.SectionIndexer;
 import org.dmfs.webcal.fragments.CalendarTitleFragment.SwitchStatusListener;
+import org.dmfs.webcal.utils.AppSettingsIntent;
 import org.dmfs.webcal.utils.Event;
 import org.dmfs.webcal.utils.ProtectedBackgroundJob;
 import org.dmfs.webcal.utils.TintedDrawable;
@@ -78,6 +79,8 @@ import org.dmfs.webcal.utils.color.ResourceColor;
 
 import java.net.URI;
 import java.util.TimeZone;
+
+import static android.content.pm.PackageManager.PERMISSION_DENIED;
 
 
 public class CalendarItemFragment extends SubscribeableItemFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwitchStatusListener, OnItemClickListener
@@ -104,6 +107,7 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
     private final static String[] PROJECTION = new String[] {
             CalendarContentContract.ContentItem.TITLE, CalendarContentContract.ContentItem.ICON_ID,
             CalendarContentContract.ContentItem.URL, ContentItem.STARRED, ContentItem._ID };
+    private static final int PERMISSION_REQUEST_CODE = 123;
     private final Place mWaitingForCalendarItem = new Place(1);
     private final Place mWaitingForCalendarSubscription = new Place(1);
     private final Place mWaitingForPayment = new Place(1);
@@ -220,7 +224,7 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
             if (cursor != null && cursor.moveToFirst())
             {
                 /*
-				 * We have an item.
+                 * We have an item.
 				 * 
 				 * Get the values and update the UI as good as we can.
 				 */
@@ -614,9 +618,6 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
     }
 
 
-    ;
-
-
     @Override
     public void onPurchase(boolean success, boolean freeTrial)
     {
@@ -637,8 +638,8 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
                 || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED)
         {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[] { Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR, Manifest.permission.GET_ACCOUNTS }, 1);
+            requestPermissions(new String[] { Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR, Manifest.permission.GET_ACCOUNTS },
+                    PERMISSION_REQUEST_CODE);
             return;
         }
 
@@ -691,13 +692,33 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK)
+        if (requestCode == PERMISSION_REQUEST_CODE)
         {
-            setCalendarSynced(true);
+            if (contains(grantResults, PERMISSION_DENIED))
+            {
+                mTitleFragment.setSwitchChecked(false);
+                if (wasAnyDeniedWithDontAskAgain(permissions, grantResults))
+                {
+                    // UX similar as suggested here: https://youtu.be/iZqDdvhTZj0?t=4m42s
+                    Snackbar.make(getView(), R.string.calendar_sync_permission_denied_message, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.calendar_sync_permission_denied_message_action_label, new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    startActivity(new AppSettingsIntent(getContext()).value());
+                                }
+                            }).show();
+                }
+            }
+            else
+            {
+                mTitleFragment.setSwitchChecked(true);
+                setCalendarSynced(true);
+            }
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -785,11 +806,39 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
      */
     private interface COLUMNS
     {
+
         int TITLE = 0;
+
         int ICON = 1;
         int URL = 2;
         int STARRED = 3;
         @SuppressWarnings("unused")
         int ID = 4;
+    }
+
+
+    private boolean contains(int[] array, int item)
+    {
+        for (int element : array)
+        {
+            if (element == item)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private boolean wasAnyDeniedWithDontAskAgain(String[] permissions, int[] grantResults)
+    {
+        for (int i = 0; i < permissions.length; i++)
+        {
+            if (grantResults[i] == PERMISSION_DENIED && !shouldShowRequestPermissionRationale(permissions[i]))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
