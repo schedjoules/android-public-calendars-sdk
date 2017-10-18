@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="page1" type="id" />
-    <item name="page2" type="id" />
-    <item name="page3" type="id" />
-    <item name="page4" type="id" />
+    <item name="page1"
+            type="id"/>
+    <item name="page2"
+            type="id"/>
+    <item name="page3"
+            type="id"/>
+    <item name="page4"
+            type="id"/>
 
 </resources>

@@ -117,7 +117,7 @@
     <string name="preferences_locale_title">Pays</string>
 
     <!-- Locale preference summary -->
-    <string name="preferences_locale_summary" />
+    <string name="preferences_locale_summary"/>
 
     <!-- Title of the preference to enable analytics -->
     <string name="preferences_enable_analytics_title">Envoyer les statistiques d\'utilisation anonymes</string>

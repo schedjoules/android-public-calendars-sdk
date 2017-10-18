@@ -1,212 +1,212 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true" >
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="8dp" >
+        android:fillViewport="true">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="8dp">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?android:attr/listPreferredItemHeight"
-            android:padding="4dp" >
-
-            <LinearLayout
-                android:id="@+id/dialog_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:minHeight="?android:attr/listPreferredItemHeight"
+                android:padding="4dp">
+
+            <LinearLayout
+                    android:id="@+id/dialog_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                 <TextView
-                    android:id="@android:id/title"
-                    style="@style/SchedJoules_Text_Dialog_Title"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="4dp"
-                    android:layout_weight="1"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:singleLine="true"
-                    android:text="@string/purchase_header_enable_sync" />
+                        android:id="@android:id/title"
+                        style="@style/SchedJoules_Text_Dialog_Title"
+                        android:layout_width="0px"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        android:ellipsize="marquee"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
+                        android:text="@string/purchase_header_enable_sync"/>
             </LinearLayout>
 
             <TextView
-                android:id="@android:id/text1"
-                style="@style/SchedJoules_Text_Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/dialog_title"
-                android:layout_margin="4dp"
-                android:text="" />
+                    android:id="@android:id/text1"
+                    style="@style/SchedJoules_Text_Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dialog_title"
+                    android:layout_margin="4dp"
+                    android:text=""/>
 
             <TextView
-                android:id="@+id/title_benefits"
-                style="@style/SchedJoules_Text_Dialog_Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@android:id/text1"
-                android:layout_margin="4dp"
-                android:paddingTop="8dp"
-                android:singleLine="true"
-                android:text="@string/purchase_header_benefits" />
+                    android:id="@+id/title_benefits"
+                    style="@style/SchedJoules_Text_Dialog_Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@android:id/text1"
+                    android:layout_margin="4dp"
+                    android:paddingTop="8dp"
+                    android:singleLine="true"
+                    android:text="@string/purchase_header_benefits"/>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/title_benefits"
-                android:layout_alignStart="@id/title_benefits"
-                android:layout_below="@id/title_benefits"
-                android:layout_margin="4dp"
-                android:orientation="vertical" >
-
-                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:layout_alignLeft="@id/title_benefits"
+                    android:layout_alignStart="@id/title_benefits"
+                    android:layout_below="@id/title_benefits"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical">
 
-                    <TextView
-                        style="@style/SchedJoules_Text_Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:drawableLeft="@drawable/dot_list_item"
-                        android:drawableStart="@drawable/dot_list_item" />
-
-                    <TextView
-                        style="@style/SchedJoules_Text_Small"
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="@string/purchase_dialog_benefits1" />
+                        android:orientation="horizontal">
+
+                    <TextView
+                            style="@style/SchedJoules_Text_Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:drawableLeft="@drawable/dot_list_item"
+                            android:drawableStart="@drawable/dot_list_item"/>
+
+                    <TextView
+                            style="@style/SchedJoules_Text_Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="@string/purchase_dialog_benefits1"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
-
-                    <TextView
-                        style="@style/SchedJoules_Text_Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:drawableLeft="@drawable/dot_list_item"
-                        android:drawableStart="@drawable/dot_list_item" />
-
-                    <TextView
-                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="@string/purchase_dialog_benefits2" />
+                        android:orientation="horizontal">
+
+                    <TextView
+                            style="@style/SchedJoules_Text_Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:drawableLeft="@drawable/dot_list_item"
+                            android:drawableStart="@drawable/dot_list_item"/>
+
+                    <TextView
+                            style="@style/SchedJoules_Text_Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="@string/purchase_dialog_benefits2"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
-
-                    <TextView
-                        style="@style/SchedJoules_Text_Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:drawableLeft="@drawable/dot_list_item"
-                        android:drawableStart="@drawable/dot_list_item" />
-
-                    <TextView
-                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="@string/purchase_dialog_benefits3" />
+                        android:orientation="horizontal">
+
+                    <TextView
+                            style="@style/SchedJoules_Text_Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:drawableLeft="@drawable/dot_list_item"
+                            android:drawableStart="@drawable/dot_list_item"/>
+
+                    <TextView
+                            style="@style/SchedJoules_Text_Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="@string/purchase_dialog_benefits3"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
-
-                    <TextView
-                        style="@style/SchedJoules_Text_Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:drawableLeft="@drawable/dot_list_item"
-                        android:drawableStart="@drawable/dot_list_item" />
-
-                    <TextView
-                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="@string/purchase_dialog_benefits4" />
+                        android:orientation="horizontal">
+
+                    <TextView
+                            style="@style/SchedJoules_Text_Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:drawableLeft="@drawable/dot_list_item"
+                            android:drawableStart="@drawable/dot_list_item"/>
+
+                    <TextView
+                            style="@style/SchedJoules_Text_Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="@string/purchase_dialog_benefits4"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
-
-                    <TextView
-                        style="@style/SchedJoules_Text_Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:drawableLeft="@drawable/dot_list_item"
-                        android:drawableStart="@drawable/dot_list_item" />
-
-                    <TextView
-                        style="@style/SchedJoules_Text_Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="@string/purchase_dialog_benefits5" />
+                        android:orientation="horizontal">
+
+                    <TextView
+                            style="@style/SchedJoules_Text_Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:drawableLeft="@drawable/dot_list_item"
+                            android:drawableStart="@drawable/dot_list_item"/>
+
+                    <TextView
+                            style="@style/SchedJoules_Text_Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="@string/purchase_dialog_benefits5"/>
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
 
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" > <!-- This is required to stretch the dialog -->
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"> <!-- This is required to stretch the dialog -->
 
             <LinearLayout
-                android:id="@+id/buttonArea"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:gravity="right"
-                android:paddingTop="4dp"
-                android:orientation="vertical" >
+                    android:id="@+id/buttonArea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:paddingTop="4dp"
+                    android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/purchase_button"
-                    style="@style/SchedJoules_Dialog_Button_Stacked"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ff008810" />
+                        android:id="@+id/purchase_button"
+                        style="@style/SchedJoules_Dialog_Button_Stacked"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#ff008810"/>
 
                 <Button
-                    android:id="@+id/free_trial_button"
-                    style="@style/SchedJoules_Dialog_Button_Stacked"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/purchase_dialog_take_the_free_trial"
-                    android:textColor="#f0b014" />
+                        android:id="@+id/free_trial_button"
+                        style="@style/SchedJoules_Dialog_Button_Stacked"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/purchase_dialog_take_the_free_trial"
+                        android:textColor="#f0b014"/>
 
                 <Button
-                    android:id="@+id/cancel_button"
-                    style="@style/SchedJoules_Dialog_Button_Stacked"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/purchase_dialog_cancel"
-                    android:textColor="#90000000"
-                    android:visibility="gone" />
+                        android:id="@+id/cancel_button"
+                        style="@style/SchedJoules_Dialog_Button_Stacked"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/purchase_dialog_cancel"
+                        android:textColor="#90000000"
+                        android:visibility="gone"/>
 
             </LinearLayout>
         </FrameLayout>

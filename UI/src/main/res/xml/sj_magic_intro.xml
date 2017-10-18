@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xmlmagic:activity layout="@layout/sj_intro"
-                   xmlns:xmlmagic="http://dmfs.org/ns/android-xml-magic"
-                   xmlns:xtivity="http://dmfs.org/ns/xtivity">
+        xmlns:xmlmagic="http://dmfs.org/ns/android-xml-magic"
+        xmlns:xtivity="http://dmfs.org/ns/xtivity">
     <xtivity:bindings>
         <xtivity:bind id="@id/main_pager">
             <xtivity:pager-adapter>
                 <xtivity:pages>
-                    <xtivity:page id="@id/page1" label="Holo" layout="@layout/sj_intro_page">
+                    <xtivity:page id="@id/page1"
+                            label="Holo"
+                            layout="@layout/sj_intro_page">
                         <xtivity:bindings>
                             <xtivity:bind id="@android:id/title">
                                 <xtivity:text value="Page 1"/>
@@ -19,7 +21,9 @@
                             </xtivity:bind>
                         </xtivity:bindings>
                     </xtivity:page>
-                    <xtivity:page id="@id/page2" label="Holo" layout="@layout/sj_intro_page">
+                    <xtivity:page id="@id/page2"
+                            label="Holo"
+                            layout="@layout/sj_intro_page">
                         <xtivity:bindings>
                             <xtivity:bind id="@android:id/title">
                                 <xtivity:text value="Page 2"/>
@@ -32,7 +36,9 @@
                             </xtivity:bind>
                         </xtivity:bindings>
                     </xtivity:page>
-                    <xtivity:page id="@id/page3" label="Holo" layout="@layout/sj_intro_page">
+                    <xtivity:page id="@id/page3"
+                            label="Holo"
+                            layout="@layout/sj_intro_page">
                         <xtivity:bindings>
                             <xtivity:bind id="@android:id/title">
                                 <xtivity:text value="Page 3"/>
@@ -45,7 +51,9 @@
                             </xtivity:bind>
                         </xtivity:bindings>
                     </xtivity:page>
-                    <xtivity:page id="@id/page4" label="Holo" layout="@layout/sj_intro_page">
+                    <xtivity:page id="@id/page4"
+                            label="Holo"
+                            layout="@layout/sj_intro_page">
                         <xtivity:bindings>
                             <xtivity:bind id="@android:id/title">
                                 <xtivity:text value="Page 4"/>
@@ -63,24 +71,27 @@
         </xtivity:bind>
         <xtivity:bind id="@id/bottom_pager">
             <xtivity:pager-adapter no-swipe="true">
-                <xtivity:transformer
-                    class="org.dmfs.android.xtivity.transformer.DefaultTransformer"/>
+                <xtivity:transformer class="org.dmfs.android.xtivity.transformer.DefaultTransformer"/>
                 <xtivity:pages>
-                    <xtivity:page id="@id/page1" label="Holo"
-                                  layout="@layout/sj_intro_bottom_page1">
+                    <xtivity:page id="@id/page1"
+                            label="Holo"
+                            layout="@layout/sj_intro_bottom_page1">
                         <xtivity:bindings>
                             <xtivity:bind id="@id/next">
                                 <xtivity:clickable clickable="true">
-                                    <xtivity:pager-action action="next" pager="@id/main_pager"/>
+                                    <xtivity:pager-action action="next"
+                                            pager="@id/main_pager"/>
                                 </xtivity:clickable>
                             </xtivity:bind>
-                            <xtivity:bind id="@id/indicator" late="true">
+                            <xtivity:bind id="@id/indicator"
+                                    late="true">
                                 <xtivity:pager pager="@id/main_pager"></xtivity:pager>
                             </xtivity:bind>
                         </xtivity:bindings>
                     </xtivity:page>
-                    <xtivity:page id="@id/page2" label="Holo"
-                                  layout="@layout/sj_intro_bottom_page2">
+                    <xtivity:page id="@id/page2"
+                            label="Holo"
+                            layout="@layout/sj_intro_bottom_page2">
                         <xtivity:bindings>
                             <xtivity:bind id="@android:id/closeButton">
                                 <xtivity:clickable value="true">
@@ -94,11 +105,17 @@
         </xtivity:bind>
     </xtivity:bindings>
     <xtivity:events>
-        <xtivity:on-page-change page="@id/page4" pager="@id/main_pager">
-            <xtivity:pager-action go-to="@id/page2" pager="@id/bottom_pager" smooth="true"/>
+        <xtivity:on-page-change page="@id/page4"
+                pager="@id/main_pager">
+            <xtivity:pager-action go-to="@id/page2"
+                    pager="@id/bottom_pager"
+                    smooth="true"/>
         </xtivity:on-page-change>
-        <xtivity:on-page-change page="@id/page3" pager="@id/main_pager">
-            <xtivity:pager-action go-to="@id/page1" pager="@id/bottom_pager" smooth="true"/>
+        <xtivity:on-page-change page="@id/page3"
+                pager="@id/main_pager">
+            <xtivity:pager-action go-to="@id/page1"
+                    pager="@id/bottom_pager"
+                    smooth="true"/>
         </xtivity:on-page-change>
     </xtivity:events>
 </xmlmagic:activity>

@@ -4,47 +4,47 @@
         android:gravity="center">
 
     <ProgressBar
-        android:id="@android:id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@android:id/message"
-        style="@style/SchedJoules_Text_Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="8dp"
-        android:text="@string/loading_failed"
-        android:visibility="gone" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <org.dmfs.webcal.views.TabBarLayout
-            android:id="@+id/tab_bar"
-            android:layout_width="match_parent"
+            android:id="@android:id/progress"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
             android:visibility="gone"/>
 
-        <FrameLayout
+    <TextView
+            android:id="@android:id/message"
+            style="@style/SchedJoules_Text_Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="@string/loading_failed"
+            android:visibility="gone"/>
+
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <org.dmfs.webcal.views.TabBarLayout
+                android:id="@+id/tab_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
             <android.support.v4.view.ViewPager
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
 
             <View
-                style="@style/SchedJoules_ToolbarShadow"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/toolbar_shadow_height" />
+                    style="@style/SchedJoules_ToolbarShadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/toolbar_shadow_height"/>
         </FrameLayout>
     </LinearLayout>
 
