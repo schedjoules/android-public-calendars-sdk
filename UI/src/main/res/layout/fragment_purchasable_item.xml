@@ -1,88 +1,88 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/purchasable_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:orientation="horizontal"
-        android:paddingBottom="8dp"
-        android:paddingEnd="14dp"
-        android:paddingLeft="18dp"
-        android:paddingRight="14dp"
-        android:paddingStart="18dp"
-        android:paddingTop="8dp"
-        android:visibility="gone">
+            android:id="@+id/purchasable_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingEnd="14dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="14dp"
+            android:paddingStart="18dp"
+            android:paddingTop="8dp"
+            android:visibility="gone">
 
         <TextView
-            android:id="@+id/free_trial_countdown"
-            style="@style/SchedJoules_Text_Medium"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
+                android:id="@+id/free_trial_countdown"
+                style="@style/SchedJoules_Text_Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"/>
 
         <FrameLayout
-            android:id="@+id/unlock_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="8dp"
-            android:background="@drawable/background_purchase_button"
-            android:clickable="true"
-            android:gravity="center_vertical|right">
-
-            <TextView
-                style="@style/SchedJoules_Text_Medium"
+                android:id="@+id/unlock_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:duplicateParentState="true"
-                android:maxLines="1"
-                android:paddingBottom="4dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
-                android:paddingTop="4dp"
-                android:text="@string/calendar_item_add_to_calendar"
-                android:textColor="@android:color/white" />
+                android:layout_gravity="right"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/background_purchase_button"
+                android:clickable="true"
+                android:gravity="center_vertical|right">
+
+            <TextView
+                    style="@style/SchedJoules_Text_Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:duplicateParentState="true"
+                    android:maxLines="1"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/calendar_item_add_to_calendar"
+                    android:textColor="@android:color/white"/>
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/buy_now_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="8dp"
-            android:background="@drawable/background_purchase_button"
-            android:clickable="true"
-            android:gravity="center_vertical|right"
-            android:visibility="gone">
-
-            <TextView
-                style="@style/SchedJoules_Text_Medium"
+                android:id="@+id/buy_now_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:duplicateParentState="true"
-                android:maxLines="1"
-                android:paddingBottom="4dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
-                android:paddingTop="4dp"
-                android:text="@string/purchase_header_buy_now"
-                android:textColor="@android:color/white" />
+                android:layout_gravity="right"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/background_purchase_button"
+                android:clickable="true"
+                android:gravity="center_vertical|right"
+                android:visibility="gone">
+
+            <TextView
+                    style="@style/SchedJoules_Text_Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:duplicateParentState="true"
+                    android:maxLines="1"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/purchase_header_buy_now"
+                    android:textColor="@android:color/white"/>
         </FrameLayout>
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/purchasable_item_host"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"></FrameLayout>
+            android:id="@+id/purchasable_item_host"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"></FrameLayout>
 
 </LinearLayout>

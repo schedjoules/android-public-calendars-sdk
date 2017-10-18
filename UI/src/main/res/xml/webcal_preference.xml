@@ -1,16 +1,16 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:icon="@drawable/ic_24_country_black50"
-        android:key="content_location"
-        android:summary="@string/preferences_locale_summary"
-        android:title="@string/preferences_locale_title" />
+            android:icon="@drawable/ic_24_country_black50"
+            android:key="content_location"
+            android:summary="@string/preferences_locale_summary"
+            android:title="@string/preferences_locale_title"/>
 
     <CheckBoxPreference
-        android:defaultValue="true"
-        android:icon="@drawable/ic_24_analytics_black50"
-        android:key="enable_analytics"
-        android:summary="@string/preferences_enable_analytics_summary"
-        android:title="@string/preferences_enable_analytics_title" />
+            android:defaultValue="true"
+            android:icon="@drawable/ic_24_analytics_black50"
+            android:key="enable_analytics"
+            android:summary="@string/preferences_enable_analytics_summary"
+            android:title="@string/preferences_enable_analytics_title"/>
 
 </PreferenceScreen>

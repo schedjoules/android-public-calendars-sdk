@@ -113,7 +113,7 @@
     <!-- Locale preference title -->
     <string name="preferences_locale_title">Land</string>
     <!-- Locale preference summary -->
-    <string name="preferences_locale_summary" />
+    <string name="preferences_locale_summary"/>
 
     <!-- Title of the preference to enable analytics -->
     <string name="preferences_enable_analytics_title">Stuur anonieme gebruiksstatistieken</string>

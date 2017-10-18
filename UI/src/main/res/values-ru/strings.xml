@@ -116,7 +116,7 @@
     <!-- Locale preference title -->
     <string name="preferences_locale_title">Страна</string>
     <!-- Locale preference summary -->
-    <string name="preferences_locale_summary" />
+    <string name="preferences_locale_summary"/>
 
     <!-- Title of the preference to enable analytics -->
     <string name="preferences_enable_analytics_title">Отправить статистические данные анонимно</string>

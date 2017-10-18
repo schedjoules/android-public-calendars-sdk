@@ -1,122 +1,122 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/calendar_item_settings_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp"
-    tools:context=".CalendarSettingsFragment" >
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/calendar_item_settings_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        tools:context=".CalendarSettingsFragment">
 
     <TextView
-        style="@style/SchedJoules_Text_Dialog_Title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left|center_vertical"
-        android:minHeight="48dp"
-        android:padding="16dp"
-        android:text="@string/calendar_item_events_settings_title" />
+            style="@style/SchedJoules_Text_Dialog_Title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:minHeight="48dp"
+            android:padding="16dp"
+            android:text="@string/calendar_item_events_settings_title"/>
 
     <LinearLayout
-        android:id="@+id/color_setting"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:orientation="horizontal"
-        android:padding="16dp" >
+            android:id="@+id/color_setting"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
         <TextView
-            style="@style/SchedJoules_Text_Medium"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="@string/calendar_settings_color" />
+                style="@style/SchedJoules_Text_Medium"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/calendar_settings_color"/>
 
         <ImageView
-            android:id="@+id/color_preview"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center_vertical"
-            android:background="#00ffffff" />
+                android:id="@+id/color_preview"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:background="#00ffffff"/>
     </LinearLayout>
 
     <View
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="?android:attr/listDivider" />
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="?android:attr/listDivider"/>
 
     <LinearLayout
-        android:id="@+id/name_setting"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:padding="16dp" >
-
-        <LinearLayout
+            android:id="@+id/name_setting"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:gravity="center_vertical"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <TextView
-                style="@style/SchedJoules_Text_Medium"
+        <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/calendar_settings_name" />
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
             <TextView
-                android:id="@+id/calendar_name"
-                style="@style/SchedJoules_Text_Small"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true" />
+                    style="@style/SchedJoules_Text_Medium"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/calendar_settings_name"/>
+
+            <TextView
+                    android:id="@+id/calendar_name"
+                    style="@style/SchedJoules_Text_Small"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"/>
         </LinearLayout>
     </LinearLayout>
 
     <View
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="?android:attr/listDivider" />
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="?android:attr/listDivider"/>
 
     <LinearLayout
-        android:id="@+id/alarm_setting"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:padding="16dp" >
+            android:id="@+id/alarm_setting"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="16dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                style="@style/SchedJoules_Text_Medium"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:text="@string/calendar_settings_reminder" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+            <TextView
+                    style="@style/SchedJoules_Text_Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/calendar_settings_reminder"/>
 
             <Spinner
-                android:id="@+id/calendar_reminder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical" />
+                    android:id="@+id/calendar_reminder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"/>
         </LinearLayout>
     </LinearLayout>
 

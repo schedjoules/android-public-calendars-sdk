@@ -1,73 +1,73 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:context=".EventsPreviewDetailFragment">
-
-    <LinearLayout
-        android:id="@android:id/custom"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:orientation="vertical">
+        tools:context=".EventsPreviewDetailFragment">
+
+    <LinearLayout
+            android:id="@android:id/custom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
 
 
         <TextView
-            android:id="@+id/date"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_access_time_black_24dp"
-            android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_access_time_black_24dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
-            android:textSize="16sp"/>
+                android:id="@+id/date"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_access_time_black_24dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_access_time_black_24dp"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:textSize="16sp"/>
 
 
         <TextView
-            android:id="@+id/time"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingLeft="48dp"
-            android:paddingStart="48dp"
-            android:textSize="16sp"/>
+                android:id="@+id/time"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="48dp"
+                android:paddingStart="48dp"
+                android:textSize="16sp"/>
 
         <TextView
-            android:id="@+id/location"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_location_on_black_24dp"
-            android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_location_on_black_24dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
-            android:textSize="16sp"/>
+                android:id="@+id/location"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_location_on_black_24dp"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:textSize="16sp"/>
 
         <TextView
-            android:id="@+id/calendar"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_event_black_24dp"
-            android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_event_black_24dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
-            android:textSize="16sp"/>
+                android:id="@+id/calendar"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_event_black_24dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_event_black_24dp"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:textSize="16sp"/>
 
         <TextView
-            android:id="@+id/description"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autoLink="web|email|map"
-            android:linksClickable="true"
-            android:padding="8dp"
-            android:textSize="16sp"/>
+                android:id="@+id/description"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web|email|map"
+                android:linksClickable="true"
+                android:padding="8dp"
+                android:textSize="16sp"/>
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/side_nav_all_calendars"
-        android:title="@string/side_nav_all_calendars"/>
+            android:id="@+id/side_nav_all_calendars"
+            android:title="@string/side_nav_all_calendars"/>
     <item
-        android:id="@+id/side_nav_my_calendars"
-        android:title="@string/side_nav_my_calendars"/>
+            android:id="@+id/side_nav_my_calendars"
+            android:title="@string/side_nav_my_calendars"/>
     <item
-        android:id="@+id/side_nav_favorite_calendars"
-        android:title="@string/side_nav_favorite_calendars"/>
+            android:id="@+id/side_nav_favorite_calendars"
+            android:title="@string/side_nav_favorite_calendars"/>
     <item
-        android:id="@+id/side_nav_faq"
-        android:icon="@drawable/ic_faq"
-        android:menuCategory="secondary"
-        android:title="@string/side_nav_faq"/>
+            android:id="@+id/side_nav_faq"
+            android:icon="@drawable/ic_faq"
+            android:menuCategory="secondary"
+            android:title="@string/side_nav_faq"/>
     <item
-        android:id="@+id/side_nav_feedback"
-        android:icon="@drawable/ic_feedback"
-        android:menuCategory="secondary"
-        android:title="@string/side_nav_feedback"/>
+            android:id="@+id/side_nav_feedback"
+            android:icon="@drawable/ic_feedback"
+            android:menuCategory="secondary"
+            android:title="@string/side_nav_feedback"/>
     <item
-        android:id="@+id/side_nav_settings"
-        android:icon="@drawable/ic_settings"
-        android:menuCategory="secondary"
-        android:title="@string/side_nav_settings"/>
+            android:id="@+id/side_nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:menuCategory="secondary"
+            android:title="@string/side_nav_settings"/>
 
 </menu>

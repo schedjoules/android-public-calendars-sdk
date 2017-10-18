@@ -117,7 +117,7 @@
     <string name="preferences_locale_title">国家</string>
 
     <!-- Locale preference summary -->
-    <string name="preferences_locale_summary" />
+    <string name="preferences_locale_summary"/>
 
     <!-- Title of the preference to enable analytics -->
     <string name="preferences_enable_analytics_title">发送匿名使用统计数据</string>

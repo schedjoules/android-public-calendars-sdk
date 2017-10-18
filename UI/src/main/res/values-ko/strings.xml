@@ -117,7 +117,7 @@
     <string name="preferences_locale_title">국가</string>
 
     <!-- Locale preference summary -->
-    <string name="preferences_locale_summary" />
+    <string name="preferences_locale_summary"/>
 
     <!-- Title of the preference to enable analytics -->
     <string name="preferences_enable_analytics_title">익명으로 사용 통계 전송하기</string>

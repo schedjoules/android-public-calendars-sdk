@@ -11,15 +11,15 @@ import android.os.Bundle;
  */
 public class DummyAuthenticatorActivity extends AccountAuthenticatorActivity
 {
-	@Override
-	protected void onCreate(Bundle icicle)
-	{
-		super.onCreate(icicle);
+    @Override
+    protected void onCreate(Bundle icicle)
+    {
+        super.onCreate(icicle);
 
-		Intent intent = new Intent(this, MainActivity.class /* adjust to your main activity */);
-		startActivity(intent);
-		setResult(RESULT_OK);
+        Intent intent = new Intent(this, MainActivity.class /* adjust to your main activity */);
+        startActivity(intent);
+        setResult(RESULT_OK);
 
-		finish();
-	}
+        finish();
+    }
 }
