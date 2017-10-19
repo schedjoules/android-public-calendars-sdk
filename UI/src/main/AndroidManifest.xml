@@ -5,13 +5,11 @@
         android:versionCode="106"
         android:versionName="1">
 
-    <uses-sdk
-            android:minSdkVersion="14"
-            android:targetSdkVersion="21"/>
-
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission
+            android:name="android.permission.GET_ACCOUNTS"
+            android:maxSdkVersion="22"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
