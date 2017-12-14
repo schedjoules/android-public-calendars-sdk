@@ -17,12 +17,10 @@
 
 package org.dmfs.webcal.fragments;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -80,7 +78,10 @@ import org.dmfs.webcal.utils.color.ResourceColor;
 import java.net.URI;
 import java.util.TimeZone;
 
+import static android.Manifest.permission.READ_CALENDAR;
+import static android.Manifest.permission.WRITE_CALENDAR;
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 
 public class CalendarItemFragment extends SubscribeableItemFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwitchStatusListener, OnItemClickListener
@@ -634,12 +635,11 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 
     private void setCalendarSynced(final boolean status)
     {
-        if (status && (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED)
-                || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED)
+        if (status &&
+                (ContextCompat.checkSelfPermission(getContext(), READ_CALENDAR) != PERMISSION_GRANTED
+                        || ContextCompat.checkSelfPermission(getContext(), WRITE_CALENDAR) != PERMISSION_GRANTED))
         {
-            requestPermissions(new String[] { Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR, Manifest.permission.GET_ACCOUNTS },
-                    PERMISSION_REQUEST_CODE);
+            requestPermissions(new String[] { READ_CALENDAR, WRITE_CALENDAR }, PERMISSION_REQUEST_CODE);
             return;
         }
 
