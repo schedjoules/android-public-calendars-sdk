@@ -12,14 +12,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package org.dmfs.webcal.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +35,8 @@ import org.dmfs.webcal.R;
 import org.dmfs.webcal.utils.TintedDrawable;
 import org.dmfs.webcal.utils.color.AccentColor;
 import org.dmfs.webcal.views.RemoteImageView;
+
+import androidx.cursoradapter.widget.CursorAdapter;
 
 
 /**

@@ -27,12 +27,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,13 +46,19 @@ import org.dmfs.webcal.utils.BitmapUtils;
 import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
 import org.dmfs.webcal.views.TabBarLayout;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.viewpager.widget.ViewPager;
+
 
 /**
  * A fragment that contains a pager to present the sections of a page item to the user. It takes a {@link Uri} or a page item id.
  *
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<Cursor>, OnSharedPreferenceChangeListener, ImageAvailableListener
+public class PagerFragment extends ActionBarFragment implements LoaderManager.LoaderCallbacks<Cursor>, OnSharedPreferenceChangeListener, ImageAvailableListener
 {
     /**
      * FIXME: we should not publish this internal field.
@@ -301,7 +301,7 @@ public class PagerFragment extends ActionBarFragment implements LoaderCallbacks<
     public void setupActionBar(View view)
     {
         // set the page title and clear the subtitle if any
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(mTitle);
         toolbar.setSubtitle(null);
     }

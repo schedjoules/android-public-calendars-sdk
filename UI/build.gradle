@@ -1,13 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion 28
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion 15
+        targetSdkVersion 28
         resValue "string", "org_dmfs_android_calendarcontent_account_type", "com.example.schedjoules.ACCOUNT"
     }
 
@@ -32,26 +31,30 @@ android {
         disable 'MissingQuantity' // TODO
         abortOnError false
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.google.android.gms:play-services-gcm:11.0.4'
-    compile 'com.google.android.gms:play-services-location:11.0.4'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation "com.google.android.gms:play-services-gcm:17.0.0"
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.github.dmfs:retention-magic:1.3'
     compile files('libs/async-tools-1.1.jar')
-    compile 'com.github.dmfs:color-picker:1.0'
+    implementation 'com.github.dmfs:color-picker:1.3'
     compile('org.dmfs:android-xml-magic:0.1.1') {
         exclude group: 'xmlpull'
     }
-    compile 'org.dmfs:rfc5545-datetime:0.2.4'
-    compile 'org.dmfs:xtivity:0.1-SNAPSHOT@aar'
-    compile 'org.dmfs:jems:1.9'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'me.relex:circleindicator:1.2.1@aar'
-    compile 'com.github.dmfs:multiline-collapsingtoolbar:79a3e45'
-    compile 'org.dmfs:essentials:1.10'
-    compile project(':webcalsdk')
-    compile project(':calendarcontent')
-    compile "com.google.android.gms:play-services-gcm:11.0.4"
+    implementation 'org.dmfs:rfc5545-datetime:0.2.4'
+//    compile 'org.dmfs:xtivity:0.1-SNAPSHOT@aar'
+    implementation 'org.dmfs:jems:1.26'
+    implementation 'me.relex:circleindicator:1.2.1@aar'
+    implementation 'com.github.dmfs:multiline-collapsingtoolbar:79a3e45'
+//    api project(':webcalsdk')
+//    api project(':calendarcontent')
+    api "org.dmfs:calendarcontent:1.1"
 }

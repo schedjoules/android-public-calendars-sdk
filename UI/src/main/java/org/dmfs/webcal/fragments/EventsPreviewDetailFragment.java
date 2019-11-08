@@ -113,7 +113,7 @@ public class EventsPreviewDetailFragment extends SupportFragment
         titleView.setText(mCalendarName.equals(mTitle) ? mCalendarName : String.format(Locale.getDefault(), "%s (%s)", mCalendarName, mTitle));
 
         TextView descriptionView = (TextView) view.findViewById(R.id.description);
-        descriptionView.setText(mPreviewEvent.description == null ? mPreviewEvent.description.trim() : "");
+        descriptionView.setText(mPreviewEvent.description != null ? mPreviewEvent.description.trim() : "");
 
         TextView locationView = (TextView) view.findViewById(R.id.location);
         tintCompoundDrawable(locationView, new AccentColor(getContext()));

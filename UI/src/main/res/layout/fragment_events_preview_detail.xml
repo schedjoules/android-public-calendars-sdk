@@ -67,6 +67,7 @@
                 android:autoLink="web|email|map"
                 android:linksClickable="true"
                 android:padding="8dp"
+                android:text="xxyyyyy"
                 android:textSize="16sp"/>
     </LinearLayout>
 

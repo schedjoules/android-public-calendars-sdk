@@ -2,13 +2,12 @@ package org.dmfs.webcal;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 
 import org.dmfs.android.retentionmagic.RetentionMagic;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 
 /**
@@ -57,27 +56,10 @@ public class BaseActivity extends AppCompatActivity
 
 
     @Override
-    protected void onPause()
-    {
-        super.onPause();
-        /*
-         * On older SDK version we have to store permanent data in onPause(), because there is no guarantee that onStop() will be called.
-		 */
-        if (VERSION.SDK_INT < VERSION_CODES.HONEYCOMB)
-        {
-            RetentionMagic.persist(this, mPrefs);
-        }
-    }
-
-
-    @Override
     protected void onStop()
     {
         super.onStop();
-        if (VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB)
-        {
-            RetentionMagic.persist(this, mPrefs);
-        }
+        RetentionMagic.persist(this, mPrefs);
     }
 
 }

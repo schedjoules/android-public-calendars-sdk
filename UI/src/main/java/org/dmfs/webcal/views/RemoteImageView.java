@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package org.dmfs.webcal.views;
@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import org.dmfs.webcal.utils.ImageProxy;
 import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
 
 /**
  * An {@link ImageView} that can load its content asynchronously.
@@ -32,7 +34,7 @@ import org.dmfs.webcal.utils.ImageProxy.ImageAvailableListener;
  * @author Arjun Naik
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class RemoteImageView extends android.support.v7.widget.AppCompatImageView implements ImageAvailableListener
+public class RemoteImageView extends AppCompatImageView implements ImageAvailableListener
 {
     /**
      * The duration of the fade-in animation when the image pops up the first time.

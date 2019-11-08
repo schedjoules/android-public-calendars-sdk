@@ -3,8 +3,8 @@ include ':Demo'
 
 
 
-include ":calendarcontent"
-project(":calendarcontent").projectDir = file("../CalendarContentProvider/calendarcontent")
+//include ":calendarcontent"
+//project(":calendarcontent").projectDir = file("../CalendarContentProvider/calendarcontent")
 
-include ":webcalsdk"
-project(":webcalsdk").projectDir = file("../WebCal-SDK/webcalsdk")
+//include ":webcalsdk"
+//project(":webcalsdk").projectDir = file("../WebCal-SDK/webcalsdk")

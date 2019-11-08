@@ -12,16 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package org.dmfs.webcal;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import org.dmfs.webcal.fragments.PreferencesFragment;
+
+import androidx.appcompat.widget.Toolbar;
 
 
 public class PreferencesActivity extends BaseActivity

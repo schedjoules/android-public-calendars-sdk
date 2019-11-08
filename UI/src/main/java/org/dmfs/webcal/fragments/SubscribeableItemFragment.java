@@ -239,10 +239,10 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
 
         mHeaderView = returnView.findViewById(R.id.purchasable_header);
 
-        mUnlockButton = (FrameLayout) mHeaderView.findViewById(R.id.unlock_button);
+        mUnlockButton = mHeaderView.findViewById(R.id.unlock_button);
         mUnlockButton.setOnClickListener(this);
 
-        mBuyButton = (FrameLayout) mHeaderView.findViewById(R.id.buy_now_button);
+        mBuyButton = mHeaderView.findViewById(R.id.buy_now_button);
         mBuyButton.setOnClickListener(this);
 
         FrameLayout itemHost = (FrameLayout) returnView.findViewById(R.id.purchasable_item_host);

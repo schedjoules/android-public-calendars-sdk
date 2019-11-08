@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package org.dmfs.webcal.fragments;
@@ -21,10 +21,6 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,13 +39,17 @@ import org.dmfs.android.retentionmagic.annotations.Retain;
 import org.dmfs.webcal.R;
 import org.dmfs.webcal.adapters.MixedNavigationAdapter;
 
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+
 
 /**
  * A fragment that shows all items of a specific section of a page. These items represent either pages or calendars.
  *
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class CategoriesListFragment extends SupportFragment implements OnItemClickListener, LoaderCallbacks<Cursor>
+public class CategoriesListFragment extends SupportFragment implements OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor>
 {
     public static final String ARG_SECTION_ID = "section_id";
     public static final String ARG_ITEM_ID = "item_id";
@@ -112,15 +112,15 @@ public class CategoriesListFragment extends SupportFragment implements OnItemCli
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
 
-		/*
+        /*
          * Apparently we have to use the parent loader manager.
-		 * 
-		 * - using just getLoaderManager() doesn't work, because it doesn't seem to start before the fragemnt becomes visible, which is bad when you swipe
-		 * 
-		 * - using getActivity().getSupportLoaderManager() doesn't work because it leaks the loaders and fragments
-		 * 
-		 * For now we keep it that way until we find a proper solution
-		 */
+         *
+         * - using just getLoaderManager() doesn't work, because it doesn't seem to start before the fragemnt becomes visible, which is bad when you swipe
+         *
+         * - using getActivity().getSupportLoaderManager() doesn't work because it leaks the loaders and fragments
+         *
+         * For now we keep it that way until we find a proper solution
+         */
         LoaderManager loaderManager = getParentFragment().getLoaderManager();
         loaderManager.initLoader((int) (mSectionId), null, this);
         return mListView;

@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package org.dmfs.webcal.push;
@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 
 import org.dmfs.android.xmlmagic.XmlLoader;
@@ -33,6 +32,8 @@ import org.dmfs.xmlobjects.pull.XmlObjectPullParserException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+
+import androidx.core.app.NotificationManagerCompat;
 
 
 /**

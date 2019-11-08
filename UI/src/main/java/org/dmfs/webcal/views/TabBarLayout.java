@@ -12,16 +12,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package org.dmfs.webcal.views;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -33,6 +30,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.dmfs.webcal.utils.color.AttributeColor;
+
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 
 public class TabBarLayout extends HorizontalScrollView
@@ -156,20 +156,14 @@ public class TabBarLayout extends HorizontalScrollView
         textView.setTextColor(new AttributeColor(context, android.R.attr.textColorTertiary).argb());
         textView.setSingleLine();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        {
-            // If we're running on Honeycomb or newer, then we can use the Theme's
-            // selectableItemBackground to ensure that the View has a pressed state
-            TypedValue outValue = new TypedValue();
-            getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
-            textView.setBackgroundResource(outValue.resourceId);
-        }
+        // If we're running on Honeycomb or newer, then we can use the Theme's
+        // selectableItemBackground to ensure that the View has a pressed state
+        TypedValue outValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
+        textView.setBackgroundResource(outValue.resourceId);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-        {
-            // If we're running on ICS or newer, enable all-caps to match the Action Bar tab style
-            textView.setAllCaps(true);
-        }
+        // If we're running on ICS or newer, enable all-caps to match the Action Bar tab style
+        textView.setAllCaps(true);
 
         int padding = (int) (TAB_PADDING * getResources().getDisplayMetrics().density);
         textView.setPadding(padding, padding, padding, padding);
@@ -256,7 +250,7 @@ public class TabBarLayout extends HorizontalScrollView
     private void scrollToTab(int tabIndex, int positionOffset)
     {
         final int tabStripChildCount = mTabBar.getChildCount();
-        if (tabStripChildCount == 0 || tabIndex < 0 || tabIndex >= tabStripChildCount)
+        if (tabIndex < 0 || tabIndex >= tabStripChildCount)
         {
             return;
         }

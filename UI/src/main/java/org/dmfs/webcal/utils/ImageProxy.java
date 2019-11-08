@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package org.dmfs.webcal.utils;
@@ -20,7 +20,6 @@ package org.dmfs.webcal.utils;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.drawable.Drawable;
-import android.support.v4.util.LruCache;
 
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 
@@ -32,6 +31,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import androidx.collection.LruCache;
 
 
 /**

@@ -32,7 +32,7 @@
                         android:ellipsize="marquee"
                         android:marqueeRepeatLimit="marquee_forever"
                         android:singleLine="true"
-                        android:text="@string/purchase_header_enable_sync"/>
+                        android:text="@string/purchase_header_enable_sync" />
             </LinearLayout>
 
             <TextView
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/dialog_title"
                     android:layout_margin="4dp"
-                    android:text=""/>
+                    android:text="" />
 
             <TextView
                     android:id="@+id/title_benefits"
@@ -53,14 +53,14 @@
                     android:layout_margin="4dp"
                     android:paddingTop="8dp"
                     android:singleLine="true"
-                    android:text="@string/purchase_header_benefits"/>
+                    android:text="@string/purchase_header_benefits" />
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/title_benefits"
-                    android:layout_alignStart="@id/title_benefits"
                     android:layout_below="@id/title_benefits"
+                    android:layout_alignStart="@id/title_benefits"
+                    android:layout_alignLeft="@id/title_benefits"
                     android:layout_margin="4dp"
                     android:orientation="vertical">
 
@@ -74,15 +74,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:drawableLeft="@drawable/dot_list_item"
-                            android:drawableStart="@drawable/dot_list_item"/>
+                            android:drawableStart="@drawable/dot_list_item"
+                            android:drawableLeft="@drawable/dot_list_item" />
 
                     <TextView
                             style="@style/SchedJoules_Text_Small"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@string/purchase_dialog_benefits1"/>
+                            android:text="@string/purchase_dialog_benefits1" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -95,15 +95,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:drawableLeft="@drawable/dot_list_item"
-                            android:drawableStart="@drawable/dot_list_item"/>
+                            android:drawableStart="@drawable/dot_list_item"
+                            android:drawableLeft="@drawable/dot_list_item" />
 
                     <TextView
                             style="@style/SchedJoules_Text_Small"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@string/purchase_dialog_benefits2"/>
+                            android:text="@string/purchase_dialog_benefits2" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -116,15 +116,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:drawableLeft="@drawable/dot_list_item"
-                            android:drawableStart="@drawable/dot_list_item"/>
+                            android:drawableStart="@drawable/dot_list_item"
+                            android:drawableLeft="@drawable/dot_list_item" />
 
                     <TextView
                             style="@style/SchedJoules_Text_Small"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@string/purchase_dialog_benefits3"/>
+                            android:text="@string/purchase_dialog_benefits3" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -137,15 +137,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:drawableLeft="@drawable/dot_list_item"
-                            android:drawableStart="@drawable/dot_list_item"/>
+                            android:drawableStart="@drawable/dot_list_item"
+                            android:drawableLeft="@drawable/dot_list_item" />
 
                     <TextView
                             style="@style/SchedJoules_Text_Small"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@string/purchase_dialog_benefits4"/>
+                            android:text="@string/purchase_dialog_benefits4" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -158,15 +158,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:drawableLeft="@drawable/dot_list_item"
-                            android:drawableStart="@drawable/dot_list_item"/>
+                            android:drawableStart="@drawable/dot_list_item"
+                            android:drawableLeft="@drawable/dot_list_item" />
 
                     <TextView
                             style="@style/SchedJoules_Text_Small"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@string/purchase_dialog_benefits5"/>
+                            android:text="@string/purchase_dialog_benefits5" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
@@ -181,32 +181,29 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="right"
-                    android:paddingTop="4dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingTop="4dp">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                         android:id="@+id/purchase_button"
-                        style="@style/SchedJoules_Dialog_Button_Stacked"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="#ff008810"/>
+                        android:layout_height="wrap_content" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                         android:id="@+id/free_trial_button"
-                        style="@style/SchedJoules_Dialog_Button_Stacked"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/purchase_dialog_take_the_free_trial"
-                        android:textColor="#f0b014"/>
+                        android:text="@string/purchase_dialog_take_the_free_trial" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                         android:id="@+id/cancel_button"
-                        style="@style/SchedJoules_Dialog_Button_Stacked"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/purchase_dialog_cancel"
-                        android:textColor="#90000000"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
             </LinearLayout>
         </FrameLayout>

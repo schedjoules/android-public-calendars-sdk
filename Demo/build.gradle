@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.schedjoules.demo"
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion 15
+        targetSdkVersion 28
         resValue "string", "org_dmfs_android_calendarcontent_account_type", "com.schedjoules.demo.ACCOUNT"
     }
 
@@ -30,6 +29,11 @@ android {
     lintOptions {
         disable 'MissingTranslation' // TODO
         abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

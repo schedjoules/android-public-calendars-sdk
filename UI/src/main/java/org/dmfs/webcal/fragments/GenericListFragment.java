@@ -21,11 +21,6 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +39,12 @@ import org.dmfs.webcal.R;
 import org.dmfs.webcal.adapters.MixedNavigationAdapter;
 import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.fragment.app.FragmentActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+
 
 /**
  * A fragment that shows pages and items for the given URI. At present this is used for "All calendars" and "My calendars".
@@ -53,7 +54,7 @@ import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
  *
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class GenericListFragment extends ActionBarFragment implements OnItemClickListener, LoaderCallbacks<Cursor>
+public class GenericListFragment extends ActionBarFragment implements OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor>
 {
     public static final String ARG_URI = "uri";
     public static final String ARG_TITLE = "title";

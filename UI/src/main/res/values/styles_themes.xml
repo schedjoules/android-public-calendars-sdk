@@ -13,7 +13,7 @@
     </style>
 
     <style name="SchedJoules_BaseTheme.Light"
-            parent="Theme.AppCompat.Light">
+            parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/schedjoules_colorPrimary</item>
         <item name="colorPrimaryDark">@color/schedjoules_colorPrimaryDark</item>
         <item name="colorAccent">@color/schedjoules_colorAccent</item>

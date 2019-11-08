@@ -14,12 +14,12 @@
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingBottom="8dp"
-            android:paddingEnd="14dp"
-            android:paddingLeft="18dp"
-            android:paddingRight="14dp"
             android:paddingStart="18dp"
+            android:paddingLeft="18dp"
             android:paddingTop="8dp"
+            android:paddingEnd="14dp"
+            android:paddingRight="14dp"
+            android:paddingBottom="8dp"
             android:visibility="gone">
 
         <TextView
@@ -31,13 +31,13 @@
                 android:duplicateParentState="true"
                 android:enabled="false"
                 android:gravity="left|center_vertical"
-                android:text="@string/calendar_item_add_to_calendar"/>
+                android:text="@string/calendar_item_add_to_calendar" />
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/calendar_item_sync_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"/>
+                android:enabled="false" />
     </LinearLayout>
 
 </LinearLayout>

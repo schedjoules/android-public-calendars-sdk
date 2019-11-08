@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package org.dmfs.webcal.fragments;
@@ -20,7 +20,6 @@ package org.dmfs.webcal.fragments;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,12 +32,14 @@ import org.dmfs.android.retentionmagic.SupportDialogFragment;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.webcal.R;
 
+import androidx.fragment.app.Fragment;
+
 
 /**
  * A Fragment that shows the purchase dialog with the options to purchase or to start a free trial. The free trial option can be disabled.
  * <p>
- * This dialog only presents the user with an option to purchase, it doesn't launch the actual purchase flow. That's left to the listener when
- * {@link OnPurchaseListener#onPurchase(boolean)} is called.
+ * This dialog only presents the user with an option to purchase, it doesn't launch the actual purchase flow. That's left to the listener when {@link
+ * OnPurchaseListener#onPurchase(boolean)} is called.
  * </p>
  *
  * @author Marten Gajda <marten@dmfs.org>

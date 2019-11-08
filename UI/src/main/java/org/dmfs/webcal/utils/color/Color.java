@@ -17,7 +17,7 @@
 
 package org.dmfs.webcal.utils.color;
 
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 
 
 /**
