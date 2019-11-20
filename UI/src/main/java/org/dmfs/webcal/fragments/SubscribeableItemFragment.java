@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package org.dmfs.webcal.fragments;
@@ -31,6 +31,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
 import com.schedjoules.analytics.Analytics;
 
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
@@ -39,15 +44,14 @@ import org.dmfs.android.retentionmagic.SupportFragment;
 import org.dmfs.asynctools.PetriNet;
 import org.dmfs.asynctools.PetriNet.Place;
 import org.dmfs.asynctools.PetriNet.Transition;
+import org.dmfs.jems.procedure.Procedure;
 import org.dmfs.webcal.IBillingActivity;
 import org.dmfs.webcal.IBillingActivity.OnInventoryListener;
+import org.dmfs.webcal.MainActivity;
 import org.dmfs.webcal.R;
 import org.dmfs.webcal.fragments.PurchaseDialogFragment.OnPurchaseListener;
-import org.dmfs.webcal.utils.billing.IabHelper.OnIabPurchaseFinishedListener;
-import org.dmfs.webcal.utils.billing.IabResult;
-import org.dmfs.webcal.utils.billing.Inventory;
-import org.dmfs.webcal.utils.billing.Purchase;
-import org.dmfs.webcal.utils.billing.SkuDetails;
+
+import java.util.Set;
 
 
 /**
@@ -55,8 +59,8 @@ import org.dmfs.webcal.utils.billing.SkuDetails;
  *
  * @author Marten Gajda <marten@dmfs.org>
  */
-public abstract class SubscribeableItemFragment extends SupportFragment implements OnClickListener, OnInventoryListener, OnIabPurchaseFinishedListener,
-        OnPurchaseListener
+public abstract class SubscribeableItemFragment extends SupportFragment implements OnClickListener, OnInventoryListener, PurchasesUpdatedListener,
+        OnPurchaseListener, MainActivity.OnBilledListener
 {
     private static final String TAG = "PurchasableItemFragment";
 
@@ -65,12 +69,11 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
     private View mBuyButton;
     private TextView mFreeTrialCountDown;
 
-    private Inventory mInventory;
-
     private long mTrialExpiryTime = -1;
 
     private Handler mHandler = new Handler();
     private Resources mResources;
+    private SkuDetails mSkuDetails;
 
     private Place mWaitingForInventory = new Place(1);
     private Place mWaitingForPaymentStatus = new Place(1);
@@ -78,19 +81,27 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
     /**
      * This {@link Transition} is fired when the inventory has been updated.
      */
-    private Transition<Inventory> mInventoryUpdated = new Transition<Inventory>(1, mWaitingForInventory, 1, mWaitingForUpdateView, mWaitingForInventory)
+    private Transition<Set<Purchase>> mInventoryUpdated = new Transition<Set<Purchase>>(1, mWaitingForInventory, 1, mWaitingForUpdateView, mWaitingForInventory)
     {
 
         @Override
-        protected void execute(Inventory inventory)
+        protected void execute(Set<Purchase> inventory)
         {
             if (inventory != null)
             {
                 // update inventory
-                mInventory = inventory;
+                //mInventory = inventory;
 
                 // notify wrapped Fragment
                 onPaymentStatusChange();
+                billingActivity().skuDetails(getGoogleSubscriptionId(), new Procedure<SkuDetails>()
+                {
+                    @Override
+                    public void process(SkuDetails skuDetails)
+                    {
+                        mSkuDetails = skuDetails;
+                    }
+                });
 
                 // Note: we don't check if the item is in the inventory. That's done by the SDK.
             }
@@ -209,23 +220,6 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
     public void onAttach(final Activity activity)
     {
         super.onAttach(activity);
-
-        IBillingActivity billingActivity = (IBillingActivity) activity;
-
-        billingActivity.addOnInventoryListener(this);
-
-        // get the inventory if we have any yet
-        mInventory = billingActivity.getInventory();
-        if (mInventory == null)
-        {
-            // trigger an inventory update
-            billingActivity.refreshInventory();
-        }
-        else
-        {
-            // we got an inventory, handle it
-            mPetriNet.fire(mInventoryUpdated, mInventory);
-        }
     }
 
 
@@ -262,7 +256,7 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
     public void onResume()
     {
         super.onResume();
-
+        billingActivity().addOnInventoryListener(this);
         // we need this to update the UI if the free trial expired between onPause and onResume
         mHandler.post(mTrialButtonUpdater);
     }
@@ -275,15 +269,8 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
     public void onPause()
     {
         super.onPause();
+        billingActivity().removeOnInventoryListener(this);
         mHandler.removeCallbacks(mTrialButtonUpdater);
-    }
-
-
-    @Override
-    public void onDetach()
-    {
-        super.onDetach();
-        ((IBillingActivity) getActivity()).removeOnInventoryListener(this);
     }
 
 
@@ -319,12 +306,6 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
     }
 
 
-    public boolean isInInventory(String productId)
-    {
-        return mInventory != null && mInventory.hasPurchase(productId);
-    }
-
-
     @Override
     public void onClick(View view)
     {
@@ -342,13 +323,12 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
      */
     public void startPurchaseFlow()
     {
-        String googleSubscriptioId = getGoogleSubscriptionId();
-        if (mInventory != null && mInventory.hasDetails(googleSubscriptioId))
+        String googleSubscriptionId = getGoogleSubscriptionId();
+        if (billingActivity().billingReady() && mSkuDetails != null)
         {
-            SkuDetails skuDetails = mInventory.getSkuDetails(googleSubscriptioId);
             Analytics.screen("purchase-dialog", null, null);
-            Analytics.event("open-purchase-dialog", "calendar-action", googleSubscriptioId, null, null, null);
-            PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mTrialExpiryTime < System.currentTimeMillis(), skuDetails.getPrice());
+            Analytics.event("open-purchase-dialog", "calendar-action", googleSubscriptionId, null, null, null);
+            PurchaseDialogFragment purchaseDialog = PurchaseDialogFragment.newInstance(mTrialExpiryTime < System.currentTimeMillis(), mSkuDetails.getPrice());
             purchaseDialog.show(getChildFragmentManager(), null);
         }
         else
@@ -367,26 +347,23 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
         String googleSubscriptioId = getGoogleSubscriptionId();
         if (freeTrial)
         {
-            Analytics.event("free-trial-enabled", "calendar-action", googleSubscriptioId, null, null, null);
+            Analytics.event("free-trial-enabled", "calendar-action", googleSubscriptioId, null, null, googleSubscriptioId);
             CalendarContentContract.PaymentStatus.enableFreeTrial(getActivity());
             onPurchase(true, true);
         }
         else
         {
             // trigger google services purchase flow
-            ((IBillingActivity) getActivity()).subscribe(googleSubscriptioId, this);
+            billingActivity().billme(googleSubscriptioId, this, mSkuDetails);
         }
     }
 
 
     @Override
-    public final void onIabPurchaseFinished(IabResult result, Purchase info)
+    public final void onBillingFinished(BillingResult result, Purchase info)
     {
-        if (result.isSuccess())
+        if (result.getResponseCode() == BillingClient.BillingResponseCode.OK)
         {
-            // invalidate inventory
-            mInventory = null;
-
             // trigger an update of the payment status
             new AsyncTask<Void, Void, Void>()
             {
@@ -446,7 +423,11 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
 
     public abstract String getItemTitle();
 
-    public abstract String getGoogleSubscriptionId();
+
+    private String getGoogleSubscriptionId()
+    {
+        return CalendarContentContract.SubscriptionId.getSubscriptionId(getActivity());
+    }
 
 
     private final Runnable mTrialButtonUpdater = new Runnable()
@@ -489,5 +470,11 @@ public abstract class SubscribeableItemFragment extends SupportFragment implemen
             }
         }
     };
+
+
+    IBillingActivity billingActivity()
+    {
+        return (IBillingActivity) getActivity();
+    }
 
 }

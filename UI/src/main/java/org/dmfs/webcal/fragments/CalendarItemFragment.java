@@ -39,6 +39,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
 import com.google.android.material.snackbar.Snackbar;
 import com.schedjoules.analytics.Analytics;
 
@@ -47,7 +49,6 @@ import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.PaymentStatus;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.SubscribedCalendars;
-import org.dmfs.android.calendarcontent.provider.CalendarContentContract.SubscriptionId;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.android.webcalreader.provider.WebCalReaderContract;
 import org.dmfs.asynctools.PetriNet;
@@ -67,9 +68,11 @@ import org.dmfs.webcal.utils.TintedDrawable;
 import org.dmfs.webcal.utils.color.ResourceColor;
 
 import java.net.URI;
+import java.util.List;
 import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -625,6 +628,7 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
     {
         if (success)
         {
+            getLoaderManager().restartLoader(LOADER_SUBSCRIPTION, null, this);
             setCalendarSynced(true);
         }
         else
@@ -787,18 +791,18 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
 
 
     @Override
-    public String getGoogleSubscriptionId()
-    {
-        return SubscriptionId.getSubscriptionId(getActivity());
-    }
-
-
-    @Override
     public void onPaymentStatusChange()
     {
         mSynced &= (isPurchased() || inFreeTrial());
         mPetriNet.fire(mPaymentStatusUpdated, null);
         getActivity().invalidateOptionsMenu();
+    }
+
+
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases)
+    {
+
     }
 
 

@@ -12,15 +12,21 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package org.dmfs.webcal;
 
 import android.app.Activity;
 
-import org.dmfs.webcal.utils.billing.IabHelper.OnIabPurchaseFinishedListener;
-import org.dmfs.webcal.utils.billing.Inventory;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.SkuDetails;
+
+import org.dmfs.jems.procedure.Procedure;
+
+import java.util.Set;
+
+import androidx.annotation.NonNull;
 
 
 /**
@@ -33,32 +39,32 @@ public interface IBillingActivity
     /**
      * A listener that is notified whenever the inventory is loaded or updated. It's also notified in case the inventory could not be loaded for any reason.
      */
-    public interface OnInventoryListener
+    interface OnInventoryListener
     {
         /**
          * Called when the user's inventory has been loaded or updated. Use {@link IBillingActivity#getInventory()} to get the inventory when this has been
          * called.
          */
-        public void onInventoryLoaded();
+        void onInventoryLoaded();
 
         /**
          * Called if an error occurred and the inventory could not be loaded.
          */
-        public void onInventoryError();
+        void onInventoryError();
 
     }
 
     /**
-     * Get the inventory. This may return <code>null</code> if no inventory has been loaded yet.
+     * Get the inventory.
      *
-     * @return The {@link Inventory} or <code>null</code>.
+     * @return The Inventory.
      */
-    public Inventory getInventory();
+    Set<Purchase> getInventory();
 
-    /**
-     * Reload the inventory.
-     */
-    public void refreshInventory();
+    void skuDetails(String sku, @NonNull Procedure<SkuDetails> listener);
+
+
+    boolean billingReady();
 
     /**
      * Add another {@link OnInventoryListener}.
@@ -66,7 +72,7 @@ public interface IBillingActivity
      * @param onInventoryListener
      *         The {@link OnInventoryListener} to notify when the inventory is loaded or updated.
      */
-    public void addOnInventoryListener(OnInventoryListener onInventoryListener);
+    void addOnInventoryListener(OnInventoryListener onInventoryListener);
 
     /**
      * Remove an {@link OnInventoryListener}.
@@ -74,39 +80,14 @@ public interface IBillingActivity
      * @param onInventoryListener
      *         The {@link OnInventoryListener} to remove.
      */
-    public void removeOnInventoryListener(OnInventoryListener onInventoryListener);
+    void removeOnInventoryListener(OnInventoryListener onInventoryListener);
 
     /**
-     * Get the details of the given SKU. Upon reception of a result all {@link OnInventoryListener}s will be notified with the new {@link Inventory}. Note that
-     * the result will contain all items owned by the user plus all that have been requested using this method.
-     * <p>
-     * Note: you need to call {@link #refreshInventory()} to update the inventory after calling this method.
-     * </p>
-     *
-     * @param sku
-     *         The SKU to get.
-     *
-     * @return <code>true</code> if the SKU has been added, <code>false</code> if has already been added before.
-     */
-    public boolean requestSkuData(String sku);
-
-    /**
-     * Start a purchase flow for the given product id.
-     *
+     * Start a purchase flow for the given product or subscription id.
      * @param productId
      *         The product id to purchase.
      * @param callback
-     *         The callback to call when the transaction has been completed or cancelled.
+     * @param skuDetails
      */
-    public void purchase(String productId, OnIabPurchaseFinishedListener callback);
-
-    /**
-     * Start a subscription flow for the given product id.
-     *
-     * @param subscriptionId
-     *         The subscription id.
-     * @param callback
-     *         The callback to call when the transaction has been completed or cancelled.
-     */
-    public void subscribe(String subscriptionId, OnIabPurchaseFinishedListener callback);
+    void billme(String productId, MainActivity.OnBilledListener callback, SkuDetails skuDetails);
 }

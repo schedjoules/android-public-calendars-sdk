@@ -31,33 +31,45 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
 import com.schedjoules.analytics.Analytics;
 import com.schedjoules.analytics.PurchaseState;
 
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.SubscriptionId;
-import org.dmfs.android.calendarcontent.secrets.ISecretProvider;
-import org.dmfs.android.calendarcontent.secrets.SecretProvider;
 import org.dmfs.android.retentionmagic.annotations.Retain;
+import org.dmfs.iterables.elementary.PresentValues;
+import org.dmfs.jems.iterable.composite.Joined;
+import org.dmfs.jems.iterable.decorators.Mapped;
+import org.dmfs.jems.iterable.elementary.Seq;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.adapters.Conditional;
+import org.dmfs.jems.optional.elementary.NullSafe;
+import org.dmfs.jems.procedure.Procedure;
+import org.dmfs.jems.single.elementary.Collected;
 import org.dmfs.webcal.fragments.CalendarItemFragment;
 import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
 import org.dmfs.webcal.fragments.GenericListFragment;
 import org.dmfs.webcal.fragments.PagerFragment;
-import org.dmfs.webcal.utils.billing.IabHelper;
-import org.dmfs.webcal.utils.billing.IabHelper.OnIabPurchaseFinishedListener;
-import org.dmfs.webcal.utils.billing.IabHelper.OnIabSetupFinishedListener;
-import org.dmfs.webcal.utils.billing.IabHelper.QueryInventoryFinishedListener;
-import org.dmfs.webcal.utils.billing.IabResult;
-import org.dmfs.webcal.utils.billing.Inventory;
-import org.dmfs.webcal.utils.billing.Purchase;
 
+import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -66,13 +78,25 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import static com.android.billingclient.api.BillingClient.BillingResponseCode.OK;
+import static com.android.billingclient.api.BillingClient.BillingResponseCode.USER_CANCELED;
+import static com.android.billingclient.api.BillingClient.SkuType.INAPP;
+import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
+import static java.util.Arrays.asList;
+
 
 /**
  * The Home Activity is used to display the main page along with the subsections.
  */
 public class MainActivity extends NavbarActivity
-        implements CategoryNavigator, IBillingActivity, OnIabSetupFinishedListener, QueryInventoryFinishedListener, LoaderManager.LoaderCallbacks<Cursor>
+        implements CategoryNavigator, IBillingActivity, BillingClientStateListener, LoaderManager.LoaderCallbacks<Cursor>
 {
+    public interface OnBilledListener
+    {
+        void onBillingFinished(BillingResult result, Purchase info);
+    }
+
+
     private final static String PREFS_INTRO = "intro";
     private final static String PREF_INTRO_VERSION = "intro_version";
     public static final String SUBCATEGORY_EXTRA = "org.dmfs.webcal.SUBCATEGORY_EXTRA";
@@ -88,31 +112,19 @@ public class MainActivity extends NavbarActivity
     /**
      * List of callbacks for inventory results.
      */
-    private final List<WeakReference<OnInventoryListener>> mBillingCallbacks = Collections
-            .synchronizedList(new ArrayList<WeakReference<OnInventoryListener>>(8));
+    private final List<WeakReference<OnInventoryListener>> mBillingCallbacks = Collections.synchronizedList(new ArrayList<>(8));
     private final List<String> mMoreItemSkus = Collections.synchronizedList(new ArrayList<String>());
     private final Handler mHandler = new Handler();
-    /**
-     * A {@link Runnable} that triggers the inventory loading.
-     */
-    private final Runnable mReloadInventoryRunnable = new Runnable()
-    {
 
-        @Override
-        public void run()
-        {
-            refreshInventory();
-        }
-    };
     protected FragmentManager mFragmentManager;
     @Retain
     protected long mSelectedItemId = 0;
     /**
      * Helper for billing services.
      */
-    private IabHelper mIabHelper;
-    private boolean mIabHelperReady = false;
-    private Inventory mInventoryCache = null;
+    private BillingClient mBillingClient;
+
+    Reference<OnBilledListener> mOnPurchaseListenerReference = null;
 
 
     @Override
@@ -159,7 +171,7 @@ public class MainActivity extends NavbarActivity
         LoaderManager lm = getSupportLoaderManager();
         lm.initLoader(-2, null, this);
 
-        initIabHelper();
+        initBilling();
 
         if (savedInstanceState == null)
         {
@@ -222,20 +234,6 @@ public class MainActivity extends NavbarActivity
     protected void onDestroy()
     {
         super.onDestroy();
-        if (mIabHelper != null)
-        {
-            try
-            {
-                mIabHelper.dispose();
-            }
-            catch (Exception e)
-            {
-                // ignore, it seems to throw an exception every now and then in
-                // the emulator
-            }
-            mIabHelper = null;
-            mIabHelperReady = false;
-        }
         Analytics.sessionEnd();
     }
 
@@ -251,19 +249,16 @@ public class MainActivity extends NavbarActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (mIabHelper == null || !mIabHelper.handleActivityResult(requestCode, resultCode, data))
+        if (requestCode == REQUEST_CODE_INTRO)
         {
-            if (requestCode == REQUEST_CODE_INTRO)
+            if (resultCode == Activity.RESULT_OK)
             {
-                if (resultCode == Activity.RESULT_OK)
-                {
-                    SharedPreferences prefs = getSharedPreferences(PREFS_INTRO, 0);
-                    prefs.edit().putInt(PREF_INTRO_VERSION, getResources().getInteger(R.integer.com_schedjoules_intro_version)).apply();
-                }
-                else
-                {
-                    finish();
-                }
+                SharedPreferences prefs = getSharedPreferences(PREFS_INTRO, 0);
+                prefs.edit().putInt(PREF_INTRO_VERSION, getResources().getInteger(R.integer.com_schedjoules_intro_version)).apply();
+            }
+            else
+            {
+                finish();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -410,99 +405,85 @@ public class MainActivity extends NavbarActivity
     }
 
 
-    private void initIabHelper()
+    private void initBilling()
     {
-        if (mIabHelper != null)
+        if (mBillingClient != null && mBillingClient.isReady())
         {
             // nothing to do
             return;
         }
 
-        // helper has not been set up yet, do that now
-        mIabHelper = new IabHelper(this, SecretProvider.INSTANCE.getSecret(this, ISecretProvider.KEY_LICENSE_KEY));
+        mBillingClient = BillingClient.newBuilder(this).setListener((billingResult, purchases) -> {
 
-        try
-        {
-            mIabHelper.startSetup(this);
-        }
-        catch (Exception e)
-        {
-            try
+            if (billingResult.getResponseCode() == OK && purchases != null)
             {
-                mIabHelper.dispose();
+                for (Purchase purchase : purchases)
+                {
+                    Analytics.purchase(purchase.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, purchase.getSku());
+                    if (!purchase.isAcknowledged())
+                    {
+                        mBillingClient.acknowledgePurchase(
+                                AcknowledgePurchaseParams
+                                        .newBuilder()
+                                        .setPurchaseToken(purchase.getPurchaseToken())
+                                        .build(),
+                                billingResult1 -> {
+                                });
+                        Optional<OnBilledListener> listener = new org.dmfs.jems.optional.decorators.Mapped<>(
+                                Reference::get,
+                                new org.dmfs.jems.optional.decorators.Sieved<>(pl -> pl.get() != null,
+                                        new NullSafe<>(mOnPurchaseListenerReference)));
+                        if (listener.isPresent())
+                        {
+                            listener.value().onBillingFinished(billingResult, purchase);
+                        }
+                    }
+                }
+                notifyInventoryListeners();
+
             }
-            catch (Exception e2)
+            else if (billingResult.getResponseCode() == USER_CANCELED)
             {
-                // ignore
+                Analytics.purchase(null, PurchaseState.CANCELLED, 0.0f, null, billingResult.getDebugMessage(), "");
             }
-            mIabHelper = null;
-
-            notifyInventoryListenersAboutError();
-
-            // try again
-            mHandler.postDelayed(mReloadInventoryRunnable, RELOAD_INVENTORY_INTERVAL);
-        }
-    }
-
-
-    @Override
-    public void onIabSetupFinished(IabResult result)
-    {
-        if (result.isSuccess())
-        {
-            mIabHelperReady = true;
-
-            // initialize mMoreItemSkus with subscription id if we have any
-            String subscriptionId = SubscriptionId.getSubscriptionId(this);
-            if (subscriptionId != null)
+            else
             {
-                mMoreItemSkus.add(subscriptionId);
+                Analytics.purchase(null, PurchaseState.FAILED, 0.0f, null, billingResult.getDebugMessage(), "");
             }
 
-            refreshInventory();
-        }
-        else
-        {
-            notifyInventoryListenersAboutError();
-        }
+        }).enablePendingPurchases().build();
+        mBillingClient.startConnection(this);
     }
 
 
     @Override
-    public void onQueryInventoryFinished(IabResult result, Inventory inv)
+    public void onBillingSetupFinished(BillingResult billingResult)
     {
-        if (result.isSuccess())
-        {
-            Log.v(TAG, "got new inventory ");
-            mInventoryCache = inv;
-            notifyInventoryListeners();
-        }
-        else
-        {
-            Log.e(TAG, "can't load inventory " + result.getMessage());
-            notifyInventoryListenersAboutError();
-
-            // try again
-            mHandler.postDelayed(mReloadInventoryRunnable, RELOAD_INVENTORY_INTERVAL);
-        }
+        notifyInventoryListeners();
     }
 
 
     @Override
-    public void refreshInventory()
+    public void onBillingServiceDisconnected()
     {
-        if (mIabHelper != null && mIabHelperReady && !mIabHelper.asyncInProgress())
-        {
-            Log.v(TAG, "refeshing inventory");
-            mIabHelper.queryInventoryAsync(true, mMoreItemSkus, this);
-        }
+        initBilling();
     }
 
 
     @Override
-    public Inventory getInventory()
+    public Set<Purchase> getInventory()
     {
-        return mInventoryCache;
+        return new Collected<>(HashSet::new, new Joined<>(
+                new Mapped<>(
+                        Purchase.PurchasesResult::getPurchasesList,
+                        new PresentValues<>(
+                                new Seq<>(
+                                        new Conditional<Purchase.PurchasesResult>(
+                                                p -> p.getResponseCode() == OK,
+                                                () -> mBillingClient.queryPurchases(SUBS)),
+                                        new Conditional<Purchase.PurchasesResult>(
+                                                p -> p.getResponseCode() == OK,
+                                                () -> mBillingClient.queryPurchases(INAPP))))))).value();
     }
 
 
@@ -524,6 +505,10 @@ public class MainActivity extends NavbarActivity
         }
 
         mBillingCallbacks.add(new WeakReference<OnInventoryListener>(onInventoryListener));
+        if (mBillingClient.isReady())
+        {
+            onInventoryListener.onInventoryLoaded();
+        }
     }
 
 
@@ -547,75 +532,13 @@ public class MainActivity extends NavbarActivity
 
 
     @Override
-    public boolean requestSkuData(String sku)
+    public void billme(final String productId, final OnBilledListener callback, SkuDetails skuDetails)
     {
-        if (!mMoreItemSkus.contains(sku))
+        if (mBillingClient.isReady())
         {
-            mMoreItemSkus.add(sku);
-            return true;
-        }
-        return false;
-    }
-
-
-    @Override
-    public void purchase(final String productId, final OnIabPurchaseFinishedListener callback)
-    {
-        if (mIabHelper != null && mIabHelperReady && !mIabHelper.asyncInProgress())
-        {
-            Analytics.purchase(null, PurchaseState.STARTED, 0.0f, null, null, productId);
-            // we inject our own listener to update the inventory
-            mIabHelper.launchPurchaseFlow(this, productId, REQUEST_CODE_LAUNCH_PURCHASE_FLOW, new OnIabPurchaseFinishedListener()
-            {
-                @Override
-                public void onIabPurchaseFinished(IabResult result, Purchase info)
-                {
-                    if (result.isSuccess())
-                    {
-                        Analytics.purchase(info.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, productId);
-                        // update inventory
-                        refreshInventory();
-                    }
-                    else if (result.isFailure())
-                    {
-                        Analytics.purchase(null, PurchaseState.FAILED, 0.0f, null, result.getMessage(), productId);
-                    }
-
-                    // forward result
-                    callback.onIabPurchaseFinished(result, info);
-                }
-            });
-        }
-    }
-
-
-    @Override
-    public void subscribe(final String subscriptionId, final OnIabPurchaseFinishedListener callback)
-    {
-        if (mIabHelper != null && mIabHelperReady && !mIabHelper.asyncInProgress())
-        {
-            Analytics.purchase(null, PurchaseState.STARTED, 0.0f, null, null, subscriptionId);
-            // we inject our own listener to update the inventory
-            mIabHelper.launchSubscriptionPurchaseFlow(this, subscriptionId, REQUEST_CODE_LAUNCH_SUBSCRIPTION_FLOW, new OnIabPurchaseFinishedListener()
-            {
-                @Override
-                public void onIabPurchaseFinished(IabResult result, Purchase info)
-                {
-                    if (result.isSuccess())
-                    {
-                        Analytics.purchase(info.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, subscriptionId);
-                        // update inventory
-                        refreshInventory();
-                    }
-                    else if (result.isFailure())
-                    {
-                        Analytics.purchase(null, PurchaseState.FAILED, 0.0f, null, result.getMessage(), subscriptionId);
-                    }
-
-                    // forward result
-                    callback.onIabPurchaseFinished(result, info);
-                }
-            });
+            Analytics.purchase(null, PurchaseState.STARTED, skuDetails.getPriceAmountMicros() / 1000000, skuDetails.getPriceCurrencyCode(), null, productId);
+            mOnPurchaseListenerReference = new WeakReference<>(callback);
+            mBillingClient.launchBillingFlow(this, BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build());
         }
     }
 
@@ -647,33 +570,6 @@ public class MainActivity extends NavbarActivity
     }
 
 
-    /**
-     * Notify all listeners about an error.
-     */
-    private synchronized void notifyInventoryListenersAboutError()
-    {
-        if (mBillingCallbacks != null)
-        {
-            List<WeakReference<OnInventoryListener>> listenerRefs = new ArrayList<WeakReference<OnInventoryListener>>(mBillingCallbacks);
-
-            for (WeakReference<OnInventoryListener> listenerRef : listenerRefs)
-            {
-                OnInventoryListener callback = listenerRef.get();
-
-                if (callback != null)
-                {
-                    callback.onInventoryError();
-                }
-                else
-                {
-                    mBillingCallbacks.remove(listenerRef);
-                }
-            }
-        }
-
-    }
-
-
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle extras)
     {
@@ -691,7 +587,6 @@ public class MainActivity extends NavbarActivity
             {
                 Log.v(TAG, "got new subscription id " + subscriptionId);
                 mMoreItemSkus.add(subscriptionId);
-                refreshInventory();
             }
         }
     }
@@ -703,8 +598,29 @@ public class MainActivity extends NavbarActivity
     }
 
 
+    public void skuDetails(String sku, @NonNull Procedure<SkuDetails> listener)
+    {
+        mBillingClient.querySkuDetailsAsync(
+                SkuDetailsParams.newBuilder().setSkusList(asList(sku)).setType(SUBS).build(),
+                (billingResult, skuDetailsList) -> {
+                    if (billingResult.getResponseCode() == OK && skuDetailsList.size() > 0)
+                    {
+                        listener.process(skuDetailsList.get(0));
+                    }
+                });
+    }
+
+
+    public boolean billingReady()
+    {
+        return mBillingClient.isReady();
+    }
+
+
+    ;;
+
     /**
-     * A {@link Runnable} that triggers a transmission of analytics hits at least every {@value #MAX_INVENTORY_AGE} milliseconds.
+     * A {@link Runnable} that triggers a transmission of analytics hits at least every {@value #MAX_ANALYTICS_AGE} milliseconds.
      *
      * @see #MAX_ANALYTICS_AGE
      */

@@ -26,18 +26,10 @@ import android.view.MenuItem;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import org.dmfs.android.retentionmagic.annotations.Parameter;
-import org.dmfs.webcal.IBillingActivity.OnInventoryListener;
 import org.dmfs.webcal.fragments.EventsPreviewDetailFragment;
 import org.dmfs.webcal.utils.Event;
 import org.dmfs.webcal.utils.UpButtonDrawable;
-import org.dmfs.webcal.utils.billing.IabHelper;
-import org.dmfs.webcal.utils.billing.Inventory;
 import org.dmfs.webcal.utils.color.ResourceColor;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -73,16 +65,6 @@ public class EventsPreviewActivity extends BaseActivity
 
     @Parameter(key = EXTRA_CONTENT_ITEM_URI)
     private Uri mContentItemUri;
-
-    /*
-     * The fields below have been copied from {@link MainActivity}. We should find a way to remove that duplicate code.
-     */
-    private List<WeakReference<OnInventoryListener>> mBillingCallbacks = null;
-    private List<String> mMoreItemSkus = Collections.synchronizedList(new ArrayList<String>());
-    private IabHelper mIabHelper;
-    private boolean mIabHelperReady = false;
-    private Inventory mInventoryCache = null;
-    private long mInventoryTime = 0;
 
 
     /**
