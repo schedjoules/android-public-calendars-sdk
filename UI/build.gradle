@@ -55,5 +55,5 @@ dependencies {
     implementation 'com.github.dmfs:multiline-collapsingtoolbar:79a3e45'
 //    api project(':webcalsdk')
 //    api project(':calendarcontent')
-    api "org.dmfs:calendarcontent:1.2"
+    api "org.dmfs:calendarcontent:1.4"
 }

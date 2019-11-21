@@ -731,6 +731,10 @@ public class CalendarItemFragment extends SubscribeableItemFragment implements L
     public void onItemClick(AdapterView<?> listView, View view, int position, long id)
     {
         Cursor cursor = (Cursor) listView.getAdapter().getItem(position);
+        if (cursor == null)
+        {
+            return;
+        }
 
         DateTime start = new DateTime(TimeZone.getTimeZone(cursor.getString(cursor.getColumnIndex(WebCalReaderContract.Events.TIMZONE))),
                 cursor.getLong(cursor.getColumnIndex(WebCalReaderContract.Events.DTSTART)));

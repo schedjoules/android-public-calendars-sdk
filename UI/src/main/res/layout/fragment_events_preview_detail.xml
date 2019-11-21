@@ -17,12 +17,12 @@
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_access_time_black_24dp"
+                android:drawableStart="@drawable/ic_access_time_black"
+                android:drawableLeft="@drawable/ic_access_time_black"
                 android:drawablePadding="16dp"
-                android:drawableStart="@drawable/ic_access_time_black_24dp"
                 android:gravity="center_vertical"
                 android:padding="8dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
 
         <TextView
@@ -31,33 +31,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:paddingLeft="48dp"
                 android:paddingStart="48dp"
-                android:textSize="16sp"/>
+                android:paddingLeft="48dp"
+                android:textSize="16sp" />
 
         <TextView
                 android:id="@+id/location"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                android:drawableStart="@drawable/ic_location_on_black"
+                android:drawableLeft="@drawable/ic_location_on_black"
                 android:drawablePadding="16dp"
-                android:drawableStart="@drawable/ic_location_on_black_24dp"
                 android:gravity="center_vertical"
                 android:padding="8dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
         <TextView
                 android:id="@+id/calendar"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_event_black_24dp"
+                android:drawableStart="@drawable/ic_event_black"
+                android:drawableLeft="@drawable/ic_event_black"
                 android:drawablePadding="16dp"
-                android:drawableStart="@drawable/ic_event_black_24dp"
                 android:gravity="center_vertical"
                 android:padding="8dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
         <TextView
                 android:id="@+id/description"
@@ -68,7 +68,7 @@
                 android:linksClickable="true"
                 android:padding="8dp"
                 android:text="xxyyyyy"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
     </LinearLayout>
 
 </RelativeLayout>
