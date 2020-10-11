@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 28
+        targetSdkVersion 29
         resValue "string", "org_dmfs_android_calendarcontent_account_type", "com.example.schedjoules.ACCOUNT"
     }
 
@@ -40,8 +40,8 @@ android {
 
 dependencies {
     implementation "com.google.android.gms:play-services-gcm:17.0.0"
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'com.android.billingclient:billing:2.0.3'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+    implementation 'com.android.billingclient:billing:3.0.1'
     implementation 'com.github.dmfs:retention-magic:1.3'
     implementation files('libs/async-tools-1.1.jar')
     implementation 'com.github.dmfs:color-picker:1.3'
@@ -50,10 +50,10 @@ dependencies {
     }
     implementation 'org.dmfs:rfc5545-datetime:0.2.4'
 //    compile 'org.dmfs:xtivity:0.1-SNAPSHOT@aar'
-    implementation 'org.dmfs:jems:1.26'
+    implementation 'org.dmfs:jems:1.41'
     implementation 'me.relex:circleindicator:1.2.1@aar'
     implementation 'com.github.dmfs:multiline-collapsingtoolbar:79a3e45'
 //    api project(':webcalsdk')
 //    api project(':calendarcontent')
-    api "org.dmfs:calendarcontent:1.4"
+    api "org.dmfs:calendarcontent:1.7"
 }
