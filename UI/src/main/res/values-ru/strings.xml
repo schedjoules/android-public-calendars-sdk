@@ -39,7 +39,7 @@
     <string name="contact_us">Свяжитесь с нами</string>
 
     <!-- Message to customers -->
-    <string name="contact_text">Если у Вас есть вопросы, пошлите нам email.</string>
+    <string name="contact_text">Если у вас есть вопросы, пошлите нам email.</string>
 
     <!-- Button to send email -->
     <string name="send_email">Отправить email</string>
@@ -48,7 +48,7 @@
     <string name="loading_failed">Не удается загрузить данные. Попытайтесь позже или проверьте интернет-соединение.</string>
 
     <!-- Message in "My Calendars" if there are no synced calendars yet -->
-    <string name="error_my_calendars_empty">Сейчас вы не синхронизируете календари. Открыть \"Все календари\" для синхронизации.</string>
+    <string name="error_my_calendars_empty">Сейчас календари не синхронизируются. Открыть \"Все календари\" для синхронизации.</string>
 
     <!-- Message in "Favorites" if there are no starred calendars yet -->
     <string name="error_favorite_calendars_empty">У вас нет избранных календарей. Чтобы внести календарь в избранные, нажмите на звездочку на странице календаря.</string>
@@ -63,15 +63,15 @@
 
     <string name="purchase_header_enable_sync">Включить синхронизацию</string>
     <string name="purchase_header_unlock">Купить сейчас за %s</string>
-    <string name="purchase_header_benefits">Достоинства</string>
+    <string name="purchase_header_benefits">Преимущества</string>
     <string name="purchase_dialog_take_the_free_trial">Получить бесплатную пробную версию</string>
     <string name="purchase_header_buy_now">Купить</string>
     <string name="purchase_dialog_cancel">Возможно, позже</string>
-    <string name="purchase_dialog_teaser_text_free_trial">Разблокировать синхронизацию для всех календарей в &lt;b&gt;%2$s&lt;/b&gt; только за &lt;b&gt;%3$s&lt;/b&gt; в год или взять &lt;b&gt; на 1 час пробную версию&lt;/b&gt;.</string>
-    <string name="purchase_dialog_teaser_text_no_free_trial">Разблокировать синхронизацию для всех календарей в &lt;b&gt;%2$s&lt;/b&gt; только за &lt;b&gt;%3$s&lt;/b&gt; в год.</string>
-    <string name="purchase_dialog_benefits1">Доступ к тысячам интересным календарям</string>
+    <string name="purchase_dialog_teaser_text_free_trial">Разблокировать синхронизацию всех календарей в &lt;b&gt;%2$s&lt;/b&gt; всего за &lt;b&gt;%3$s&lt;/b&gt; в год или взять &lt;b&gt; пробную версию на 1 час&lt;/b&gt;.</string>
+    <string name="purchase_dialog_teaser_text_no_free_trial">Разблокировать синхронизацию всех календарей в &lt;b&gt;%2$s&lt;/b&gt; всего за &lt;b&gt;%3$s&lt;/b&gt; в год.</string>
+    <string name="purchase_dialog_benefits1">Доступ к тысячам интересных календарей</string>
     <string name="purchase_dialog_benefits2">Автоматическое обновление событий в календаре</string>
-    <string name="purchase_dialog_benefits3">Актуальные спортивные результаты прямо в календаре</string>
+    <string name="purchase_dialog_benefits3">Актуальные результаты матчей прямо в календаре</string>
     <string name="purchase_dialog_benefits4">Много другой дополнительной информации</string>
     <string name="purchase_dialog_benefits5">Работает со всеми календарными приложениями</string>
 
@@ -90,8 +90,8 @@
     <string name="purchase_connection_error_message">Не удается соединиться с сервисом Google Play.\nПроверьте интернет-подключение или попробуйте еще раз позднее.</string>
 
     <string-array name="alarm_names">
-        <item>Настройки по умолчанию сервера</item>
-        <item>Нет напоминаний</item>
+        <item>Настройки сервера по умолчанию</item>
+        <item>Напоминаний нет</item>
         <item>0 мин</item>
         <item>1 мин</item>
         <item>2 мин</item>
@@ -119,9 +119,9 @@
     <string name="preferences_locale_summary"/>
 
     <!-- Title of the preference to enable analytics -->
-    <string name="preferences_enable_analytics_title">Отправить статистические данные анонимно</string>
+    <string name="preferences_enable_analytics_title">Отправлять статистические данные анонимно</string>
     <!-- Summary of the preference to enable analytics -->
-    <string name="preferences_enable_analytics_summary">Помогите нам улучшить приложение, анонимно отправив статистические данные.</string>
+    <string name="preferences_enable_analytics_summary">Помогите нам улучшить приложение, анонимно отправляя статистические данные.</string>
 
     <!-- Title of the entry for the default content location in the settings -->
     <string name="default_location">По умолчанию</string>
