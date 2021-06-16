@@ -142,7 +142,7 @@
     <string name="side_nav_faq">Часто задаваемые вопросы</string>
 
     <!-- Title of feedback section -->
-    <string name="side_nav_feedback">Отклики</string>
+    <string name="side_nav_feedback">Обратная связь</string>
 
     <!-- Title of settings section -->
     <string name="side_nav_settings">Настройки</string>
