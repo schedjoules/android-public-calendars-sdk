@@ -53,6 +53,7 @@ import org.dmfs.jems.optional.Optional;
 import org.dmfs.jems.optional.adapters.Conditional;
 import org.dmfs.jems.optional.elementary.NullSafe;
 import org.dmfs.jems.procedure.Procedure;
+import org.dmfs.jems.procedure.composite.ForEach;
 import org.dmfs.jems.single.elementary.Collected;
 import org.dmfs.webcal.fragments.CalendarItemFragment;
 import org.dmfs.webcal.fragments.CategoriesListFragment.CategoryNavigator;
@@ -419,7 +420,8 @@ public class MainActivity extends NavbarActivity
             {
                 for (Purchase purchase : purchases)
                 {
-                    Analytics.purchase(purchase.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, purchase.getSku());
+                    new ForEach<>(purchase.getSkus()).process(sku ->
+                            Analytics.purchase(purchase.getOrderId(), PurchaseState.SUCCEEDED, 0.0f, null, null, sku));
                     if (!purchase.isAcknowledged())
                     {
                         mBillingClient.acknowledgePurchase(

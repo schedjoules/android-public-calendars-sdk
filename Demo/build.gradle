@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "com.schedjoules.demo"
-        minSdkVersion 15
-        targetSdkVersion 28
+        minSdkVersion 19
+        targetSdkVersion 31
         resValue "string", "org_dmfs_android_calendarcontent_account_type", "com.schedjoules.demo.ACCOUNT"
     }
 
