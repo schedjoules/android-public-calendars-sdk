@@ -44,7 +44,6 @@ import com.android.billingclient.api.Purchase;
 import com.google.android.material.snackbar.Snackbar;
 import com.schedjoules.analytics.Analytics;
 
-import org.apache.http.message.BasicHeader;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.ContentItem;
 import org.dmfs.android.calendarcontent.provider.CalendarContentContract.PaymentStatus;
@@ -81,6 +80,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+import cz.msebera.android.httpclient.message.BasicHeader;
 
 import static android.Manifest.permission.READ_CALENDAR;
 import static android.Manifest.permission.WRITE_CALENDAR;

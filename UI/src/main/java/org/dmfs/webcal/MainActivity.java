@@ -19,6 +19,7 @@ package org.dmfs.webcal;
 
 import android.app.Activity;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -39,6 +40,8 @@ import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.security.ProviderInstaller;
 import com.schedjoules.analytics.Analytics;
 import com.schedjoules.analytics.PurchaseState;
 
@@ -71,6 +74,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -90,8 +94,51 @@ import static java.util.Arrays.asList;
  * The Home Activity is used to display the main page along with the subsections.
  */
 public class MainActivity extends NavbarActivity
-        implements CategoryNavigator, IBillingActivity, BillingClientStateListener, LoaderManager.LoaderCallbacks<Cursor>
+        implements CategoryNavigator, IBillingActivity, BillingClientStateListener, LoaderManager.LoaderCallbacks<Cursor>, ProviderInstaller.ProviderInstallListener
 {
+
+    private boolean retryProviderInstall;
+
+
+    @Override
+    public void onProviderInstallFailed(int errorCode, @Nullable Intent intent)
+    {
+        GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
+        if (availability.isUserResolvableError(errorCode))
+        {
+            // Recoverable error. Show a dialog prompting the user to
+            // install/update/enable Google Play services.
+            availability.showErrorDialogFragment(
+                    this,
+                    errorCode,
+                    ERROR_DIALOG_REQUEST_CODE,
+                    new DialogInterface.OnCancelListener()
+                    {
+                        @Override
+                        public void onCancel(DialogInterface dialog)
+                        {
+                            // The user chose not to take the recovery action.
+                            // onProviderInstallerNotAvailable();
+                        }
+                    });
+        }
+        else
+        {
+            // Google Play services isn't available.
+            //   onProviderInstallerNotAvailable();
+        }
+
+    }
+
+
+    @Override
+    public void onProviderInstalled()
+    {
+        initBilling();
+        Log.d(TAG, "billing Initialized");
+    }
+
+
     public interface OnBilledListener
     {
         void onBillingFinished(BillingResult result, Purchase info);
@@ -104,6 +151,7 @@ public class MainActivity extends NavbarActivity
     private final static int REQUEST_CODE_LAUNCH_PURCHASE_FLOW = 10003;
     private final static int REQUEST_CODE_LAUNCH_SUBSCRIPTION_FLOW = 10004;
     private final static int REQUEST_CODE_INTRO = 10005;
+    private static final int ERROR_DIALOG_REQUEST_CODE = 11006;
 
     /**
      * The interval in milliseconds to retry to load the inventory in case of an error.
@@ -171,8 +219,7 @@ public class MainActivity extends NavbarActivity
 
         LoaderManager lm = getSupportLoaderManager();
         lm.initLoader(-2, null, this);
-
-        initBilling();
+        ProviderInstaller.installIfNeededAsync(this, this);
 
         if (savedInstanceState == null)
         {
@@ -262,7 +309,32 @@ public class MainActivity extends NavbarActivity
                 finish();
             }
         }
+
+        if (requestCode == ERROR_DIALOG_REQUEST_CODE)
+        {
+            // Adding a fragment via GoogleApiAvailability.showErrorDialogFragment
+            // before the instance state is restored throws an error. So instead,
+            // set a flag here, which causes the fragment to delay until
+            // onPostResume.
+            retryProviderInstall = true;
+        }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    /**
+     * On resume, check whether a flag indicates that the provider needs to be reinstalled.
+     */
+    @Override
+    protected void onPostResume()
+    {
+        super.onPostResume();
+        if (retryProviderInstall)
+        {
+            // It's safe to retry installation.
+            ProviderInstaller.installIfNeededAsync(this, this);
+        }
+        retryProviderInstall = false;
     }
 
 
