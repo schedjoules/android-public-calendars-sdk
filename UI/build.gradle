@@ -52,5 +52,5 @@ dependencies {
     implementation 'org.dmfs:jems:1.43'
     implementation 'me.relex:circleindicator:1.2.1@aar'
     implementation 'com.github.dmfs:multiline-collapsingtoolbar:79a3e45'
-    api "org.dmfs:calendarcontent:2.0.0"
+    api "org.dmfs:calendarcontent:2.0.2"
 }
